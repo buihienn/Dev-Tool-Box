@@ -20,7 +20,7 @@ const HashTool = () => {
   return (
     <div className="p-4 border rounded-lg shadow-lg">
       <h2 className="text-xl font-bold mb-2">Hash Text Tool</h2>
-      <input type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Enter text" className="border p-2 rounded w-full mb-2" required/>
+      <input type="text" value={text} onChange={(e) => setText(e.target.value)} placeholder="Enter text" className="border p-2 rounded w-full mb-2"/>
       <select value={algorithm} onChange={(e) => setAlgorithm(e.target.value)} className="border p-2 rounded w-full mb-2">
         <option value="MD5">MD5</option>
         <option value="SHA-256">SHA-256</option>
