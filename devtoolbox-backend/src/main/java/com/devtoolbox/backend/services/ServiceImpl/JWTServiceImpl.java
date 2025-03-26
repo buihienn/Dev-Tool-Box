@@ -1,4 +1,4 @@
-package com.devtoolbox.backend.services.JWTServiceImpl;
+package com.devtoolbox.backend.services.ServiceImpl;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -8,12 +8,14 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.devtoolbox.backend.services.JWTService;
+
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
 
 @Service
-public class JWTServiceImpl {
+public class JWTServiceImpl implements JWTService {
 
     private static final String SECRET_KEY = "devtoolbox_secret_key_for_jwt_authentication_devtoolbox_secret"; // 256 bit ( 32 ky tu )
     private static final long EXPIRATION_TIME = 86400000; // 1 day
@@ -47,5 +49,14 @@ public class JWTServiceImpl {
                 .build()
                 .parseClaimsJws(token)
                 .getBody();
+    }
+
+    public boolean isTokenValid (String token, UserDetails userDetails){
+        final String username = extractUserName(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    public boolean isTokenExpired(String token){
+        return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 }
