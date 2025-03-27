@@ -1,23 +1,36 @@
-import './App.css';
+import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { SidebarProvider } from './context/SidebarContext';
+import ToolLayout from './pages/ToolLayout';
+import UserDashboard from './pages/UserDashboard';
 
-import React from "react";
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
-import Home from "./pages/Home";
-import TokenTool from "./pages/TokenTool";
-import HashTool from "./pages/HashTool";
+// Import các công cụ
+import TokenGeneratorTool from './pages/TokenGeneratorTool';
+import HashText from './pages/HashText';
+import Bcrypt from './pages/Bcrypt';
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <Routes>
-      <Route path="/" element={<Navigate to="/home"/>} />
-
-        <Route path="/home" element={<Home />} />
-        <Route path="/Token-generator" element={<TokenTool />} />
-        <Route path="/Hash-text" element={<HashTool />} />
-      </Routes>
-    </Router>
+    <SidebarProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<ToolLayout />}>
+            {/* UserDashboard/Trang chủ */}
+            <Route index element={<UserDashboard />} />
+            
+            {/* Các công cụ */}
+            <Route path="/token-generator" element={<TokenGeneratorTool />} />
+            <Route path="/hash-text" element={<HashText />} />
+            <Route path="/bcrypt" element={<Bcrypt />} />
+            {/* Thêm các công cụ khác */}
+            
+            {/* Route cho trường hợp không tìm thấy */}
+            <Route path="*" element={<div>Không tìm thấy trang!</div>} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </SidebarProvider>
   );
-};
+}
 
 export default App;
