@@ -1,5 +1,7 @@
 package com.devtoolbox.backend.controller;
 
+import java.util.Map;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,9 +26,14 @@ public class AuthenticationController {
     public ResponseEntity<?> signup(@RequestBody SignUpRequest signUpRequest) {
         try {
             User user = authenticationService.signup(signUpRequest);
-            return ResponseEntity.ok(user);
+            return ResponseEntity.ok(Map.of(
+                "message", "Signup successful",
+                "user", user
+            ));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of(
+                "message", e.getMessage()
+            ));
         }
     }
 
@@ -34,9 +41,14 @@ public class AuthenticationController {
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
             String token = authenticationService.login(loginRequest);
-            return ResponseEntity.ok(token);
+            return ResponseEntity.ok(Map.of(
+                "message", "Login successful",
+                "token", token
+            ));
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.badRequest().body(Map.of(
+                "message", e.getMessage()
+            ));
         }
     }
 }  

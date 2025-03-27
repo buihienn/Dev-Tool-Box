@@ -5,7 +5,7 @@ const TokenTool = () => {
 
   const fetchToken = async () => {
     try {
-      const response = await fetch("http://localhost:8080/api/token/generate");
+      const response = await fetch("http://localhost:8080/api/auth/token/generate");
       const data = await response.text();
       setToken(data);
     } catch (error) {
