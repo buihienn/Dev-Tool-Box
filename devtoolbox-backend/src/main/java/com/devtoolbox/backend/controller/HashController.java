@@ -7,7 +7,7 @@ import java.util.Base64;
 import org.springframework.web.bind.annotation.CrossOrigin;
 
 @RestController
-@RequestMapping("/api/hash")
+@RequestMapping("/api/auth/hash")
 @CrossOrigin(origins = "*")
 public class HashController {
 

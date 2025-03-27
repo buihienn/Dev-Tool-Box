@@ -5,15 +5,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.UUID; // ✅ Import UUID
+import java.util.UUID; //Import UUID
 
 @RestController
-@RequestMapping("/api/token")
+@RequestMapping("/api/auth/token")
 @CrossOrigin(origins = "*")
 public class TokenController {
 
-    @GetMapping("/generate") // ✅ Đảm bảo annotation đúng
+    @GetMapping("/generate") // Đảm bảo annotation đúng
     public String generateToken() {
-        return UUID.randomUUID().toString(); // ✅ Phát sinh token UUID
+        return UUID.randomUUID().toString(); // Phát sinh token UUID
     }
 }

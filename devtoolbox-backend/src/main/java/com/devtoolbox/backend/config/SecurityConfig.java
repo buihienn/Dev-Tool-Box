@@ -33,9 +33,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
             .authorizeHttpRequests(request -> request
-                .requestMatchers("/api/vl/auth/**").permitAll()
-                .requestMatchers("/app/vl/admin").hasAuthority(Role.ADMIN.name())
-                .requestMatchers("/app/vl/user").hasAuthority(Role.USER.name())
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/token/generate").hasAuthority(Role.ADMIN.name())
+                .requestMatchers("/app/admin").hasAuthority(Role.ADMIN.name())
+                .requestMatchers("/app/user").hasAuthority(Role.USER.name())
                 .anyRequest().authenticated()
             )
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

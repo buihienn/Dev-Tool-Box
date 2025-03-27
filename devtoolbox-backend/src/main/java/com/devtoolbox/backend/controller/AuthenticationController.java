@@ -6,12 +6,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.devtoolbox.backend.dto.LoginRequest;
 import com.devtoolbox.backend.dto.SignUpRequest;
 import com.devtoolbox.backend.entities.User;
 import com.devtoolbox.backend.services.AuthenticationService;
 
 @RestController
-@RequestMapping("api/vl/auth")
+@RequestMapping("api/auth")
 public class AuthenticationController {
     private final AuthenticationService authenticationService;
 
@@ -20,7 +21,22 @@ public class AuthenticationController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signup(@RequestBody SignUpRequest signUpRequest){
-        return ResponseEntity.ok(authenticationService.signup(signUpRequest));
+    public ResponseEntity<?> signup(@RequestBody SignUpRequest signUpRequest) {
+        try {
+            User user = authenticationService.signup(signUpRequest);
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            String token = authenticationService.login(loginRequest);
+            return ResponseEntity.ok(token);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }  
