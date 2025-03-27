@@ -1,14 +1,25 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const navigate = useNavigate();
+
   return (
     <div>
       <h1>Trang chủ</h1>
       <p>Chào mừng bạn đến với DevToolBox!</p>
-      <Link to="/token-generator">
-        <button>🔑 Token Generator</button>
-      </Link>
+      <button onClick={() => navigate("/Token-generator")}>
+        🔑 Token Generator
+      </button>
+      <button onClick={() => navigate("/Hash-text")}>
+        🔒 Hash Tool
+      </button>
+      <button onClick={() => navigate("/login")}>
+        Đăng nhập
+      </button>
+      <button onClick={() => navigate("/register")}>
+        Đăng ký
+      </button>
     </div>
   );
 };

@@ -26,12 +26,12 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     public User signup(SignUpRequest signUpRequest){
 
         if (userRepository.findByEmail(signUpRequest.getEmail()).isPresent()) {
-            throw new IllegalArgumentException("Email đã được sử dụng!");
+            throw new IllegalArgumentException("Email is used!");
         }
     
         // Kiểm tra mật khẩu không được null hoặc rỗng
         if (signUpRequest.getPassword() == null || signUpRequest.getPassword().isEmpty()) {
-            throw new IllegalArgumentException("Mật khẩu không được để trống!");
+            throw new IllegalArgumentException("Password cannot be null or empty!");
         }
 
         User user = new User();
@@ -47,10 +47,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     @Override
     public String login(LoginRequest loginRequest) {
         User user = userRepository.findByEmail(loginRequest.getEmail())
-                .orElseThrow(() -> new IllegalArgumentException("Email không tồn tại"));
+                .orElseThrow(() -> new IllegalArgumentException("Email not found!"));
 
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Mật khẩu không đúng");
+            throw new IllegalArgumentException("Passwrod wrong!");
         }
 
         // Trả về JWT token nếu đăng nhập thành công

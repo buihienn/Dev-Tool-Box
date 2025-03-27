@@ -8,7 +8,7 @@ const HashTool = () => {
   const handleHash = async () => {
     try {
         console.log("${algorithm}")
-        const response = await fetch(`http://localhost:8080/api/hash/${algorithm}?text=${text}`);
+        const response = await fetch(`http://localhost:8080/api/auth/hash/${algorithm}?text=${text}`);
         const data = await response.text();
         setHashedText(data);
     } catch (error) {
