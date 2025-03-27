@@ -7,10 +7,10 @@ import com.devtoolbox.backend.entities.Role;
 public class SignUpRequest {
     private String email;
     private String password;
-    private String firstName;
-    private String lastName;
-    private boolean isPremium;
-    private Role role;        
+    private String firstName = "";
+    private String lastName = "";
+    private boolean isPremium = false;
+    private Role role = Role.USER;        
 
     // Getters
     public String getEmail() {

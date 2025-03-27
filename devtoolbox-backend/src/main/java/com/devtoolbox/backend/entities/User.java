@@ -21,17 +21,15 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
-    private String firstName;
+    // @Column(nullable = false)
+    // private String firstName;
 
-    @Column(nullable = false)
-    private String lastName;
+    // @Column(nullable = false)
+    // private String lastName;
 
-    @Column(nullable = false)
     private boolean isPremium = false;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
     private Role role;
 
     @Override
@@ -73,13 +71,21 @@ public class User implements UserDetails {
         return email;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public Long getId() {
+        return id;
     }
+
+    public boolean isPremium() {
+        return isPremium;
+    }
+
+    // public String getFirstName() {
+    //     return firstName;
+    // }
     
-    public String getLastName() {
-        return lastName;
-    }
+    // public String getLastName() {
+    //     return lastName;
+    // }
 
      // Setters
      public void setId(Long id) {
@@ -102,12 +108,12 @@ public class User implements UserDetails {
         this.role = role;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
+    // public void setFirstName(String firstName) {
+    //     this.firstName = firstName;
+    // }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    // public void setLastName(String lastName) {
+    //     this.lastName = lastName;
+    // }
 
 }

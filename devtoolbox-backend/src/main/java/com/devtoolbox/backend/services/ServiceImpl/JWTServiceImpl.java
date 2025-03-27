@@ -17,7 +17,7 @@ import java.util.function.Function;
 @Service
 public class JWTServiceImpl implements JWTService {
 
-    private static final String SECRET_KEY = "devtoolbox_secret_key_for_jwt_authentication_devtoolbox_secret"; // 256 bit ( 32 ky tu )
+    private static final String SECRET_KEY = "devtoolbox+secret+key+for+jwt+authentication+devtoolbox+secret"; // 256 bit ( 32 ky tu )
     private static final long EXPIRATION_TIME = 86400000; // 1 day
 
     private Key getSigninKey() {
