@@ -1,0 +1,15 @@
+.tool-header {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .tool-header h3 {
+    color: #043A84;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  .tool-header p {
+    color: #6c757d;
+    margin-bottom: 2rem;
+  }
