@@ -4,7 +4,7 @@ import {
   ClockHistory, 
   ChevronDown, 
   ChevronUp,
-  Trophy
+  StarFill
 } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { useSidebar } from '../context/SidebarContext';
@@ -156,7 +156,7 @@ const verticalLineStyle = {
           >
             <CustomToggle
               eventKey="premium"
-              icon={<Trophy />}
+              icon={<StarFill />}
               title="Công cụ Premium"
               callback={toggleCategory}
             />

@@ -6,7 +6,7 @@ import {
     Button, 
     Dropdown,
   } from 'react-bootstrap';
-import { List, House, StarFill, Heart, Github, Twitter, InfoCircle, Sun, Person } from 'react-bootstrap-icons';
+import { List, House, DiamondFill, Heart, Github, InfoCircle, Sun, Person } from 'react-bootstrap-icons';
 import { useSidebar } from '../context/SidebarContext';
 import { useNavigate } from 'react-router-dom';
 
@@ -60,7 +60,7 @@ const Header = () => {
         <div className="ms-auto d-flex align-items-center">
             {/* Premium Button */}
             <Button variant="warning" className="d-flex align-items-center text-dark">
-            <StarFill />
+            <DiamondFill />
             <span className="d-none d-md-inline ms-1">Premium</span>
             </Button>
             
@@ -73,9 +73,6 @@ const Header = () => {
             <Nav className="ms-2">
             <Nav.Link href="#github" style={{ color: '#000' }}>
                 <Github />
-            </Nav.Link>
-            <Nav.Link href="#twitter" style={{ color: '#000' }}>
-                <Twitter />
             </Nav.Link>
             <Nav.Link href="#info" style={{ color: '#000' }}>
                 <InfoCircle />

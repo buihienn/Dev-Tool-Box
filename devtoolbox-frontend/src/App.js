@@ -10,6 +10,7 @@ import Register from './pages/Register';
 import TokenGeneratorTool from './pages/TokenGeneratorTool';
 import HashText from './pages/HashText';
 import Bcrypt from './pages/Bcrypt';
+import MathEvaluator from './pages/MathEvaluator';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
             <Route path="token-generator" element={<TokenGeneratorTool />} />
             <Route path="hash-text" element={<HashText />} />
             <Route path="bcrypt" element={<Bcrypt />} />
+            <Route path="math-evaluator" element={<MathEvaluator />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}
