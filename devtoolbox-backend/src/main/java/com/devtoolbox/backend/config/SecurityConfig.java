@@ -17,8 +17,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.devtoolbox.backend.services.UserService;
-import com.devtoolbox.backend.entities.Role;
+import com.devtoolbox.backend.application.services.UserService;
+import com.devtoolbox.backend.data.entities.Role;
 
 @Configuration
 @EnableWebSecurity

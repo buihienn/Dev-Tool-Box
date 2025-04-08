@@ -1,7 +1,7 @@
-package com.devtoolbox.backend.dto;
+package com.devtoolbox.backend.application.dto;
 
 
-import com.devtoolbox.backend.entities.Role;
+import com.devtoolbox.backend.data.entities.Role;
 
 // Data class
 public class SignUpRequest {

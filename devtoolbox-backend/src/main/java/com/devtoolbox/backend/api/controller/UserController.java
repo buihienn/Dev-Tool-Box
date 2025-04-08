@@ -1,4 +1,4 @@
-package com.devtoolbox.backend.controller;
+package com.devtoolbox.backend.api.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

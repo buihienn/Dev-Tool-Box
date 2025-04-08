@@ -1,24 +1,21 @@
-package com.devtoolbox.backend.controller;
+package com.devtoolbox.backend.application.services.ServiceImpl;
 
-import org.springframework.web.bind.annotation.*;
+import com.devtoolbox.backend.application.services.HashService;
+import org.springframework.stereotype.Service;
+
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-@RestController
-@RequestMapping("/api/auth/hash")
-@CrossOrigin(origins = "*")
-public class HashController {
+@Service
+public class HashServiceImpl implements HashService {
 
-    @GetMapping("/{encoding}")
-    public Map<String, String> hashText(
-            @PathVariable String encoding,
-            @RequestParam String text 
-    ) {
+    @Override
+    public Map<String, String> generateHashes(String text, String encoding) {
         Map<String, String> hashResults = new HashMap<>();
-        String[] algorithms = {"MD5", "SHA1", "SHA256", "SHA512"}; 
+        String[] algorithms = {"MD5", "SHA1", "SHA256", "SHA512"};
 
         for (String algorithm : algorithms) {
             try {
