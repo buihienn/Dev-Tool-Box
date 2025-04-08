@@ -1,13 +1,19 @@
 import React, { useState } from "react";
-import {useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "../styles/Login.css"; // Import file CSS
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
     try {
       const response = await fetch("http://localhost:8080/api/auth/login", {
         method: "POST",
@@ -19,47 +25,60 @@ const Login = () => {
           password: password,
         }),
       });
-  
+
       const data = await response.json();
-  
+
       if (response.ok) {
-        alert(data.message || "Đăng nhập thành công!");
-        // Lưu token vào localStorage hoặc sessionStorage
+        // Lưu token vào localStorage
         localStorage.setItem("token", data.token);
-        navigate("/home"); // Chuyển hướng đến trang chủ
+
+        // Hiển thị thông báo thành công
+        alert(`Đăng nhập thành công! Xin chào ${data.email} (${data.role})`);
+
+        // Chuyển hướng đến trang chủ
+        navigate("/home");
       } else {
-        alert(data.message || "Đăng nhập thất bại!");
+        setError(data.message || "Đăng nhập thất bại!");
       }
     } catch (error) {
       console.error("Lỗi khi gọi API:", error);
-      alert(error.message);
+      setError("Đã xảy ra lỗi, vui lòng thử lại sau!");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="auth-container">
-      <h2>Đăng nhập</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Email:</label>
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
-        </div>
-        <div>
-          <label>Mật khẩu:</label>
-          <input
-            type="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            required
-          />
-        </div>
-        <button type="submit">Đăng nhập</button>
-      </form>
+    <div className="login-container">
+      <div className="login-card">
+        <h2>Đăng nhập</h2>
+        {error && <p className="error-message">{error}</p>}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Email:</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              placeholder="Nhập email của bạn"
+            />
+          </div>
+          <div className="form-group">
+            <label>Mật khẩu:</label>
+            <input
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              placeholder="Nhập mật khẩu"
+            />
+          </div>
+          <button type="submit" className="login-button" disabled={loading}>
+            {loading ? "Đang xử lý..." : "Đăng nhập"}
+          </button>
+        </form>
+      </div>
     </div>
   );
 };

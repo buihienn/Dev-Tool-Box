@@ -1,8 +1,5 @@
 package com.devtoolbox.backend.config;
 
-import com.devtoolbox.backend.services.JWTService;
-import com.devtoolbox.backend.services.UserService;
-
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -18,6 +15,10 @@ import org.springframework.security.web.authentication.WebAuthenticationDetailsS
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
+
+import com.devtoolbox.backend.application.services.JWTService;
+import com.devtoolbox.backend.application.services.UserService;
+
 import org.springframework.lang.NonNull;
 
 

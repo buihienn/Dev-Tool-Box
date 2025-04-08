@@ -1,4 +1,4 @@
-package com.devtoolbox.backend.entities;
+package com.devtoolbox.backend.data.entities;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -77,6 +77,10 @@ public class User implements UserDetails {
 
     public boolean isPremium() {
         return isPremium;
+    }
+
+    public Role getRole() {
+        return role;
     }
 
     // public String getFirstName() {

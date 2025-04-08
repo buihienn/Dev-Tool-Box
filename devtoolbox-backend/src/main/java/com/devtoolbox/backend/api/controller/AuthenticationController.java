@@ -1,4 +1,4 @@
-package com.devtoolbox.backend.controller;
+package com.devtoolbox.backend.api.controller;
 
 import java.util.Map;
 
@@ -8,10 +8,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.devtoolbox.backend.dto.LoginRequest;
-import com.devtoolbox.backend.dto.SignUpRequest;
-import com.devtoolbox.backend.entities.User;
-import com.devtoolbox.backend.services.AuthenticationService;
+import com.devtoolbox.backend.application.dto.LoginRequest;
+import com.devtoolbox.backend.application.dto.SignUpRequest;
+import com.devtoolbox.backend.application.services.AuthenticationService;
+import com.devtoolbox.backend.data.entities.User;
 
 @RestController
 @RequestMapping("api/auth")
@@ -40,15 +40,10 @@ public class AuthenticationController {
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
         try {
-            String token = authenticationService.login(loginRequest);
-            return ResponseEntity.ok(Map.of(
-                "message", "Login successful",
-                "token", token
-            ));
+            Map<String, Object> response = authenticationService.login(loginRequest);
+            return ResponseEntity.ok(response);
         } catch (IllegalArgumentException e) {
-            return ResponseEntity.badRequest().body(Map.of(
-                "message", e.getMessage()
-            ));
+            return ResponseEntity.badRequest().body(Map.of("message", e.getMessage()));
         }
     }
 }  

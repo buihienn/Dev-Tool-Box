@@ -1,5 +1,6 @@
-package com.devtoolbox.backend.services.ServiceImpl;
+package com.devtoolbox.backend.application.services.ServiceImpl;
 
+import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,7 +9,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.devtoolbox.backend.services.JWTService;
+import com.devtoolbox.backend.application.services.JWTService;
 
 import java.security.Key;
 import java.util.Date;
@@ -17,8 +18,9 @@ import java.util.function.Function;
 @Service
 public class JWTServiceImpl implements JWTService {
 
-    private static final String SECRET_KEY = "devtoolbox+secret+key+for+jwt+authentication+devtoolbox+secret"; // 256 bit ( 32 ky tu )
-    private static final long EXPIRATION_TIME = 86400000; // 1 day
+    private static final Dotenv dotenv = Dotenv.load(); // Load file .env
+    private static final String SECRET_KEY = dotenv.get("JWT_SECRET_KEY");
+    private static final long EXPIRATION_TIME = Long.parseLong(dotenv.get("JWT_EXPIRATION_TIME", "86400000"));
 
     private Key getSigninKey() {
         byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);

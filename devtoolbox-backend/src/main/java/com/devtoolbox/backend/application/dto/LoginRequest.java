@@ -1,4 +1,4 @@
-package com.devtoolbox.backend.dto;
+package com.devtoolbox.backend.application.dto;
 
 public class LoginRequest {
     private String email;
