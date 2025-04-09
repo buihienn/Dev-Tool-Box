@@ -2,6 +2,7 @@ import {
   Key,
   Hash,
   ShieldLock,
+  ClockHistory,
 } from 'react-bootstrap-icons';
 
 const toolsData = [
@@ -31,6 +32,15 @@ const toolsData = [
     category: 'crypto',
     isNew: false,
     isPremium: false
+  },
+  {
+    id: 'ulid-generator',
+    name: 'ULID Generator',
+    description: 'Tạo ULID ngẫu nhiên (Universally Unique Lexicographically Sortable Identifier)',
+    icon: ClockHistory, 
+    category: 'crypto', 
+    isNew: true,
+    isPremium: false, 
   },
 ];
 
