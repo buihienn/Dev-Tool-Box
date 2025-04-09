@@ -1,14 +1,8 @@
 package com.devtoolbox.backend.api.controller;
 
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.Map;
-
 import com.devtoolbox.backend.application.services.BcryptService;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @RestController
 @RequestMapping("/api/auth/bcrypt")
