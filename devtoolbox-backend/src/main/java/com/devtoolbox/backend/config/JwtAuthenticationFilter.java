@@ -35,10 +35,18 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     }
 
     @Override
-    protected void doFilterInternal (@NonNull HttpServletRequest req, @NonNull HttpServletResponse res, @NonNull FilterChain filterChain)  throws ServletException, IOException{
+    protected void doFilterInternal(@NonNull HttpServletRequest req, @NonNull HttpServletResponse res, @NonNull FilterChain filterChain) throws ServletException, IOException {
         final String authHeader = req.getHeader("Authorization");
+        final String requestURI = req.getRequestURI();
+
+        // Bỏ qua bộ lọc cho các endpoint công khai
+        if (requestURI.startsWith("/api/auth/verify")) {
+            filterChain.doFilter(req, res);
+            return;
+        }
+
         final String username;
-        if (!StringUtils.hasText(authHeader) || !authHeader.startsWith("Bearer ")){
+        if (!StringUtils.hasText(authHeader) || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(req, res);
             return;
         }
@@ -46,22 +54,19 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         final String jwt = authHeader.substring(7);
         username = jwtService.extractUserName(jwt);
 
-        if (StringUtils.hasText(username) && SecurityContextHolder.getContext().getAuthentication() == null){
+        if (StringUtils.hasText(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = userService.userDetailsService().loadUserByUsername(username);
 
             if (jwtService.isTokenValid(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
-
                 authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
 
                 SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
                 securityContext.setAuthentication(authToken);
                 SecurityContextHolder.setContext(securityContext);
-
             }
         }
         filterChain.doFilter(req, res);
-
     }
     
 }

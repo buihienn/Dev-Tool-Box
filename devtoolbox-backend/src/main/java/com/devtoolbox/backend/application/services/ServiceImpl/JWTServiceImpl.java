@@ -27,9 +27,11 @@ public class JWTServiceImpl implements JWTService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserDetails userDetails, String role, Long userId) {
         return Jwts.builder()
-                .setSubject(userDetails.getUsername()) // Luu username vao token
+                .setSubject(userDetails.getUsername()) // Lưu username vào token
+                .claim("role", role) // Thêm vai trò vào payload
+                .claim("userId", userId) // Thêm userId vào payload
                 .setIssuedAt(new Date()) // Thời gian phát hành token
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // Hết hạn sau 24h
                 .signWith(getSigninKey(), SignatureAlgorithm.HS256) // Ký token bằng SHA-256
@@ -46,19 +48,25 @@ public class JWTServiceImpl implements JWTService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parserBuilder()
-                .setSigningKey(getSigninKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+        try {
+            return Jwts.parserBuilder()
+                    .setSigningKey(getSigninKey())
+                    .build()
+                    .parseClaimsJws(token)
+                    .getBody();
+        } catch (Exception e) {
+            // Log lỗi chi tiết
+            System.err.println("Token không hợp lệ hoặc đã hết hạn: " + e.getMessage());
+            throw new IllegalArgumentException("Invalid or expired token");
+        }
     }
 
-    public boolean isTokenValid (String token, UserDetails userDetails){
+    public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = extractUserName(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public boolean isTokenExpired(String token){
+    public boolean isTokenExpired(String token) {
         return extractClaim(token, Claims::getExpiration).before(new Date());
     }
 }

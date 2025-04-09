@@ -28,6 +28,7 @@ public class User implements UserDetails {
     // private String lastName;
 
     private boolean isPremium = false;
+    private boolean isVerified = false;
 
     @Enumerated(EnumType.STRING)
     private Role role;
@@ -119,5 +120,13 @@ public class User implements UserDetails {
     // public void setLastName(String lastName) {
     //     this.lastName = lastName;
     // }
+
+    public boolean isVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(boolean isVerified) {
+        this.isVerified = isVerified;
+    }
 
 }

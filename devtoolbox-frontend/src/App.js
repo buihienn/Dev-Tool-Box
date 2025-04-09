@@ -12,6 +12,8 @@ import HashText from './pages/HashText';
 import Bcrypt from './pages/Bcrypt';
 import MathEvaluator from './pages/MathEvaluator';
 import ULID from './pages/UlidGenerator';
+import ForgotPassword from './pages/ForgotPassword';
+import VerifyEmail from './pages/VerifyEmail';
 
 function App() {
   return (
@@ -31,6 +33,9 @@ function App() {
           {/* Các route không cần ToolLayout */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/verify" element={<VerifyEmail />} />
+          {/* Route không tìm thấy */}
           <Route path="*" element={<div>Không tìm thấy trang!</div>} />
         </Routes>
       </BrowserRouter>
