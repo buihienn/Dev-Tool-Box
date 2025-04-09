@@ -8,4 +8,6 @@ import com.devtoolbox.backend.data.entities.User;
 public interface AuthenticationService {
     User signup(SignUpRequest signUpRequest);
     Map<String, Object> login(LoginRequest loginRequest);
+    public void verifyEmail(String token);
+    void resendVerificationEmail(String email);
 }

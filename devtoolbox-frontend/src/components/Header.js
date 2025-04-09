@@ -10,13 +10,12 @@ import {
 import {
   List,
   House,
-  StarFill,
   Heart,
   Github,
-  Twitter,
   InfoCircle,
   Sun,
   Person,
+  DiamondFill,
 } from "react-bootstrap-icons";
 import { useSidebar } from "../context/SidebarContext";
 import { useNavigate } from "react-router-dom";
@@ -32,9 +31,10 @@ const Header = () => {
   const handleLogout = () => {
     // Xóa JWT token khỏi localStorage
     localStorage.removeItem("token");
-
+    localStorage.removeItem("email"); // Xóa email khỏi localStorage
+    localStorage.removeItem("role"); // Xóa vai trò khỏi localStorage
     // Điều hướng về trang đăng nhập
-    navigate("/login");
+    navigate("/");
   };
 
   return (
