@@ -21,7 +21,7 @@ const ToolLayout = () => {
         transition: 'grid-template-columns 0.3s ease'
       }}
     >
-      {/* Sidebar - grid area sidebar */}
+      {/* Sidebar */}
       <div style={{ 
         gridArea: 'sidebar', 
         background: '#FCF9F1', 
@@ -33,12 +33,12 @@ const ToolLayout = () => {
         <Sidebar />
       </div>
 
-      {/* Header - grid area header */}
+      {/* Header */}
       <div style={{ gridArea: 'header' }}>
         <Header />
       </div>
 
-      {/* Content - grid area content */}
+      {/* Content */}
       <div style={{ 
         gridArea: 'content', 
         overflow: 'auto',

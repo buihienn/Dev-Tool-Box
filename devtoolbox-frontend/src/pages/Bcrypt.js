@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
-import '../styles/ToolLayout.css'; // Import CSS
+import '../styles/ToolLayout.css';
 
 const Bcrypt = () => {
   const [inputString, setInputString] = useState('');

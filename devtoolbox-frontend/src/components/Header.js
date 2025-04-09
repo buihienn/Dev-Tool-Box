@@ -82,9 +82,10 @@ const Header = () => {
         </InputGroup>
 
         <div className="ms-auto d-flex align-items-center">
-          {/* Premium Button */}
-          <Button variant="warning" className="d-flex align-items-center text-dark">
-            <StarFill />
+            {/* Premium Button */}
+            <Button variant="warning" className="d-flex align-items-center text-dark">
+            <DiamondFill />
+
             <span className="d-none d-md-inline ms-1">Premium</span>
           </Button>
 
@@ -98,11 +99,8 @@ const Header = () => {
             <Nav.Link href="#github" style={{ color: "#000" }}>
               <Github />
             </Nav.Link>
-            <Nav.Link href="#twitter" style={{ color: "#000" }}>
-              <Twitter />
-            </Nav.Link>
-            <Nav.Link href="#info" style={{ color: "#000" }}>
-              <InfoCircle />
+            <Nav.Link href="#info" style={{ color: '#000' }}>
+                <InfoCircle />
             </Nav.Link>
             <Nav.Link href="#theme" style={{ color: "#000" }}>
               <Sun />

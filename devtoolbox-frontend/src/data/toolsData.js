@@ -2,6 +2,7 @@ import {
   Key,
   Hash,
   ShieldLock,
+  Calculator,
   ClockHistory,
 } from 'react-bootstrap-icons';
 
@@ -31,6 +32,15 @@ const toolsData = [
     icon: ShieldLock,
     category: 'crypto',
     isNew: false,
+    isPremium: false
+  },
+  {
+    id: 'math-evaluator',
+    name: 'Math Evaluator',
+    description: 'Đánh giá biểu thức toán học và trả về kết quả chính xác',
+    icon: Calculator,
+    category: 'math',
+    isNew: true,
     isPremium: false
   },
   {

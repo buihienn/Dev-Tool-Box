@@ -7,11 +7,9 @@ import categoriesData from '../data/categoriesData';
 import '../styles/GridLayout.css';
 
 const UserDashboard = () => {
-  // Lấy các công cụ mới
   const newTools = toolsData.filter(tool => tool.isNew);
   
-  // Lấy các công cụ sử dụng gần đây
-  const recentTools = toolsData.slice(0, 3); // Giả lập 3 công cụ đầu tiên làm công cụ gần đây
+  const recentTools = toolsData.slice(0, 3);
   
   return (
     <Container fluid>      
