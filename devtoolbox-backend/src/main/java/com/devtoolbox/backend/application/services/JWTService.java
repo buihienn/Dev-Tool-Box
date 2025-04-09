@@ -1,4 +1,4 @@
-package com.devtoolbox.backend.services;
+package com.devtoolbox.backend.application.services;
 
 import org.springframework.security.core.userdetails.UserDetails;
 

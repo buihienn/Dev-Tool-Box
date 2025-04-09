@@ -10,6 +10,56 @@ const Bcrypt = () => {
   const [compareHash, setCompareHash] = useState('');
   const [isMatch, setIsMatch] = useState(null);
 
+  // Gọi API để tạo hash
+  const handleGenerateHash = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/bcrypt/hash', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inputString: inputString,
+          saltRounds: saltRounds,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGeneratedHash(data.hash); // Lưu hash được trả về
+      } else {
+        console.error('Lỗi khi tạo hash:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Lỗi khi gọi API hash:', error);
+    }
+  };
+
+  // Gọi API để so sánh chuỗi với hash
+  const handleCompareHash = async () => {
+    try {
+      const response = await fetch('http://localhost:8080/api/auth/bcrypt/compare', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          inputString: compareString,
+          hash: compareHash,
+        }),
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setIsMatch(data.isMatch); // Lưu kết quả so sánh
+      } else {
+        console.error('Lỗi khi so sánh hash:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Lỗi khi gọi API compare:', error);
+    }
+  };
+
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
       <div className="tool-header">
@@ -54,10 +104,13 @@ const Bcrypt = () => {
             </Form.Group>
 
             <Form.Group className="mb-3">
+              <Form.Label>Generated hash:</Form.Label>
               <Form.Control type="text" readOnly value={generatedHash} />
             </Form.Group>
 
-            <Button variant="primary">Copy hash</Button>
+            <Button variant="primary" onClick={handleGenerateHash}>
+              Generate Hash
+            </Button>
           </Card.Body>
         </Card>
 
@@ -92,7 +145,9 @@ const Bcrypt = () => {
               </span>
             </div>
 
-            <Button variant="primary">Compare</Button>
+            <Button variant="primary" onClick={handleCompareHash}>
+              Compare
+            </Button>
           </Card.Body>
         </Card>
       </div>

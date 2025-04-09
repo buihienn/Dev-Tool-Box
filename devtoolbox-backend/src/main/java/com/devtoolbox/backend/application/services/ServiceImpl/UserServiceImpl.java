@@ -1,12 +1,12 @@
-package com.devtoolbox.backend.services.ServiceImpl;
+package com.devtoolbox.backend.application.services.ServiceImpl;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.devtoolbox.backend.repositories.UserRepository;
-import com.devtoolbox.backend.services.UserService;
+import com.devtoolbox.backend.application.services.UserService;
+import com.devtoolbox.backend.data.repositories.UserRepository;
 
 
 

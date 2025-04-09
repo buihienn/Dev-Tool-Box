@@ -88,7 +88,7 @@ return (
               Sao chép
             </Button>
             <Button variant="primary" onClick={handleGenerateToken}>
-              Tạo
+              Tạo token
             </Button>
           </div>
         </Card.Body>

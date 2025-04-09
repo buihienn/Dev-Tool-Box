@@ -11,6 +11,7 @@ import TokenGeneratorTool from './pages/TokenGeneratorTool';
 import HashText from './pages/HashText';
 import Bcrypt from './pages/Bcrypt';
 import MathEvaluator from './pages/MathEvaluator';
+import ULID from './pages/UlidGenerator';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route path="hash-text" element={<HashText />} />
             <Route path="bcrypt" element={<Bcrypt />} />
             <Route path="math-evaluator" element={<MathEvaluator />} />
+            <Route path="ulid-generator" element={<ULID />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}

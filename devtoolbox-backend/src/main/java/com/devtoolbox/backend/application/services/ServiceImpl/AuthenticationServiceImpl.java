@@ -1,15 +1,18 @@
-package com.devtoolbox.backend.services.ServiceImpl;
+package com.devtoolbox.backend.application.services.ServiceImpl;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.devtoolbox.backend.dto.LoginRequest;
-import com.devtoolbox.backend.dto.SignUpRequest;
-import com.devtoolbox.backend.entities.Role;
-import com.devtoolbox.backend.entities.User;
-import com.devtoolbox.backend.repositories.UserRepository;
-import com.devtoolbox.backend.services.AuthenticationService;
-import com.devtoolbox.backend.services.JWTService;
+import com.devtoolbox.backend.application.dto.LoginRequest;
+import com.devtoolbox.backend.application.dto.SignUpRequest;
+import com.devtoolbox.backend.application.services.AuthenticationService;
+import com.devtoolbox.backend.application.services.JWTService;
+import com.devtoolbox.backend.data.entities.Role;
+import com.devtoolbox.backend.data.entities.User;
+import com.devtoolbox.backend.data.repositories.UserRepository;
 
 @Service
 public class AuthenticationServiceImpl implements AuthenticationService{
@@ -34,6 +37,10 @@ public class AuthenticationServiceImpl implements AuthenticationService{
             throw new IllegalArgumentException("Password cannot be null or empty!");
         }
 
+        if (signUpRequest.getPassword().length() < 8) {
+            throw new IllegalArgumentException("Password must be at least 8 characters long!");
+        }
+
         User user = new User();
         user.setEmail(signUpRequest.getEmail());
         user.setPassword(passwordEncoder.encode(signUpRequest.getPassword()));
@@ -45,15 +52,27 @@ public class AuthenticationServiceImpl implements AuthenticationService{
     }
 
     @Override
-    public String login(LoginRequest loginRequest) {
+    public Map<String, Object> login(LoginRequest loginRequest) {
+        // Tìm người dùng theo email
         User user = userRepository.findByEmail(loginRequest.getEmail())
                 .orElseThrow(() -> new IllegalArgumentException("Email not found!"));
 
+        // Kiểm tra mật khẩu
         if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
-            throw new IllegalArgumentException("Passwrod wrong!");
+            throw new IllegalArgumentException("Password is incorrect!");
         }
 
-        // Trả về JWT token nếu đăng nhập thành công
-        return jwtService.generateToken(user);
+        // Tạo JWT token
+        String token = jwtService.generateToken(user);
+
+        // Trả về thông tin người dùng và token
+        Map<String, Object> response = new HashMap<>();
+        response.put("message", "Login successful");
+        response.put("token", token);
+        response.put("email", user.getEmail());
+        response.put("role", user.getRole().toString());
+        response.put("premium", user.isPremium());
+
+        return response;
     }
 }

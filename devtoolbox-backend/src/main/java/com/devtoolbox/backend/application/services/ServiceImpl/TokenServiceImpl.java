@@ -1,28 +1,22 @@
-package com.devtoolbox.backend.controller;
+package com.devtoolbox.backend.application.services.ServiceImpl;
 
-import org.springframework.web.bind.annotation.*;
+import com.devtoolbox.backend.application.services.TokenService;
+import org.springframework.stereotype.Service;
+
 import java.security.SecureRandom;
 
-@RestController
-@RequestMapping("/api/auth/token")
-@CrossOrigin(origins = "*")
-public class TokenController {
+@Service
+public class TokenServiceImpl implements TokenService {
 
-    @GetMapping("/generate")
-    public String generateToken(
-            @RequestParam(required = false, defaultValue = "true") boolean uppercase,
-            @RequestParam(required = false, defaultValue = "true") boolean lowercase,
-            @RequestParam(required = false, defaultValue = "true") boolean numbers,
-            @RequestParam(required = false, defaultValue = "true") boolean symbols,
-            @RequestParam(required = false, defaultValue = "64") int length) {
-
-        // Danh sach cac ky tu
+    @Override
+    public String generateToken(boolean uppercase, boolean lowercase, boolean numbers, boolean symbols, int length) {
+        // Danh sách các ký tự
         String upperCaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         String lowerCaseChars = "abcdefghijklmnopqrstuvwxyz";
         String numberChars = "0123456789";
         String symbolChars = "!@#$%^&*()-_=+[]{}|;:,.<>?";
 
-        // Tao danh sach ky tu dua tren yeu cau
+        // Tạo danh sách ký tự dựa trên yêu cầu
         StringBuilder characterPool = new StringBuilder();
         if (uppercase) characterPool.append(upperCaseChars);
         if (lowercase) characterPool.append(lowerCaseChars);
