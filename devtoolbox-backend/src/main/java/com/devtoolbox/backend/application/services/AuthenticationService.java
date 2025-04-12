@@ -10,4 +10,5 @@ public interface AuthenticationService {
     Map<String, Object> login(LoginRequest loginRequest);
     public void verifyEmail(String token);
     void resendVerificationEmail(String email);
+    public void forgotPassword(String email);
 }

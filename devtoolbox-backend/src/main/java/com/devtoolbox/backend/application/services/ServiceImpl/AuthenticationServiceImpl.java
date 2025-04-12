@@ -3,7 +3,11 @@ package com.devtoolbox.backend.application.services.ServiceImpl;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
+import java.util.Collections;
 import java.util.UUID;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -161,5 +165,61 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         } catch (MessagingException e) {
             throw new IllegalStateException("Failed to send verification email", e);
         }
+    }
+
+    public void forgotPassword(String email) {
+        // Tìm người dùng theo email
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new IllegalArgumentException("Email không tồn tại hoặc chưa được đăng ký!"));
+    
+        // Tạo mật khẩu mới
+        String newPassword = generateRandomPassword(12);
+    
+        // Mã hóa mật khẩu mới và cập nhật vào cơ sở dữ liệu
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+    
+        // Gửi mật khẩu mới qua email
+        String emailContent = "<p>Mật khẩu mới của bạn là:</p>"
+                + "<p><strong>" + newPassword + "</strong></p>"
+                + "<p>Vui lòng đăng nhập và thay đổi mật khẩu ngay lập tức để đảm bảo an toàn.</p>";
+        try {
+            emailService.sendEmail(user.getEmail(), "Mật khẩu mới của bạn", emailContent);
+        } catch (MessagingException e) {
+            throw new IllegalStateException("Không thể gửi email đặt lại mật khẩu. Vui lòng thử lại sau!", e);
+        }
+    }
+
+    // Hàm tạo mật khẩu ngẫu nhiên
+    private String generateRandomPassword(int length) {
+        String upperCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
+        String numbers = "0123456789";
+        String specialCharacters = "!@#$%^&*()-_+=<>?";
+        String allCharacters = upperCaseLetters + lowerCaseLetters + numbers + specialCharacters;
+
+        StringBuilder password = new StringBuilder();
+        Random random = new Random();
+
+        // Đảm bảo mật khẩu có ít nhất một ký tự thuộc mỗi nhóm
+        password.append(upperCaseLetters.charAt(random.nextInt(upperCaseLetters.length())));
+        password.append(lowerCaseLetters.charAt(random.nextInt(lowerCaseLetters.length())));
+        password.append(numbers.charAt(random.nextInt(numbers.length())));
+        password.append(specialCharacters.charAt(random.nextInt(specialCharacters.length())));
+
+        // Thêm các ký tự ngẫu nhiên còn lại
+        for (int i = 4; i < length; i++) {
+            password.append(allCharacters.charAt(random.nextInt(allCharacters.length())));
+        }
+
+        // Trộn ngẫu nhiên các ký tự trong mật khẩu
+        List<Character> passwordChars = password.chars()
+                .mapToObj(c -> (char) c)
+                .collect(Collectors.toList());
+        Collections.shuffle(passwordChars);
+
+        return passwordChars.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining());
     }
 }
