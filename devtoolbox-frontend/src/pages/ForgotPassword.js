@@ -7,19 +7,16 @@ const ForgotPassword = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // Hàm kiểm tra định dạng email
   const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  // Hàm xử lý gửi yêu cầu Forgot Password
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
     setError("");
 
-    // Kiểm tra định dạng email
     if (!validateEmail(email)) {
       setError("Email không hợp lệ. Vui lòng nhập đúng định dạng email.");
       return;
@@ -28,7 +25,6 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      // Gửi yêu cầu đến API backend
       const response = await fetch("http://localhost:8080/api/auth/forgot-password", {
         method: "POST",
         headers: {
@@ -40,10 +36,8 @@ const ForgotPassword = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Hiển thị thông báo thành công
         setMessage("Yêu cầu đặt lại mật khẩu đã được gửi. Vui lòng kiểm tra email của bạn.");
       } else {
-        // Hiển thị lỗi từ backend
         if (response.status === 400) {
           setError(data.message || "Email không tồn tại hoặc chưa được đăng ký.");
         } else if (response.status === 500) {
@@ -68,6 +62,8 @@ const ForgotPassword = () => {
         {message && <p className="success-message">{message}</p>}
         {/* Hiển thị thông báo lỗi */}
         {error && <p className="error-message">{error}</p>}
+        {/* Hiển thị spinner khi đang loading */}
+        {loading && <div className="loading-spinner">Đang xử lý...</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label>Email:</label>
@@ -80,7 +76,7 @@ const ForgotPassword = () => {
             />
           </div>
           <button type="submit" className="forgot-password-button" disabled={loading}>
-            {loading ? <span className="spinner"></span> : "Gửi yêu cầu"}
+            Gửi yêu cầu
           </button>
         </form>
         <div className="back-to-login">
