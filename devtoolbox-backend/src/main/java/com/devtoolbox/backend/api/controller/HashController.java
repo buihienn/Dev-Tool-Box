@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/api/auth/hash")
+@RequestMapping("/tool/hash")
 @CrossOrigin(origins = "*")
 public class HashController {
 

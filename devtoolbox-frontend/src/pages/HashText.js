@@ -25,7 +25,7 @@ const HashText = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/auth/hash/${encoding}?text=${encodeURIComponent(text)}`
+        `http://localhost:8080/tool/hash/${encoding}?text=${encodeURIComponent(text)}`
       );
       if (response.ok) {
         const results = await response.json();

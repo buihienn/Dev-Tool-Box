@@ -5,7 +5,7 @@ import java.util.Map;
 import com.devtoolbox.backend.application.services.BcryptService;
 
 @RestController
-@RequestMapping("/api/auth/bcrypt")
+@RequestMapping("/tool/bcrypt")
 public class BcryptController {
 
     private final BcryptService bcryptService;

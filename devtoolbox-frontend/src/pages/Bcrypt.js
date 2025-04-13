@@ -38,7 +38,7 @@ const Bcrypt = () => {
   // Gọi API để so sánh chuỗi với hash
   const handleCompareHash = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/bcrypt/compare', {
+      const response = await fetch('http://localhost:8080/tool/bcrypt/compare', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

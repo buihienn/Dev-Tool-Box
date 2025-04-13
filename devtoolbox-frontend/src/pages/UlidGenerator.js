@@ -10,7 +10,7 @@ const UlidGenerator = () => {
   // Hàm để tạo ULID
   const handleGenerateUlid = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/auth/ulid/generate?quantity=${quantity}&format=${format}`, {
+      const response = await fetch(`http://localhost:8080/tool/ulid/generate?quantity=${quantity}&format=${format}`, {
         method: 'GET',
       });
 

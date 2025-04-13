@@ -4,7 +4,7 @@ import com.devtoolbox.backend.application.services.TokenService;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/auth/token")
+@RequestMapping("/tool/token")
 @CrossOrigin(origins = "*")
 public class TokenController {
 

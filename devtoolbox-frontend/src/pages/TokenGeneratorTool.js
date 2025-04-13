@@ -12,7 +12,7 @@ const TokenGeneratorTool = () => {
 
 const handleGenerateToken = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/api/auth/token/generate?uppercase=${uppercase}&lowercase=${lowercase}&numbers=${numbers}&symbols=${symbols}&length=${length}`, {
+    const response = await fetch(`http://localhost:8080/tool/token/generate?uppercase=${uppercase}&lowercase=${lowercase}&numbers=${numbers}&symbols=${symbols}&length=${length}`, {
       method: "GET",
     });
 
