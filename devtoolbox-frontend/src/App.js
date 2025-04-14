@@ -14,6 +14,7 @@ import MathEvaluator from './pages/MathEvaluator';
 import ULID from './pages/UlidGenerator';
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
+import IntegerBaseConverter from './pages/IntegerBaseConverter';
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
             <Route path="bcrypt" element={<Bcrypt />} />
             <Route path="math-evaluator" element={<MathEvaluator />} />
             <Route path="ulid-generator" element={<ULID />} />
+            <Route path="base-converter" element={<IntegerBaseConverter />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}
