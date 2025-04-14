@@ -17,6 +17,12 @@ import VerifyEmail from './pages/VerifyEmail';
 import AdminLayout from './pages/AdminLayout';
 import ETACalculator from './pages/ETACalculator';
 import PercentageCalculator from './pages/PercentageCalculator';
+import IntegerBaseConverter from './pages/IntegerBaseConverter';
+import TextToNatoAlphabet from './pages/TextToNatoAlphabet';
+import XMLToJSON from './pages/XMLToJSON';
+import URLParser from './pages/URLParser';
+import URLFormatter from './pages/URLFormatter';
+import JWTParser from './pages/JWTParser';
 
 // const AdminGuard = ({ children }) => {
 //   const role = localStorage.getItem('role');
@@ -43,6 +49,12 @@ function App() {
             <Route path="ulid-generator" element={<ULID />} />
             <Route path="/eta-calculator" element={<ETACalculator />} />
             <Route path="/percentage-calculator" element={<PercentageCalculator />} />
+            <Route path="base-converter" element={<IntegerBaseConverter />} />
+            <Route path="text-to-nato-alphabet" element={<TextToNatoAlphabet />} />
+            <Route path="xml-to-json" element={<XMLToJSON />} />
+            <Route path="url-parser" element={<URLParser />} />
+            <Route path="url-formatter" element={<URLFormatter />} />
+            <Route path="jwt-parser" element={<JWTParser />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}

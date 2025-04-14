@@ -6,6 +6,7 @@ import {
   ClockHistory,
   Clock,
   Percent,
+  Globe,
 } from 'react-bootstrap-icons';
 
 const toolsData = [
@@ -79,7 +80,60 @@ const toolsData = [
     isPremium: false,
     isEnabled: true,
   },
-
+  {
+    id: 'base-converter',
+    name: 'Integer Base Converter',
+    description: 'Chuyển đổi số nguyên giữa các hệ cơ số khác nhau',
+    icon: Calculator,
+    category: 'converter',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'text-to-nato-alphabet',
+    name: 'Text to NATO Alphabet',
+    description: 'Chuyển đổi văn bản thành bảng chữ cái NATO',
+    icon: Globe,
+    category: 'converter',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'xml-to-json',
+    name: 'XML to JSON',
+    description: 'Chuyển đổi XML thành JSON dễ đọc và sử dụng',
+    icon: Globe,
+    category: 'converter',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'url-parser',
+    name: 'URL Parser',
+    description: 'Phân tích và trích xuất thông tin từ URL',
+    icon: Globe,
+    category: 'web',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'url-formatter',
+    name: 'URL Formatter',
+    description: 'Định dạng và làm sạch URL để dễ đọc hơn',
+    icon: Globe,
+    category: 'web',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'jwt-parser',
+    name: 'JWT Parser',
+    description: 'Phân tích và giải mã JSON Web Token (JWT) để xem nội dung của nó',
+    icon: Globe,
+    category: 'web',
+    isNew: false,
+    isPremium: false,
+  },
 ];
 
 export default toolsData;
