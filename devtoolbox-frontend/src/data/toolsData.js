@@ -4,6 +4,8 @@ import {
   ShieldLock,
   Calculator,
   ClockHistory,
+  Clock,
+  Percent,
   Globe,
 } from 'react-bootstrap-icons';
 
@@ -15,7 +17,8 @@ const toolsData = [
     icon: Key,
     category: 'crypto',
     isNew: true,
-    isPremium: false
+    isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'hash-text',
@@ -24,7 +27,8 @@ const toolsData = [
     icon: Hash,
     category: 'crypto',
     isNew: false,
-    isPremium: false
+    isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'bcrypt',
@@ -33,7 +37,8 @@ const toolsData = [
     icon: ShieldLock,
     category: 'crypto',
     isNew: false,
-    isPremium: false
+    isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'math-evaluator',
@@ -42,7 +47,28 @@ const toolsData = [
     icon: Calculator,
     category: 'math',
     isNew: true,
-    isPremium: false
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
+    id: "eta-calculator",
+    name: "ETA Calculator",
+    description: "Tính toán thời gian dự kiến hoàn thành dựa trên tiến độ hiện tại",
+    category: "math",
+    icon: Clock,
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
+    id: "percentage-calculator",
+    name: "Máy tính phần trăm",
+    description: "Dễ dàng tính toán phần trăm từ một giá trị đến giá trị khác, hoặc từ một phần trăm đến một giá trị.",
+    category: "math",
+    icon: Percent,
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'ulid-generator',
@@ -51,7 +77,8 @@ const toolsData = [
     icon: ClockHistory, 
     category: 'crypto', 
     isNew: true,
-    isPremium: false, 
+    isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'base-converter',
