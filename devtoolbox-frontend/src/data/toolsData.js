@@ -89,6 +89,24 @@ const toolsData = [
     isNew: false,
     isPremium: false,
   },
+  {
+    id: 'url-formatter',
+    name: 'URL Formatter',
+    description: 'Định dạng và làm sạch URL để dễ đọc hơn',
+    icon: Globe,
+    category: 'web',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'jwt-parser',
+    name: 'JWT Parser',
+    description: 'Phân tích và giải mã JSON Web Token (JWT) để xem nội dung của nó',
+    icon: Globe,
+    category: 'web',
+    isNew: false,
+    isPremium: false,
+  },
 ];
 
 export default toolsData;
