@@ -4,6 +4,8 @@ import {
   ShieldLock,
   Calculator,
   ClockHistory,
+  Clock,
+  Percent,
 } from 'react-bootstrap-icons';
 
 const toolsData = [
@@ -48,6 +50,26 @@ const toolsData = [
     isEnabled: true,
   },
   {
+    id: "eta-calculator",
+    name: "ETA Calculator",
+    description: "Tính toán thời gian dự kiến hoàn thành dựa trên tiến độ hiện tại",
+    category: "math",
+    icon: Clock,
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
+    id: "percentage-calculator",
+    name: "Máy tính phần trăm",
+    description: "Dễ dàng tính toán phần trăm từ một giá trị đến giá trị khác, hoặc từ một phần trăm đến một giá trị.",
+    category: "math",
+    icon: Percent,
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
     id: 'ulid-generator',
     name: 'ULID Generator',
     description: 'Tạo ULID ngẫu nhiên (Universally Unique Lexicographically Sortable Identifier)',
@@ -57,6 +79,7 @@ const toolsData = [
     isPremium: false,
     isEnabled: true,
   },
+
 ];
 
 export default toolsData;

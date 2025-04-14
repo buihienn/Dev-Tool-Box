@@ -15,6 +15,8 @@ import ULID from './pages/UlidGenerator';
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import AdminLayout from './pages/AdminLayout';
+import ETACalculator from './pages/ETACalculator';
+import PercentageCalculator from './pages/PercentageCalculator';
 
 // const AdminGuard = ({ children }) => {
 //   const role = localStorage.getItem('role');
@@ -39,6 +41,8 @@ function App() {
             <Route path="bcrypt" element={<Bcrypt />} />
             <Route path="math-evaluator" element={<MathEvaluator />} />
             <Route path="ulid-generator" element={<ULID />} />
+            <Route path="/eta-calculator" element={<ETACalculator />} />
+            <Route path="/percentage-calculator" element={<PercentageCalculator />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}
