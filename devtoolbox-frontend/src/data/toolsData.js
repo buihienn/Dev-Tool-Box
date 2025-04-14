@@ -52,6 +52,15 @@ const toolsData = [
     isNew: true,
     isPremium: false, 
   },
+  {
+    id: 'integer-base-converter',
+    name: 'Integer Base Converter',
+    description: 'Chuyển đổi số nguyên giữa các hệ cơ số khác nhau',
+    icon: Calculator,
+    category: 'converter',
+    isNew: false,
+    isPremium: false,
+  }
 ];
 
 export default toolsData;
