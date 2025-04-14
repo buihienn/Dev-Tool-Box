@@ -15,6 +15,8 @@ import ULID from './pages/UlidGenerator';
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import IntegerBaseConverter from './pages/IntegerBaseConverter';
+import TextToNatoAlphabet from './pages/TextToNatoAlphabet';
+import XMLToJSON from './pages/XMLToJSON';
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
             <Route path="math-evaluator" element={<MathEvaluator />} />
             <Route path="ulid-generator" element={<ULID />} />
             <Route path="base-converter" element={<IntegerBaseConverter />} />
+            <Route path="text-to-nato-alphabet" element={<TextToNatoAlphabet />} />
+            <Route path="xml-to-json" element={<XMLToJSON />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}

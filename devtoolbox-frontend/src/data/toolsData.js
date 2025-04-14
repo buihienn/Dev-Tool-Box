@@ -4,6 +4,7 @@ import {
   ShieldLock,
   Calculator,
   ClockHistory,
+  Globe,
 } from 'react-bootstrap-icons';
 
 const toolsData = [
@@ -57,6 +58,24 @@ const toolsData = [
     name: 'Integer Base Converter',
     description: 'Chuyển đổi số nguyên giữa các hệ cơ số khác nhau',
     icon: Calculator,
+    category: 'converter',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'text-to-nato-alphabet',
+    name: 'Text to NATO Alphabet',
+    description: 'Chuyển đổi văn bản thành bảng chữ cái NATO',
+    icon: Globe,
+    category: 'converter',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'xml-to-json',
+    name: 'XML to JSON',
+    description: 'Chuyển đổi XML thành JSON dễ đọc và sử dụng',
+    icon: Globe,
     category: 'converter',
     isNew: false,
     isPremium: false,
