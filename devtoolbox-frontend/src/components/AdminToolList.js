@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Form, Button, Spinner, Alert, Modal, Row, Col } from 'react-bootstrap';
 import { Trash, PlusCircle } from 'react-bootstrap-icons';
+import toolsData from '../data/toolsData';
 
 const AdminToolList = () => {
   const [tools, setTools] = useState([]);
@@ -15,28 +16,20 @@ const AdminToolList = () => {
   const fetchTools = async () => {
     setLoading(true);
     try {
-      // Trong trường hợp thực tế, bạn sẽ gọi API
-      // const response = await fetch('http://localhost:8080/api/admin/tools', {
-      //   headers: {
-      //     'Authorization': `Bearer ${localStorage.getItem('token')}`
-      //   }
-      // });
-      // const data = await response.json();
-      // setTools(data);
-
-      // Dữ liệu mẫu
+      // Lấy dữ liệu từ toolsData.js
       setTimeout(() => {
-        const sampleTools = [
-          { id: 1, name: 'Token Generator', type: 'crypto', premium: false },
-          { id: 2, name: 'Hash Text', type: 'crypto', premium: false },
-          { id: 3, name: 'Advanced Encryption', type: 'crypto', premium: true },
-          { id: 4, name: 'ULID Generator', type: 'generator', premium: false },
-          { id: 5, name: 'Math Evaluator', type: 'math', premium: false },
-          { id: 6, name: 'Code Formatter', type: 'developer', premium: true },
-        ];
-        setTools(sampleTools);
+        // Chuyển đổi từ dữ liệu trong toolsData sang định dạng phù hợp với AdminToolList
+        const formattedTools = toolsData.map(tool => ({
+          id: tool.id,
+          name: tool.name,
+          type: tool.category,
+          premium: tool.isPremium,
+          enabled: tool.isEnabled
+        }));
+        
+        setTools(formattedTools);
         setLoading(false);
-      }, 500);
+      }, 300);
     } catch (err) {
       setError('Có lỗi xảy ra khi tải dữ liệu công cụ');
       setLoading(false);
@@ -47,7 +40,6 @@ const AdminToolList = () => {
     try {
       const toolToUpdate = tools.find(tool => tool.id === id);
       
-      // Trong trường hợp thực tế, bạn sẽ gọi API
       // await fetch(`http://localhost:8080/api/admin/tools/${id}/premium`, {
       //   method: 'PUT',
       //   headers: {
@@ -66,10 +58,31 @@ const AdminToolList = () => {
     }
   };
 
+  const handleToggleEnabled = async (id) => {
+    try {
+      const toolToUpdate = tools.find(tool => tool.id === id);
+      
+      // await fetch(`http://localhost:8080/api/admin/tools/${id}/status`, {
+      //   method: 'PUT',
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //     'Authorization': `Bearer ${localStorage.getItem('token')}`
+      //   },
+      //   body: JSON.stringify({ enabled: !toolToUpdate.enabled })
+      // });
+
+      // Cập nhật state
+      setTools(tools.map(tool => 
+        tool.id === id ? { ...tool, enabled: !tool.enabled } : tool
+      ));
+    } catch (err) {
+      setError('Có lỗi xảy ra khi cập nhật trạng thái kích hoạt công cụ');
+    }
+  };
+
   const handleDeleteTool = async (id) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa công cụ này không?')) {
       try {
-        // Trong trường hợp thực tế, bạn sẽ gọi API
         // await fetch(`http://localhost:8080/api/admin/tools/${id}`, {
         //   method: 'DELETE',
         //   headers: {
@@ -115,9 +128,10 @@ const AdminToolList = () => {
         <thead className="table-dark">
           <tr>
             <th width="5%">STT</th>
-            <th width="40%">Tên công cụ</th>
-            <th width="20%">Loại</th>
+            <th width="30%">Tên công cụ</th>
+            <th width="15%">Loại</th>
             <th width="15%">Loại công cụ</th>
+            <th width="15%">Trạng thái</th>
             <th width="20%">Thao tác</th>
           </tr>
         </thead>
@@ -138,6 +152,15 @@ const AdminToolList = () => {
                   />
                 </td>
                 <td>
+                  <Form.Check
+                    type="switch"
+                    id={`enabled-switch-${tool.id}`}
+                    label={tool.enabled ? "Đang bật" : "Đã tắt"}
+                    checked={tool.enabled}
+                    onChange={() => handleToggleEnabled(tool.id)}
+                  />
+                </td>
+                <td>
                   <Button 
                     variant="danger" 
                     size="sm"
@@ -150,7 +173,7 @@ const AdminToolList = () => {
             ))
           ) : (
             <tr>
-              <td colSpan="5" className="text-center">Không có công cụ nào</td>
+              <td colSpan="6" className="text-center">Không có công cụ nào</td>
             </tr>
           )}
         </tbody>

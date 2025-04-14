@@ -14,7 +14,8 @@ const toolsData = [
     icon: Key,
     category: 'crypto',
     isNew: true,
-    isPremium: false
+    isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'hash-text',
@@ -23,7 +24,8 @@ const toolsData = [
     icon: Hash,
     category: 'crypto',
     isNew: false,
-    isPremium: false
+    isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'bcrypt',
@@ -32,7 +34,8 @@ const toolsData = [
     icon: ShieldLock,
     category: 'crypto',
     isNew: false,
-    isPremium: false
+    isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'math-evaluator',
@@ -41,7 +44,8 @@ const toolsData = [
     icon: Calculator,
     category: 'math',
     isNew: true,
-    isPremium: false
+    isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'ulid-generator',
@@ -50,7 +54,8 @@ const toolsData = [
     icon: ClockHistory, 
     category: 'crypto', 
     isNew: true,
-    isPremium: false, 
+    isPremium: false,
+    isEnabled: true,
   },
 ];
 
