@@ -7,6 +7,7 @@ import {
   Clock,
   Percent,
   Globe,
+  Stopwatch,
 } from 'react-bootstrap-icons';
 
 const toolsData = [
@@ -133,6 +134,16 @@ const toolsData = [
     category: 'web',
     isNew: false,
     isPremium: false,
+  },
+  {
+    id: "chronometer",
+    name: "Chronometer",
+    description: "Giám sát thời gian của một sự việc. Cơ bản là một đồng hồ bấm giờ với các tính năng đơn giản.",
+    category: "measurement",
+    icon: Stopwatch,
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
   },
 ];
 

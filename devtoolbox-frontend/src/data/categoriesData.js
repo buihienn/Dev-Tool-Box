@@ -1,4 +1,4 @@
-import { ShieldLock, Code, Archive, ArrowsAngleContract, Globe, CameraVideo, Terminal, Wifi, Calculator, Rulers, FileText, Database } from 'react-bootstrap-icons';
+import { ShieldLock, Code, Archive, ArrowsAngleContract, Globe, CameraVideo, Terminal, Wifi, Calculator, Rulers, FileText, Database  } from 'react-bootstrap-icons';
 import React from 'react';
 
 const categoriesData = [

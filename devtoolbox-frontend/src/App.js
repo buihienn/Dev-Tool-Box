@@ -23,6 +23,7 @@ import XMLToJSON from './pages/XMLToJSON';
 import URLParser from './pages/URLParser';
 import URLFormatter from './pages/URLFormatter';
 import JWTParser from './pages/JWTParser';
+import Chronometer from './pages/Chronometer';
 
 // const AdminGuard = ({ children }) => {
 //   const role = localStorage.getItem('role');
@@ -55,6 +56,7 @@ function App() {
             <Route path="url-parser" element={<URLParser />} />
             <Route path="url-formatter" element={<URLFormatter />} />
             <Route path="jwt-parser" element={<JWTParser />} />
+            <Route path="/chronometer" element={<Chronometer />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}
