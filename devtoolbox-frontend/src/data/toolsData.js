@@ -54,7 +54,7 @@ const toolsData = [
     isPremium: false, 
   },
   {
-    id: 'integer-base-converter',
+    id: 'base-converter',
     name: 'Integer Base Converter',
     description: 'Chuyển đổi số nguyên giữa các hệ cơ số khác nhau',
     icon: Calculator,
@@ -79,7 +79,16 @@ const toolsData = [
     category: 'converter',
     isNew: false,
     isPremium: false,
-  }
+  },
+  {
+    id: 'url-parser',
+    name: 'URL Parser',
+    description: 'Phân tích và trích xuất thông tin từ URL',
+    icon: Globe,
+    category: 'web',
+    isNew: false,
+    isPremium: false,
+  },
 ];
 
 export default toolsData;

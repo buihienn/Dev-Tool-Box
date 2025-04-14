@@ -17,6 +17,7 @@ import VerifyEmail from './pages/VerifyEmail';
 import IntegerBaseConverter from './pages/IntegerBaseConverter';
 import TextToNatoAlphabet from './pages/TextToNatoAlphabet';
 import XMLToJSON from './pages/XMLToJSON';
+import URLParser from './pages/URLParser';
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
             <Route path="base-converter" element={<IntegerBaseConverter />} />
             <Route path="text-to-nato-alphabet" element={<TextToNatoAlphabet />} />
             <Route path="xml-to-json" element={<XMLToJSON />} />
+            <Route path="url-parser" element={<URLParser />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}
