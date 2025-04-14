@@ -145,6 +145,34 @@ const toolsData = [
     isPremium: false,
     isEnabled: true,
   },
+  {
+    id: 'qr-code-generator',
+    name: 'QR Code Generator',
+    description: 'Tạo mã QR cho văn bản hoặc URL và tải xuống dưới dạng hình ảnh',
+    icon: Globe,
+    category: 'images-videos',
+    isNew: false,
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
+    id: 'wifi-qr-code-generator',
+    name: 'WiFi QR Code Generator',
+    description: 'Tạo mã QR cho WiFi để dễ dàng chia sẻ thông tin kết nối',
+    icon: Globe,
+    category: 'images-videos',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'image-to-base64',
+    name: 'Image to Base64 + HTML',
+    description: 'Chuyển đổi hình ảnh thành mã Base64 và tạo mã HTML tương ứng',
+    icon: Globe,
+    category: 'images-videos',
+    isNew: false,
+    isPremium: false,
+  },
 ];
 
 export default toolsData;
