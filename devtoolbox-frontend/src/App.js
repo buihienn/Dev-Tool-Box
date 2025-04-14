@@ -24,6 +24,9 @@ import URLParser from './pages/URLParser';
 import URLFormatter from './pages/URLFormatter';
 import JWTParser from './pages/JWTParser';
 import Chronometer from './pages/Chronometer';
+import QRCodeGenerator from './pages/QRCodeGenerator';
+import WiFiQRCodeGenerator from './pages/WiFiQRCodeGenerator';
+import ImageToBase64 from './pages/ImageToBase64';
 
 // const AdminGuard = ({ children }) => {
 //   const role = localStorage.getItem('role');
@@ -57,6 +60,9 @@ function App() {
             <Route path="url-formatter" element={<URLFormatter />} />
             <Route path="jwt-parser" element={<JWTParser />} />
             <Route path="/chronometer" element={<Chronometer />} />
+            <Route path="qr-code-generator" element={<QRCodeGenerator />} />
+            <Route path="wifi-qr-code-generator" element={<WiFiQRCodeGenerator />} />
+            <Route path="image-to-base64" element={<ImageToBase64 />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}
