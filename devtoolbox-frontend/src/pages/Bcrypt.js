@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
+import ToolHeader from '../components/ToolHeader';
 
 const Bcrypt = () => {
   const [inputString, setInputString] = useState('');
@@ -62,13 +63,7 @@ const Bcrypt = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>Bcrypt</h3>
-        <p>
-          Mã hóa và so sánh chuỗi văn bản sử dụng bcrypt. Bcrypt là một hàm mã hóa mật khẩu dựa trên thuật toán Blowfish.
-        </p>
-      </div>
-
+      <ToolHeader toolId="bcrypt"/>
       <div className="d-flex flex-column flex-lg-row gap-4" style={{ maxWidth: '800px', margin: '0 auto' }}>
         {/* Hash Section */}
         <Card className="bg-light text-dark flex-grow-1">

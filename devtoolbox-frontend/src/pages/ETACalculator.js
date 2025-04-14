@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 import { format } from 'date-fns';
+import ToolHeader from '../components/ToolHeader';
 
 const ETACalculator = () => {
   // State cho input values
@@ -77,14 +78,7 @@ const ETACalculator = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem'}}>
-      <div className="tool-header">
-        <h3>ETA Calculator</h3>
-        <p>
-          Tính toán thời gian dự kiến hoàn thành dựa trên tiến độ hiện tại.
-          Ước tính khi nào một công việc sẽ kết thúc dựa trên tốc độ xử lý.
-        </p>
-      </div>
-
+      <ToolHeader toolId="eta-calculator"/>
       <Row className="d-flex flex-column flex-lg-row gap-4" style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Col>
           <Card className="bg-light mb-4">
