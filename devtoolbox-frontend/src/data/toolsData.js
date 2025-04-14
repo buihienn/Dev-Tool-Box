@@ -173,6 +173,24 @@ const toolsData = [
     isNew: false,
     isPremium: false,
   },
+  {
+    id: 'json-formatter',
+    name: 'JSON Formatter',
+    description: 'Định dạng và làm sạch JSON để dễ đọc hơn',
+    icon: Globe,
+    category: 'development',
+    isNew: false,
+    isPremium: false,
+  },
+  {
+    id: 'json-to-csv',
+    name: 'JSON to CSV',
+    description: 'Chuyển đổi JSON thành CSV với khả năng phát hiện tiêu đề tự động',
+    icon: Globe,
+    category: 'development',
+    isNew: false,
+    isPremium: false,
+  }
 ];
 
 export default toolsData;
