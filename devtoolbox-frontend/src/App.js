@@ -18,6 +18,8 @@ import IntegerBaseConverter from './pages/IntegerBaseConverter';
 import TextToNatoAlphabet from './pages/TextToNatoAlphabet';
 import XMLToJSON from './pages/XMLToJSON';
 import URLParser from './pages/URLParser';
+import URLFormatter from './pages/URLFormatter';
+import JWTParser from './pages/JWTParser';
 
 function App() {
   return (
@@ -36,6 +38,8 @@ function App() {
             <Route path="text-to-nato-alphabet" element={<TextToNatoAlphabet />} />
             <Route path="xml-to-json" element={<XMLToJSON />} />
             <Route path="url-parser" element={<URLParser />} />
+            <Route path="url-formatter" element={<URLFormatter />} />
+            <Route path="jwt-parser" element={<JWTParser />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}
