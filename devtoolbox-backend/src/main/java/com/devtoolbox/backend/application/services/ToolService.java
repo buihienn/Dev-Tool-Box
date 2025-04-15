@@ -22,7 +22,7 @@ public interface ToolService {
     Tool enableTool(String id, boolean enabled);
 
     // Nâng/Hạ cấp công cụ (Premium/Regular)
-    Tool upgradeTool(String id, Tool.Level level);
+    Tool upgradeTool(String id, boolean isPremium);
     
     boolean isToolEnabled(String id);
 
