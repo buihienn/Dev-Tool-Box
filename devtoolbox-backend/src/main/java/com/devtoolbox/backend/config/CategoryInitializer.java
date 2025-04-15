@@ -24,8 +24,7 @@ public class CategoryInitializer {
                 new Category("math", "Toán học", "", "Các công cụ tính toán và hỗ trợ toán học"),
                 new Category("measurement", "Đo lường", "", "Các công cụ đo lường và chuyển đổi đơn vị"),
                 new Category("text", "Văn bản", "", "Các công cụ xử lý và phân tích văn bản"),
-                new Category("data", "Dữ liệu", "", "Các công cụ xử lý và phân tích dữ liệu"),
-                new Category("other", "Other", "", "Các công cụ hỗ trợ khác")
+                new Category("data", "Dữ liệu", "", "Các công cụ xử lý và phân tích dữ liệu")
             );
 
             // Lưu các category nếu chưa tồn tại

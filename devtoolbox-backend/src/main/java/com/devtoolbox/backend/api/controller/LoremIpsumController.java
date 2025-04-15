@@ -1,7 +1,6 @@
 package com.devtoolbox.backend.api.controller;
 
 import com.devtoolbox.backend.application.services.LoremIpsumService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,7 +11,6 @@ public class LoremIpsumController {
     
     private final LoremIpsumService loremIpsumService;
     
-    @Autowired
     public LoremIpsumController(LoremIpsumService loremIpsumService) {
         this.loremIpsumService = loremIpsumService;
     }

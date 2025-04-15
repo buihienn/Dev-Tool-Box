@@ -1,11 +1,9 @@
 package com.devtoolbox.backend.api.controller;
 
 import com.devtoolbox.backend.application.services.BenchmarkService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -15,7 +13,6 @@ public class BenchmarkController {
     
     private final BenchmarkService benchmarkService;
     
-    @Autowired
     public BenchmarkController(BenchmarkService benchmarkService) {
         this.benchmarkService = benchmarkService;
     }
