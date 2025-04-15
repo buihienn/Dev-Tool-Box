@@ -35,6 +35,9 @@ import BenchmarkBuilder from './pages/BenchmarkBuilder';
 import LoremIpsumGenerator from './pages/LoremIpsumGenerator';
 import TextStatistics from './pages/TextStatistics';
 import NumeronymGenerator from './pages/NumeronymGenerator';
+import PhoneParser from './pages/PhoneParser';
+import IbanValidator from './pages/IbanValidator';
+import CreditCardValidator from './pages/CreditCardValidator';
 
 // const AdminGuard = ({ children }) => {
 //   const role = localStorage.getItem('role');
@@ -79,6 +82,9 @@ function App() {
             <Route path="/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
             <Route path="/text-statistics" element={<TextStatistics />} />
             <Route path="/numeronym-generator" element={<NumeronymGenerator />} />
+            <Route path="/phone-parser" element={<PhoneParser />} />
+            <Route path="/iban-validator" element={<IbanValidator />} />
+            <Route path="/credit-card-validator" element={<CreditCardValidator />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}

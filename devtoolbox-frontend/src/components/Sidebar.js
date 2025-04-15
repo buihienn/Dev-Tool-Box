@@ -143,7 +143,11 @@ const Sidebar = () => {
         width: expanded ? '250px' : '0',
         overflow: 'hidden',
         display: 'flex',    
-        flexDirection: 'column'
+        flexDirection: 'column',
+        position: 'fixed', 
+        top: 0,         
+        left: 0,         
+        zIndex: 1000
       }}
     >
       <div className="p-3 border-bottom border-secondary">
@@ -162,9 +166,7 @@ const Sidebar = () => {
           height: '0' 
         }}
       >
-
-      <div className="overflow-auto" style={{ width: '250px'}}>
-        <Accordion 
+              <Accordion 
           className="border-0"
           activeKey={activeKeys}
           alwaysOpen
@@ -242,7 +244,6 @@ const Sidebar = () => {
             ))
           )}
         </Accordion>
-      </div>
     </div>
     </div>
   );
