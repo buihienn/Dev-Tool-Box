@@ -190,6 +190,15 @@ const toolsData = [
     category: 'development',
     isNew: false,
     isPremium: false,
+  },
+  {
+    id: 'docker-compose-converter',
+    name: 'Docker Compose Converter',
+    description: 'Chuyển đổi lệnh Docker run thành tệp docker-compose.yml',
+    icon: Globe,
+    category: 'development',
+    isNew: false,
+    isPremium: false,
   }
 ];
 

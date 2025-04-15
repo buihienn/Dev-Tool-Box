@@ -29,6 +29,7 @@ import WiFiQRCodeGenerator from './pages/WiFiQRCodeGenerator';
 import ImageToBase64 from './pages/ImageToBase64';
 import JSONFormatter from './pages/JSONFormatter';
 import JSONToCSV from './pages/JSONToCSV';
+import DockerComposeConverter from './pages/DockerComposeConverter';
 
 // const AdminGuard = ({ children }) => {
 //   const role = localStorage.getItem('role');
@@ -67,6 +68,7 @@ function App() {
             <Route path="image-to-base64" element={<ImageToBase64 />} />
             <Route path="json-formatter" element={<JSONFormatter />} />
             <Route path="json-to-csv" element={<JSONToCSV />} />
+            <Route path="docker-compose-converter" element={<DockerComposeConverter />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}
