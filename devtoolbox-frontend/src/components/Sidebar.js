@@ -13,7 +13,6 @@ import toolsData from '../data/toolsData';
 import fetchCategories from '../data/categoriesData';
 
 const Sidebar = () => {
-  // Sử dụng context thay vì props
   const { expanded } = useSidebar();
   
   // State để lưu dữ liệu categories từ API

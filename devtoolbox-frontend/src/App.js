@@ -30,6 +30,11 @@ import ImageToBase64 from './pages/ImageToBase64';
 import JSONFormatter from './pages/JSONFormatter';
 import JSONToCSV from './pages/JSONToCSV';
 import DockerComposeConverter from './pages/DockerComposeConverter';
+import TemperatureConverter from './pages/TemperatureConverter';
+import BenchmarkBuilder from './pages/BenchmarkBuilder';
+import LoremIpsumGenerator from './pages/LoremIpsumGenerator';
+import TextStatistics from './pages/TextStatistics';
+import NumeronymGenerator from './pages/NumeronymGenerator';
 
 // const AdminGuard = ({ children }) => {
 //   const role = localStorage.getItem('role');
@@ -69,6 +74,11 @@ function App() {
             <Route path="json-formatter" element={<JSONFormatter />} />
             <Route path="json-to-csv" element={<JSONToCSV />} />
             <Route path="docker-compose-converter" element={<DockerComposeConverter />} />
+            <Route path="/temperature-converter" element={<TemperatureConverter />} />
+            <Route path="/benchmark-builder" element={<BenchmarkBuilder />} />
+            <Route path="/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
+            <Route path="/text-statistics" element={<TextStatistics />} />
+            <Route path="/numeronym-generator" element={<NumeronymGenerator />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}

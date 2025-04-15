@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Form, InputGroup, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; 
+import ToolHeader from '../components/ToolHeader';
 
 const HashText = () => {
   const [textToHash, setTextToHash] = useState(''); 
@@ -58,10 +59,7 @@ const HashText = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>Mã hóa văn bản</h3>
-        <p>Mã hóa một chuỗi văn bản bằng cách sử dụng các hàm bạn cần: MD5, SHA1, SHA256, SHA512.</p>
-      </div>
+      <ToolHeader toolId="hash-text"/>
 
       <div style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#ffffff', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         {/* Nhập chuỗi văn bản */}

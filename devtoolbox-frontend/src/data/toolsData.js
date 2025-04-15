@@ -8,6 +8,11 @@ import {
   Percent,
   Globe,
   Stopwatch,
+  Thermometer,
+  Speedometer,
+  TextParagraph,
+  FileEarmarkText,
+  Icon123,
 } from 'react-bootstrap-icons';
 
 const toolsData = [
@@ -152,6 +157,56 @@ const toolsData = [
     isEnabled: true,
   },
   {
+    id: "temperature-converter",
+    name: "Bộ chuyển đổi nhiệt độ",
+    description: "Chuyển đổi độ nhiệt độ giữa Kelvin, Celsius, Fahrenheit và các đơn vị khác",
+    category: "measurement",
+    icon: Thermometer,
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
+    id: "benchmark-builder",
+    name: "Trình tạo bảng đánh giá",
+    description: "So sánh thời gian thực thi của các nhiệm vụ với trình tạo bảng đánh giá trực tuyến",
+    category: "measurement",
+    icon: Speedometer,
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
+    id: "lorem-ipsum-generator",
+    name: "Lorem Ipsum Generator",
+    description: "Tạo văn bản giả Lorem Ipsum với cấu hình tùy chỉnh cho các dự án thiết kế và phát triển",
+    category: "text",
+    icon: TextParagraph,
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
+    id: "text-statistics",
+    name: "Thống kê văn bản",
+    description: "Phân tích chi tiết văn bản: số ký tự, số từ, kích thước và nhiều thông tin khác",
+    category: "text",
+    icon: FileEarmarkText,
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
+    id: "numeronym-generator",
+    name: "Numeronym Generator",
+    description: "Tạo từ viết tắt kiểu numeronym (như 'i18n') cho các từ và cụm từ",
+    category: "text",
+    icon: Icon123,  
+    isNew: true,
+    isPremium: false,
+    isEnabled: true,
+  },
+  {
     id: 'qr-code-generator',
     name: 'QR Code Generator',
     description: 'Tạo mã QR cho văn bản hoặc URL và tải xuống dưới dạng hình ảnh',
@@ -210,7 +265,7 @@ const toolsData = [
     isNew: false,
     isPremium: false,
     isEnabled: true,
-  }
+  },
 ];
 
 export default toolsData;

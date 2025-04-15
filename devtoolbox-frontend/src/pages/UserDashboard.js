@@ -1,12 +1,34 @@
-import React from 'react';
-import { Container, Badge } from 'react-bootstrap';
+import React, { useState, useEffect } from 'react';
+import { Container, Badge, Spinner } from 'react-bootstrap';
 import { Tools, ClockHistory } from 'react-bootstrap-icons';
 import ToolCard from '../components/ToolCard';
 import toolsData from '../data/toolsData';
-import categoriesData from '../data/categoriesData';
+import fetchCategories from '../data/categoriesData';
 import '../styles/GridLayout.css';
 
 const UserDashboard = () => {
+  // Thêm state để lưu dữ liệu categories từ API
+  const [categoriesData, setCategoriesData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Fetch categories khi component mount
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchCategories();
+        setCategoriesData(data || []);
+      } catch (error) {
+        console.error("Error loading categories:", error);
+        setCategoriesData([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadCategories();
+  }, []);
+
   const newTools = toolsData.filter(tool => tool.isNew);
   
   const recentTools = toolsData.slice(0, 3);
@@ -43,25 +65,34 @@ const UserDashboard = () => {
       </div>
       
       {/* All Categories Section */}
-      {categoriesData.map(category => (
-        <div key={category.id} className="mb-4">
-          <div className="d-flex align-items-center mb-3">
-            <h5 className="mb-0 d-flex align-items-center">
-              {React.createElement(category.icon, { className: "me-2" })}
-              {category.name}
-            </h5>
-          </div>
-          
-          <div className="grid grid-cols-1 gap-12px sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
-            {toolsData
-              .filter(tool => tool.category === category.id)
-              .map(tool => (
-                <ToolCard key={tool.id} tool={tool} />
-              ))
-            }
-          </div>
+      {isLoading ? (
+        <div className="text-center py-4">
+          <Spinner animation="border" role="status" variant="primary">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+          <p className="mt-2">Đang tải danh mục...</p>
         </div>
-      ))}
+      ) : (
+        categoriesData.map(category => (
+          <div key={category.id} className="mb-4">
+            <div className="d-flex align-items-center mb-3">
+              <h5 className="mb-0 d-flex align-items-center">
+                {React.createElement(category.icon, { className: "me-2" })}
+                {category.name}
+              </h5>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-12px sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+              {toolsData
+                .filter(tool => tool.category === category.id)
+                .map(tool => (
+                  <ToolCard key={tool.id} tool={tool} />
+                ))
+              }
+            </div>
+          </div>
+        ))
+      )}
     </Container>
   );
 };
