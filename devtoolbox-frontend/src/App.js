@@ -30,6 +30,17 @@ import ImageToBase64 from './pages/ImageToBase64';
 import JSONFormatter from './pages/JSONFormatter';
 import JSONToCSV from './pages/JSONToCSV';
 import DockerComposeConverter from './pages/DockerComposeConverter';
+import TemperatureConverter from './pages/TemperatureConverter';
+import BenchmarkBuilder from './pages/BenchmarkBuilder';
+import LoremIpsumGenerator from './pages/LoremIpsumGenerator';
+import TextStatistics from './pages/TextStatistics';
+import NumeronymGenerator from './pages/NumeronymGenerator';
+import PhoneParser from './pages/PhoneParser';
+import IbanValidator from './pages/IbanValidator';
+import CreditCardValidator from './pages/CreditCardValidator';
+import MacAddressGenerator from './pages/MacAddressGenerator';
+import Ipv4Converter from './pages/Ipv4Converter';
+import Ipv4RangeExpander from './pages/Ipv4RangeExpander';
 
 // const AdminGuard = ({ children }) => {
 //   const role = localStorage.getItem('role');
@@ -69,6 +80,17 @@ function App() {
             <Route path="json-formatter" element={<JSONFormatter />} />
             <Route path="json-to-csv" element={<JSONToCSV />} />
             <Route path="docker-compose-converter" element={<DockerComposeConverter />} />
+            <Route path="/temperature-converter" element={<TemperatureConverter />} />
+            <Route path="/benchmark-builder" element={<BenchmarkBuilder />} />
+            <Route path="/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
+            <Route path="/text-statistics" element={<TextStatistics />} />
+            <Route path="/numeronym-generator" element={<NumeronymGenerator />} />
+            <Route path="/phone-parser" element={<PhoneParser />} />
+            <Route path="/iban-validator" element={<IbanValidator />} />
+            <Route path="/credit-card-validator" element={<CreditCardValidator />} />
+            <Route path="/mac-address-generator" element={<MacAddressGenerator />} />
+            <Route path="/ipv4-converter" element={<Ipv4Converter />} />
+            <Route path="/ipv4-range-expander" element={<Ipv4RangeExpander />} />
           </Route>
 
           {/* Các route không cần ToolLayout */}
