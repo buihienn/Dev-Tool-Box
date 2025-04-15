@@ -1,6 +1,7 @@
 import React, { useState }from 'react';
 import { Card, Form, Button, InputGroup, ToggleButton } from 'react-bootstrap';
-import '../styles/ToolLayout.css'; // Import CSS
+import '../styles/ToolLayout.css';
+import '../styles/Card.css'; 
 
 const TokenGeneratorTool = () => {
   const [uppercase, setUppercase] = useState(true);
@@ -40,7 +41,7 @@ return (
     </div>
 
     <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <Card className="bg-light text-dark p-4">
+      <Card className="bg-light text-dark p-4 no-hover">
         <Card.Body>
         <div className="mb-4">
           <div className="row">

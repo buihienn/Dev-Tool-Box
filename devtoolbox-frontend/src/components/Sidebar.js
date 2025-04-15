@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Nav, Accordion } from 'react-bootstrap';
 import { 
   ClockHistory, 
   ChevronDown, 
   ChevronUp,
-  StarFill
+  StarFill,
+  Globe // Default icon
 } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { useSidebar } from '../context/SidebarContext';
@@ -13,10 +14,39 @@ import toolsData from '../data/toolsData';
 import categoriesData from '../data/categoriesData'; // Giả định bạn đã có danh sách danh mục công cụ
 
 const Sidebar = () => {
-  // Sử dụng context thay vì props
   const { expanded } = useSidebar();
   
-  const [activeKeys, setActiveKeys] = useState(['recent', 'premium', ...categoriesData.map(cat => cat.id)]);
+  // State để lưu dữ liệu categories từ API
+  const [categoriesData, setCategoriesData] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  
+  // Fetch categories khi component mount
+  useEffect(() => {
+    const loadCategories = async () => {
+      try {
+        setIsLoading(true);
+        const data = await fetchCategories();
+        setCategoriesData(data || []); // Đảm bảo luôn có mảng, ngay cả khi API trả về null
+      } catch (error) {
+        console.error("Error loading categories:", error);
+        setCategoriesData([]); // Đặt mảng rỗng nếu có lỗi
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    
+    loadCategories();
+  }, []);
+  
+  // Sử dụng state để lưu các accordion section đang mở
+  const [activeKeys, setActiveKeys] = useState(['recent', 'premium']);
+  
+  // Thêm các category ID vào activeKeys khi categoriesData được tải
+  useEffect(() => {
+    if (categoriesData.length > 0) {
+      setActiveKeys(prev => [...prev, ...categoriesData.map(cat => cat.id)]);
+    }
+  }, [categoriesData]);
   
   const toggleCategory = (categoryName) => {
     setActiveKeys(prev => {
@@ -34,7 +64,7 @@ const Sidebar = () => {
     return toolsData.filter(tool => tool.category === categoryId);
   };
 
-  // Lấy danh sách công cụ sử dụng gần đây (thực tế sẽ được lưu trong state hoặc localStorage)
+  // Lấy danh sách công cụ sử dụng gần đây
   const getRecentlyUsedTools = () => {
     // Giả định 3 công cụ được sử dụng gần đây nhất
     return toolsData.slice(0, 3);
@@ -71,9 +101,9 @@ const Sidebar = () => {
       key={tool.id} 
       className="text-black d-flex align-items-center px-3 py-2"
       as={Link}
-      to={`/${tool.id}`} // Đảm bảo định dạng đường dẫn đúng
+      to={`/${tool.id}`}
     >
-      {React.createElement(tool.icon, { className: "me-2" })}
+      {React.createElement(tool.icon || Globe, { className: "me-2" })}
       <span 
         style={{
           whiteSpace: 'nowrap',
@@ -94,15 +124,15 @@ const Sidebar = () => {
   };
 
   // Style cho đường thẳng dọc
-const verticalLineStyle = {
-  position: 'absolute',
-  left: '23px', // Điều chỉnh để thẳng với icon
-  top: '40px', // Bắt đầu từ phía dưới header - điều chỉnh giá trị này
-  height: 'calc(100% - 40px)', // Chiều cao của đường thẳng
-  width: '1px', // Đường mỏng hơn trông sẽ đẹp hơn
-  backgroundColor: '#000000', // Sử dụng màu chủ đạo
-  zIndex: 5 // Đảm bảo đường thẳng nằm trên các phần tử khác
-};
+  const verticalLineStyle = {
+    position: 'absolute',
+    left: '23px', 
+    top: '40px', 
+    height: 'calc(100% - 40px)',
+    width: '1px',
+    backgroundColor: '#000000', 
+    zIndex: 5 
+  };
 
   return (
     <div 
@@ -110,8 +140,15 @@ const verticalLineStyle = {
       style={{
         background: '#FCF9F1',
         transition: 'all 0.3s ease',
-        minHeight: '100vh',
+        height: '100vh',
         width: expanded ? '250px' : '0',
+        overflow: 'hidden',
+        display: 'flex',    
+        flexDirection: 'column',
+        position: 'fixed', 
+        top: 0,         
+        left: 0,         
+        zIndex: 1000
       }}
     >
       <div className="p-3 border-bottom border-secondary">
@@ -121,8 +158,16 @@ const verticalLineStyle = {
         <p className="text-muted mb-0 small">Công cụ cho nhà phát triển.</p>
       </div>
 
-      <div className="overflow-auto" style={{ width: '250px'}}>
-        <Accordion 
+      {/* Phần scroll */}
+      <div 
+        className="overflow-auto" 
+        style={{ 
+          width: '100%',
+          flex: '1 1 auto',
+          height: '0' 
+        }}
+      >
+              <Accordion 
           className="border-0"
           activeKey={activeKeys}
           alwaysOpen
@@ -172,31 +217,35 @@ const verticalLineStyle = {
           </Accordion.Item>
 
           {/* Tool Categories from categoriesData */}
-          {categoriesData.map((category) => (
-            <Accordion.Item 
-              eventKey={category.id} 
-              key={category.id} 
-              className="border-0 text-black position-relative"
-              style={categoryStyle}
-            >
-              <CustomToggle
-                eventKey={category.id}
-                icon={React.createElement(category.icon)}
-                title={category.name}
-                callback={toggleCategory}
-              />
-              {activeKeys.includes(category.id) && <div style={verticalLineStyle}></div>}
-              <Accordion.Body className="p-0 ps-4">
-                <Nav className="flex-column">
-                  {getToolsByCategory(category.id).map((tool) => (
-                    <ToolLink key={tool.id} tool={tool} />
-                  ))}
-                </Nav>
-              </Accordion.Body>
-            </Accordion.Item>
-          ))}
+          {isLoading ? (
+            <div className="p-3 text-black">Đang tải danh mục...</div>
+          ) : (
+            categoriesData.map((category) => (
+              <Accordion.Item 
+                eventKey={category.id} 
+                key={category.id} 
+                className="border-0 text-black position-relative"
+                style={categoryStyle}
+              >
+                <CustomToggle
+                  eventKey={category.id}
+                  icon={React.createElement(category.icon || Globe)}
+                  title={category.name}
+                  callback={toggleCategory}
+                />
+                {activeKeys.includes(category.id) && <div style={verticalLineStyle}></div>}
+                <Accordion.Body className="p-0 ps-4">
+                  <Nav className="flex-column">
+                    {getToolsByCategory(category.id).map((tool) => (
+                      <ToolLink key={tool.id} tool={tool} />
+                    ))}
+                  </Nav>
+                </Accordion.Body>
+              </Accordion.Item>
+            ))
+          )}
         </Accordion>
-      </div>
+    </div>
     </div>
   );
 };
