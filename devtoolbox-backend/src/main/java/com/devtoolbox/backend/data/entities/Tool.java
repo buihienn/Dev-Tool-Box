@@ -8,8 +8,7 @@ import java.time.LocalDateTime;
 public class Tool {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private String id;
 
     @Column(nullable = false, unique = true)
     private String name;
@@ -37,12 +36,21 @@ public class Tool {
     }
 
     // Getters và Setters
-    
-    public Long getId() {
-        return id;
+    public Tool() {
     }
 
-    public void setId(Long id) {
+    public Tool(String id, String name, Boolean enabled, Level level, Category category) {
+        this.id = id;
+        this.name = name;
+        this.enabled = enabled;
+        this.level = level;
+        this.category = category;
+    }
+    
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
         this.id = id;
     }
 

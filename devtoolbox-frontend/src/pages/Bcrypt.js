@@ -14,7 +14,7 @@ const Bcrypt = () => {
   // Gọi API để tạo hash
   const handleGenerateHash = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/auth/bcrypt/hash', {
+      const response = await fetch('http://localhost:8080/tool/bcrypt/hash', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
