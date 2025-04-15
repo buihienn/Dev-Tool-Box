@@ -16,13 +16,15 @@ public class Tool {
     @Column(nullable = false)
     private Boolean enabled = true;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
-    private Level level = Level.REGULAR;
+    @Column(name = "is_premium", nullable = false)
+    private Boolean isPremium = false; // Thay thế level bằng isPremium
+
+    @Column(name = "is_new", nullable = false)
+    private Boolean isNew = false; // Thuộc tính mới
 
     @ManyToOne
     @JoinColumn(name = "category_id", nullable = false)
-    private Category category; // Liên kết với bảng categories
+    private Category category;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
@@ -30,26 +32,23 @@ public class Tool {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt = LocalDateTime.now();
 
-    public enum Level {
-        REGULAR,
-        PREMIUM
-    }
-
     // Getters và Setters
     public Tool() {
     }
 
-    public Tool(String id, String name, Boolean enabled, Level level, Category category) {
+    public Tool(String id, String name, Boolean enabled, Boolean isPremium, Boolean isNew, Category category) {
         this.id = id;
         this.name = name;
         this.enabled = enabled;
-        this.level = level;
+        this.isPremium = isPremium;
+        this.isNew = isNew;
         this.category = category;
     }
-    
+
     public String getId() {
         return id;
     }
+
     public void setId(String id) {
         this.id = id;
     }
@@ -70,15 +69,26 @@ public class Tool {
         this.enabled = enabled;
     }
 
-    public Level getLevel() {
-        return level;
+    public Boolean getIsPremium() {
+        return isPremium;
     }
-    public void setLevel(Level level) {
-        this.level = level;
+
+    public void setIsPremium(Boolean isPremium) {
+        this.isPremium = isPremium;
     }
+
+    public Boolean getIsNew() {
+        return isNew;
+    }
+
+    public void setIsNew(Boolean isNew) {
+        this.isNew = isNew;
+    }
+
     public Category getCategory() {
         return category;
     }
+
     public void setCategory(Category category) {
         this.category = category;
     }
@@ -86,16 +96,16 @@ public class Tool {
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
+
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
+
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
+
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
-
-    
-
 }

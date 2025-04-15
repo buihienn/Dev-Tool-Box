@@ -28,7 +28,8 @@ public class ToolController {
                 tool.getId(),
                 tool.getName(),
                 tool.getCategory().getName(),
-                tool.getLevel().name(),
+                tool.getIsNew(),
+                tool.getIsPremium(),
                 tool.getEnabled()
             ))
             .collect(Collectors.toList());

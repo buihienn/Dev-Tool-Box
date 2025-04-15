@@ -44,10 +44,10 @@ public class ToolServiceImpl  implements ToolService{
         return toolRepository.save(tool);
     }
 
-    // Nâng/Hạ cấp công cụ (Premium/Regular)
-    public Tool upgradeTool(String id, Tool.Level level) {
+    // Nâng/Hạ cấp công cụ (Premium)
+    public Tool upgradeTool(String id, boolean isPremium) {
         Tool tool = getToolById(id);
-        tool.setLevel(level);
+        tool.setIsPremium(isPremium);
         return toolRepository.save(tool);
     }
 

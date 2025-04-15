@@ -4,16 +4,17 @@ public class ToolResponse {
     private String id;
     private String name;
     private String category;
-    private String level;
-    private Boolean enabled;
+    private Boolean isNew;
+    private Boolean isPremium;
+    private Boolean isEnabled;
 
-    // Constructor
-    public ToolResponse(String id, String name, String category, String level, Boolean enabled) {
+    public ToolResponse(String id, String name, String category, Boolean isNew, Boolean isPremium, Boolean isEnabled) {
         this.id = id;
         this.name = name;
         this.category = category;
-        this.level = level;
-        this.enabled = enabled;
+        this.isNew = isNew;
+        this.isPremium = isPremium;
+        this.isEnabled = isEnabled;
     }
 
     // Getters và Setters
@@ -41,19 +42,27 @@ public class ToolResponse {
         this.category = category;
     }
 
-    public String getLevel() {
-        return level;
+    public Boolean getIsNew() {
+        return isNew;
     }
 
-    public void setLevel(String level) {
-        this.level = level;
+    public void setIsNew(Boolean isNew) {
+        this.isNew = isNew;
     }
 
-    public Boolean getEnabled() {
-        return enabled;
+    public Boolean getIsPremium() {
+        return isPremium;
     }
 
-    public void setEnabled(Boolean enabled) {
-        this.enabled = enabled;
+    public void setIsPremium(Boolean isPremium) {
+        this.isPremium = isPremium;
+    }
+
+    public Boolean getIsEnabled() {
+        return isEnabled;
+    }
+
+    public void setIsEnabled(Boolean isEnabled) {
+        this.isEnabled = isEnabled;
     }
 }
