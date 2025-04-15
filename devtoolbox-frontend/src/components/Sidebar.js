@@ -9,10 +9,11 @@ import {
 import { Link } from 'react-router-dom';
 import { useSidebar } from '../context/SidebarContext';
 import toolsData from '../data/toolsData';
-import categoriesData from '../data/categoriesData';
+import fetchCategories from '../data/categoriesData';
 
 const Sidebar = () => {
   // Sử dụng context thay vì props
+  const categoriesData = fetchCategories();
   const { expanded } = useSidebar();
   
   const [activeKeys, setActiveKeys] = useState(['recent', 'premium', ...categoriesData.map(cat => cat.id)]);

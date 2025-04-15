@@ -89,6 +89,7 @@ const toolsData = [
     category: 'converter',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'text-to-nato-alphabet',
@@ -98,6 +99,7 @@ const toolsData = [
     category: 'converter',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'xml-to-json',
@@ -107,6 +109,7 @@ const toolsData = [
     category: 'converter',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'url-parser',
@@ -116,6 +119,7 @@ const toolsData = [
     category: 'web',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'url-formatter',
@@ -125,6 +129,7 @@ const toolsData = [
     category: 'web',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'jwt-parser',
@@ -134,6 +139,7 @@ const toolsData = [
     category: 'web',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: "chronometer",
@@ -150,7 +156,7 @@ const toolsData = [
     name: 'QR Code Generator',
     description: 'Tạo mã QR cho văn bản hoặc URL và tải xuống dưới dạng hình ảnh',
     icon: Globe,
-    category: 'images-videos',
+    category: 'images_videos',
     isNew: false,
     isPremium: false,
     isEnabled: true,
@@ -160,18 +166,20 @@ const toolsData = [
     name: 'WiFi QR Code Generator',
     description: 'Tạo mã QR cho WiFi để dễ dàng chia sẻ thông tin kết nối',
     icon: Globe,
-    category: 'images-videos',
+    category: 'images_videos',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'image-to-base64',
     name: 'Image to Base64 + HTML',
     description: 'Chuyển đổi hình ảnh thành mã Base64 và tạo mã HTML tương ứng',
     icon: Globe,
-    category: 'images-videos',
+    category: 'images_videos',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'json-formatter',
@@ -181,6 +189,7 @@ const toolsData = [
     category: 'development',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'json-to-csv',
@@ -190,6 +199,7 @@ const toolsData = [
     category: 'development',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   },
   {
     id: 'docker-compose-converter',
@@ -199,6 +209,7 @@ const toolsData = [
     category: 'development',
     isNew: false,
     isPremium: false,
+    isEnabled: true,
   }
 ];
 
