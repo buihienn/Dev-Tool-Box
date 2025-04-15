@@ -17,6 +17,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.devtoolbox.backend.application.services.ToolService;
 import com.devtoolbox.backend.application.services.UserService;
 import com.devtoolbox.backend.data.entities.Role;
 
@@ -25,10 +26,12 @@ import com.devtoolbox.backend.data.entities.Role;
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
+    private final ToolService toolService;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserService userService) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserService userService, ToolService toolService) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userService = userService;
+        this.toolService = toolService;
     }
 
     @Bean
@@ -46,12 +49,14 @@ public class SecurityConfig {
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/tools/**").permitAll()
                 .requestMatchers("/api/categories/**").permitAll()
+                .requestMatchers("/api/get-tool/all").permitAll()
                 .requestMatchers("/api/token/generate").hasAuthority(Role.ADMIN.name())
                 .requestMatchers("/app/admin/**").hasAuthority(Role.ADMIN.name())
                 .requestMatchers("/app/user/**").hasAuthority(Role.USER.name())
                 .requestMatchers("/tool/**").permitAll() // dùng để chạy các tool
                 .anyRequest().authenticated()
             )
+            .addFilterBefore(new ToolFilter(toolService), UsernamePasswordAuthenticationFilter.class)
             .sessionManagement(manager -> manager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authenticationProvider(authenticationProvider())
             .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

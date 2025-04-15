@@ -10,17 +10,21 @@ public interface ToolService {
     List<Tool> getAllTools();
 
     // Lấy thông tin công cụ theo ID
-    Tool getToolById(Long id);
+    Tool getToolById(String id);
 
     // Bổ sung công cụ mới
     Tool createTool(Tool tool);
 
     // Loại bỏ công cụ
-    void deleteTool(Long id);
+    void deleteTool(String id);
 
     // Enable/Disable công cụ
-    Tool enableTool(Long id, boolean enabled);
+    Tool enableTool(String id, boolean enabled);
 
     // Nâng/Hạ cấp công cụ (Premium/Regular)
-    Tool upgradeTool(Long id, Tool.Level level);
+    Tool upgradeTool(String id, Tool.Level level);
+    
+    boolean isToolEnabled(String id);
+
+    Tool getToolByName(String toolName);
 }

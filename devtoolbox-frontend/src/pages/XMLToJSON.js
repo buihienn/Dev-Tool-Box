@@ -3,7 +3,7 @@ import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; // Import CSS
 
 const XMLToJSON = () => {
-  const [xmlInput, setXmlInput] = useState('');
+  const [xmlInput, setXmlInput] = useState('"<a x=\'1.234\' y=\'It&#39;s\'/>"');
   const [jsonOutput, setJsonOutput] = useState('');
 
   const handleConvertToJSON = async () => {
@@ -51,7 +51,7 @@ const XMLToJSON = () => {
                 <Form.Control
                 as="textarea"
                 rows={6}
-                value={xmlInput || "<a x='1.234' y='It&#39;s'/>"} // Giá trị khởi tạo
+                value={xmlInput} // Giá trị khởi tạo
                 onChange={(e) => setXmlInput(e.target.value)}
                 />
             </Form.Group>
