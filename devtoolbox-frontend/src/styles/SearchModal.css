@@ -1,0 +1,16 @@
+.search-modal .selected-item {
+    background-color: #043A84 !important;
+    color: white !important;
+}
+
+.search-modal .selected-item:hover {
+    background-color: #032c63 !important;
+}
+
+.search-modal .selected-item .text-white {
+    color: white !important;
+}
+
+.search-modal .list-group-item:focus {
+    box-shadow: none;
+}

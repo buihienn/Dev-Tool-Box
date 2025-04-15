@@ -83,7 +83,7 @@ public class PhoneParserServiceImpl implements PhoneParserService {
      * Lấy tên quốc gia từ mã quốc gia
      */
     private String getCountryName(String countryCode) {
-        Locale locale = new Locale("", countryCode);
+        Locale locale = new Locale.Builder().setRegion(countryCode).build();
         return locale.getDisplayCountry(Locale.ENGLISH);
     }
     
