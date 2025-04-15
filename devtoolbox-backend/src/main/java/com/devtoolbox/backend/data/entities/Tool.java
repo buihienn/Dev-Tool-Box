@@ -21,6 +21,10 @@ public class Tool {
     @Column(nullable = false)
     private Level level = Level.REGULAR;
 
+    @ManyToOne
+    @JoinColumn(name = "category_id", nullable = false)
+    private Category category; // Liên kết với bảng categories
+
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 
@@ -32,15 +36,8 @@ public class Tool {
         PREMIUM
     }
 
-    public Tool(String name, Boolean enabled, Level level) {
-        this.name = name;
-        this.enabled = enabled;
-        this.level = level;
-        this.createdAt = LocalDateTime.now();
-        this.updatedAt = LocalDateTime.now();
-    }
-
     // Getters và Setters
+    
     public Long getId() {
         return id;
     }
@@ -68,24 +65,29 @@ public class Tool {
     public Level getLevel() {
         return level;
     }
-
     public void setLevel(Level level) {
         this.level = level;
+    }
+    public Category getCategory() {
+        return category;
+    }
+    public void setCategory(Category category) {
+        this.category = category;
     }
 
     public LocalDateTime getCreatedAt() {
         return createdAt;
     }
-
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
     public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
-
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
+
+    
+
 }

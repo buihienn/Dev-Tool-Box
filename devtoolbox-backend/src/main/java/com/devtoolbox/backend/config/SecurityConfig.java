@@ -45,6 +45,7 @@ public class SecurityConfig {
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/api/tools/**").permitAll()
+                .requestMatchers("/api/categories/**").permitAll()
                 .requestMatchers("/api/token/generate").hasAuthority(Role.ADMIN.name())
                 .requestMatchers("/app/admin/**").hasAuthority(Role.ADMIN.name())
                 .requestMatchers("/app/user/**").hasAuthority(Role.USER.name())
