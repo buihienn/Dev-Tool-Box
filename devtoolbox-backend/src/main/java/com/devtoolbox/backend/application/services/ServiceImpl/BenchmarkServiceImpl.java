@@ -121,6 +121,7 @@ public class BenchmarkServiceImpl implements BenchmarkService {
         return true;
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public String exportAsMarkdown(String benchmarkId) {
         Map<String, Object> benchmark = benchmarks.get(benchmarkId);
@@ -130,7 +131,6 @@ public class BenchmarkServiceImpl implements BenchmarkService {
         
         String unit = (String) benchmark.get("unit");
         
-        @SuppressWarnings("unchecked")
         List<Map<String, Object>> suites = (List<Map<String, Object>>) benchmark.get("suites");
         
         // Sắp xếp suite theo trung bình
@@ -149,7 +149,6 @@ public class BenchmarkServiceImpl implements BenchmarkService {
             Map<String, Object> suite = sortedSuites.get(i);
             String name = (String) suite.get("name");
             
-            @SuppressWarnings("unchecked")
             List<Map<String, Object>> measures = (List<Map<String, Object>>) suite.get("measures");
             
             double mean = calculateMean(measures);
@@ -163,6 +162,7 @@ public class BenchmarkServiceImpl implements BenchmarkService {
         return sb.toString();
     }
     
+    @SuppressWarnings("unchecked")
     @Override
     public String exportAsBulletList(String benchmarkId) {
         Map<String, Object> benchmark = benchmarks.get(benchmarkId);
@@ -172,7 +172,6 @@ public class BenchmarkServiceImpl implements BenchmarkService {
         
         String unit = (String) benchmark.get("unit");
         
-        @SuppressWarnings("unchecked")
         List<Map<String, Object>> suites = (List<Map<String, Object>>) benchmark.get("suites");
         
         // Sắp xếp suite theo trung bình
@@ -189,7 +188,6 @@ public class BenchmarkServiceImpl implements BenchmarkService {
             Map<String, Object> suite = sortedSuites.get(i);
             String name = (String) suite.get("name");
             
-            @SuppressWarnings("unchecked")
             List<Map<String, Object>> measures = (List<Map<String, Object>>) suite.get("measures");
             
             double mean = calculateMean(measures);

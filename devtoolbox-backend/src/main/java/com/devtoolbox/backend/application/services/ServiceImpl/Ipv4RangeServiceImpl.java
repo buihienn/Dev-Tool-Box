@@ -105,16 +105,6 @@ public class Ipv4RangeServiceImpl implements Ipv4RangeService {
     }
     
     /**
-     * Chuyển đổi số long thành chuỗi subnet mask
-     */
-    private String longToIpMask(long mask) {
-        return ((mask >> 24) & 0xFF) + "." +
-               ((mask >> 16) & 0xFF) + "." +
-               ((mask >> 8) & 0xFF) + "." +
-               (mask & 0xFF);
-    }
-    
-    /**
      * Tính toán độ dài tiền tố CIDR tối ưu cho dải địa chỉ IP
      */
     private int calculateOptimalCIDR(long startIp, long endIp) {
