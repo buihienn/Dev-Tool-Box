@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Row, Col, Table, InputGroup, Badge } from 'react-bootstrap';
-import { Clipboard, Globe, TelephoneFill } from 'react-bootstrap-icons';
 import ToolHeader from '../components/ToolHeader';
 import '../styles/ToolLayout.css';
 import '../styles/Card.css';
@@ -79,11 +78,7 @@ const PhoneParser = () => {
   
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <ToolHeader 
-        toolId="phone-parser"
-        defaultName="Trình phân tích và định dạng số điện thoại"
-        defaultDescription="Phân tích, xác thực và định dạng số điện thoại. Lấy thông tin về số điện thoại, như mã quốc gia, loại, v.v."
-      />
+      <ToolHeader toolId="phone-parser"/>
       
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4 no-hover mb-4">

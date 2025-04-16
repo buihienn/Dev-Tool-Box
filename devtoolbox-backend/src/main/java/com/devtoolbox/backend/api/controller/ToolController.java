@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.http.ResponseEntity;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
 import com.devtoolbox.backend.data.repositories.ToolRepository;
 import com.devtoolbox.backend.application.dto.ToolResponse;
 
@@ -16,7 +15,6 @@ public class ToolController {
 
     private final ToolRepository toolRepository;
 
-    @Autowired
     public ToolController(ToolRepository toolRepository) {
         this.toolRepository = toolRepository;
     }

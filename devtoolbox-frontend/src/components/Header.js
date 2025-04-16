@@ -17,25 +17,31 @@ import {
   Person,
   DiamondFill,
   Search,
+  BoxArrowInRight,
+  PersonCircle
 } from "react-bootstrap-icons";
 import { useSidebar } from "../context/SidebarContext";
 import { useNavigate } from "react-router-dom";
 import SearchModal from "./SearchModal";
+import { useAuth } from "../context/AuthContext"; // Import AuthContext
 
 const Header = () => {
   const { expanded, toggleSidebar } = useSidebar();
   const navigate = useNavigate();
   const [showSearchModal, setShowSearchModal] = useState(false);
+  const { currentUser, userRole, logout, isAuthenticated } = useAuth(); // Sử dụng AuthContext
 
   const navigateToHome = () => {
     navigate("/");
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("email");
-    localStorage.removeItem("role");
+  const handleLogin = () => {
     navigate("/login");
+  };
+
+  const handleLogout = () => {
+    logout(); // Sử dụng hàm logout từ AuthContext
+    navigate("/");
   };
 
   // Xử lý phím tắt Ctrl + K để mở modal tìm kiếm
@@ -122,17 +128,21 @@ const Header = () => {
           </div>
 
           <div className="ms-auto d-flex align-items-center">
-            {/* Premium Button */}
-            <Button variant="warning" className="d-flex align-items-center text-dark">
-              <DiamondFill />
-              <span className="d-none d-md-inline ms-1">Premium</span>
-            </Button>
+            {/* Premium Button - Hiển thị Premium nếu đã đăng nhập */}
+            {isAuthenticated && (
+              <Button variant="warning" className="d-flex align-items-center text-dark">
+                <DiamondFill />
+                <span className="d-none d-md-inline ms-1">Premium</span>
+              </Button>
+            )}
 
-            {/* Favorites button */}
-            <Button variant="danger" className="d-flex align-items-center ms-2">
-              <Heart />
-              <span className="d-none d-md-inline ms-1">Yêu thích</span>
-            </Button>
+            {/* Favorites button - Hiển thị nếu đã đăng nhập */}
+            {isAuthenticated && (
+              <Button variant="danger" className="d-flex align-items-center ms-2">
+                <Heart />
+                <span className="d-none d-md-inline ms-1">Yêu thích</span>
+              </Button>
+            )}
 
             <Nav className="ms-2">
               <Nav.Link href="#github" style={{ color: "#000" }}>
@@ -146,25 +156,45 @@ const Header = () => {
               </Nav.Link>
             </Nav>
 
-            {/* User Profile Button */}
-            <div className="ms-2 border">
-              <Dropdown>
-                <Dropdown.Toggle
-                  variant="outline-info"
-                  id="profile-dropdown"
-                  className="d-flex align-items-center"
-                >
-                  <Person className="me-md-2" />
-                  <span className="d-none d-md-inline">Hồ sơ</span>
-                </Dropdown.Toggle>
-                <Dropdown.Menu align="end">
-                  <Dropdown.Item href="#profile">Xem hồ sơ</Dropdown.Item>
-                  <Dropdown.Item href="#settings">Cài đặt</Dropdown.Item>
-                  <Dropdown.Divider />
-                  <Dropdown.Item onClick={handleLogout}>Đăng xuất</Dropdown.Item>
-                </Dropdown.Menu>
-              </Dropdown>
-            </div>
+            {/* Điều kiện render dựa trên trạng thái đăng nhập */}
+            {isAuthenticated ? (
+              // User Profile Dropdown khi đã đăng nhập
+              <div className="ms-2">
+                <Dropdown>
+                  <Dropdown.Toggle
+                    variant="outline-info"
+                    id="profile-dropdown"
+                    className="d-flex align-items-center"
+                  >
+                    <PersonCircle className="me-md-2" />
+                    <span className="d-none d-md-inline">
+                      {currentUser?.email?.split('@')[0]}
+                    </span>
+                  </Dropdown.Toggle>
+                  <Dropdown.Menu align="end">
+                    <Dropdown.Item href="#profile">Xem hồ sơ</Dropdown.Item>
+                    <Dropdown.Item href="#settings">Cài đặt</Dropdown.Item>
+                    {userRole === 'admin' && (
+                      <Dropdown.Item onClick={() => navigate('/admin')}>Quản lý hệ thống</Dropdown.Item>
+                    )}
+                    <Dropdown.Divider />
+                    <Dropdown.Item onClick={handleLogout}>
+                      <span className="text-danger">Đăng xuất</span>
+                    </Dropdown.Item>
+                  </Dropdown.Menu>
+                </Dropdown>
+              </div>
+            ) : (
+              // Nút đăng nhập khi chưa đăng nhập
+              <Button 
+                variant="outline-primary" 
+                className="ms-2 d-flex align-items-center"
+                onClick={handleLogin}
+              >
+                <BoxArrowInRight className="me-md-1" />
+                <span className="d-none d-sm-inline">Đăng nhập</span>
+              </Button>
+            )}
           </div>
         </Navbar>
       </div>

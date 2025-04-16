@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import "../styles/Login.css"; // Import file CSS
-import { jwtDecode } from "jwt-decode";
+import { useNavigate, Link, useLocation } from "react-router-dom";
+import "../styles/Login.css";
+import { useAuth } from "../context/AuthContext";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -9,6 +9,11 @@ const Login = () => {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { login } = useAuth();
+
+  // Lấy trang đích từ state, nếu không có thì mặc định là trang chủ
+  const from = location.state?.from?.pathname || "/";
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -16,37 +21,19 @@ const Login = () => {
     setLoading(true);
   
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password,
-        }),
-      });
-  
-      const data = await response.json();
-  
-      if (response.ok) {
-        // Lưu token vào localStorage
-        localStorage.setItem("token", data.token);
-  
-        // Giải mã token để lấy email
-        const decodedToken = jwtDecode(data.token); // Giải mã token
-        const userEmail = decodedToken.sub; // Lấy email từ subject
-        const userRole = decodedToken.role; // Lấy vai trò từ payload
-        localStorage.setItem("email", userEmail); // Lưu email vào localStorage
-        localStorage.setItem("role", userRole); // Lưu vai trò vào localStorage
-  
-        // Hiển thị thông báo thành công
-        alert(`Đăng nhập thành công! Xin chào ${userEmail} (${decodedToken.role})`);
-  
-        // Chuyển hướng đến trang chủ
-        navigate("/");
+      const result = await login(email, password);
+      
+      if (result.success) {
+        // Kiểm tra vai trò và điều hướng
+        if (result.role === 'ADMIN') {
+          // Nếu là admin, điều hướng đến trang quản trị
+          navigate('/admin', { replace: true });
+        } else {
+          // Không phải admin thì điều hướng đến trang trước đó hoặc trang chủ
+          navigate(from, { replace: true });
+        }
       } else {
-        if (data.message === "Please verify your email before logging in!") {
+        if (result.needVerification) {
           const resend = window.confirm(
             "Tài khoản của bạn chưa được xác minh. Bạn có muốn gửi lại email xác minh không?"
           );
@@ -72,11 +59,11 @@ const Login = () => {
             }
           }
         } else {
-          setError(data.message || "Đăng nhập thất bại!");
+          setError(result.message);
         }
       }
     } catch (error) {
-      console.error("Lỗi khi gọi API:", error);
+      console.error("Lỗi khi xử lý đăng nhập:", error);
       setError("Đã xảy ra lỗi, vui lòng thử lại sau!");
     } finally {
       setLoading(false);

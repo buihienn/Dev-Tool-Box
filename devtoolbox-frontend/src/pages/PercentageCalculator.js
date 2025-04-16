@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Row, Col, Alert, Tab, Nav } from 'react-bootstrap';
-import toolsData from '../data/toolsData';
+import ToolHeader from '../components/ToolHeader';
 
 const PercentageCalculator = () => {
   // State cho thông tin tool
@@ -14,17 +14,6 @@ const PercentageCalculator = () => {
 
   // State cho tab thứ ba: Phần trăm tăng/giảm là bao nhiêu?
   const [percentageChange, setPercentageChange] = useState({ from: '', to: '', result: null, isIncrease: null });
-
-  // Lấy thông tin từ toolsData
-  useEffect(() => {
-    const tool = toolsData.find(tool => tool.id === 'percentage-calculator');
-    if (tool) {
-      setToolInfo({
-        name: tool.name,
-        description: tool.description
-      });
-    }
-  }, []);
   
   // Tính X% của Y
   const handlePercentOfValueChange = (field, value) => {
@@ -78,12 +67,7 @@ const PercentageCalculator = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem'}}>
-      <div className="tool-header">
-        <h3>{toolInfo.name}</h3>
-        <p>
-          {toolInfo.description}
-        </p>
-      </div>
+      <ToolHeader toolId="percentage-calculator"/>
 
       <Row className="d-flex flex-column flex-lg-row gap-4" style={{ maxWidth: '800px', margin: '0 auto' }}>
           <Col>

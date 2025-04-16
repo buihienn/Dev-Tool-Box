@@ -9,7 +9,7 @@ import {
 } from 'react-bootstrap-icons';
 import { Link } from 'react-router-dom';
 import { useSidebar } from '../context/SidebarContext';
-import toolsData from '../data/toolsData';
+import fetchToolsData from '../data/toolsData'; // Import function, không phải data
 import fetchCategories from '../data/categoriesData';
 
 const Sidebar = () => {
@@ -18,23 +18,32 @@ const Sidebar = () => {
   // State để lưu dữ liệu categories từ API
   const [categoriesData, setCategoriesData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+  // State để lưu dữ liệu tools từ API
+  const [toolsData, setToolsData] = useState([]);
   
-  // Fetch categories khi component mount
+  // Fetch categories và tools khi component mount
   useEffect(() => {
-    const loadCategories = async () => {
+    const loadData = async () => {
       try {
         setIsLoading(true);
-        const data = await fetchCategories();
-        setCategoriesData(data || []); // Đảm bảo luôn có mảng, ngay cả khi API trả về null
+        
+        // Tải dữ liệu danh mục
+        const categoriesResult = await fetchCategories();
+        setCategoriesData(categoriesResult || []);
+        
+        // Tải dữ liệu công cụ
+        const toolsResult = await fetchToolsData();
+        setToolsData(toolsResult || []);
       } catch (error) {
-        console.error("Error loading categories:", error);
-        setCategoriesData([]); // Đặt mảng rỗng nếu có lỗi
+        console.error("Error loading data:", error);
+        setCategoriesData([]);
+        setToolsData([]);
       } finally {
         setIsLoading(false);
       }
     };
     
-    loadCategories();
+    loadData();
   }, []);
   
   // Sử dụng state để lưu các accordion section đang mở
@@ -66,7 +75,7 @@ const Sidebar = () => {
   // Lấy danh sách công cụ sử dụng gần đây
   const getRecentlyUsedTools = () => {
     // Giả định 3 công cụ được sử dụng gần đây nhất
-    return toolsData.slice(0, 3);
+    return toolsData.slice(0, Math.min(3, toolsData.length));
   };
 
   // Lọc các công cụ Premium
@@ -84,7 +93,7 @@ const Sidebar = () => {
         onClick={() => callback(eventKey)}
       >
         <span className="fw-bold d-flex align-items-center">
-          {React.isValidElement(icon) ? icon : <icon className="me-2" />}
+          {React.isValidElement(icon) ? icon : React.createElement(Globe)}
           <span className="ms-2">{title}</span>
         </span>
         <span className="ms-auto">
@@ -97,7 +106,6 @@ const Sidebar = () => {
   // Tool Link Component để hiển thị các liên kết công cụ nhất quán
   const ToolLink = ({ tool }) => (
     <Nav.Link 
-      key={tool.id} 
       className="text-black d-flex align-items-center px-3 py-2"
       as={Link}
       to={`/${tool.id}`}
@@ -166,60 +174,60 @@ const Sidebar = () => {
           height: '0' 
         }}
       >
-              <Accordion 
-          className="border-0"
-          activeKey={activeKeys}
-          alwaysOpen
-        >
-          {/* Recently Used Section*/}
-          <Accordion.Item 
-            eventKey="recent" 
-            className="border-0 text-black position-relative" 
-            style={categoryStyle}
+        {isLoading ? (
+          <div className="p-3 text-black">Đang tải dữ liệu...</div>
+        ) : (
+          <Accordion 
+            className="border-0"
+            activeKey={activeKeys}
+            alwaysOpen
           >
-            <CustomToggle
-              eventKey="recent"
-              icon={<ClockHistory />}
-              title="Sử dụng gần đây"
-              callback={toggleCategory}
-            />
-            {activeKeys.includes('recent') && <div style={verticalLineStyle}></div>}
-            <Accordion.Body className="p-0 ps-4">
-              <Nav className="flex-column">
-                {recentlyUsedTools.map((tool) => (
-                  <ToolLink key={tool.id} tool={tool} />
-                ))}
-              </Nav>
-            </Accordion.Body>
-          </Accordion.Item>
+            {/* Recently Used Section*/}
+            <Accordion.Item 
+              eventKey="recent" 
+              className="border-0 text-black position-relative" 
+              style={categoryStyle}
+            >
+              <CustomToggle
+                eventKey="recent"
+                icon={<ClockHistory />}
+                title="Sử dụng gần đây"
+                callback={toggleCategory}
+              />
+              {activeKeys.includes('recent') && <div style={verticalLineStyle}></div>}
+              <Accordion.Body className="p-0 ps-4">
+                <Nav className="flex-column">
+                  {recentlyUsedTools.map((tool) => (
+                    <ToolLink key={tool.id} tool={tool} />
+                  ))}
+                </Nav>
+              </Accordion.Body>
+            </Accordion.Item>
 
-          {/* Premium Tools Section */}
-          <Accordion.Item 
-            eventKey="premium" 
-            className="border-0 text-black position-relative" 
-            style={categoryStyle}
-          >
-            <CustomToggle
-              eventKey="premium"
-              icon={<StarFill />}
-              title="Công cụ Premium"
-              callback={toggleCategory}
-            />
-            {activeKeys.includes('premium') && <div style={verticalLineStyle}></div>}
-            <Accordion.Body className="p-0 ps-4">
-              <Nav className="flex-column">
-                {premiumTools.map((tool) => (
-                  <ToolLink key={tool.id} tool={tool} />
-                ))}
-              </Nav>
-            </Accordion.Body>
-          </Accordion.Item>
+            {/* Premium Tools Section */}
+            <Accordion.Item 
+              eventKey="premium" 
+              className="border-0 text-black position-relative" 
+              style={categoryStyle}
+            >
+              <CustomToggle
+                eventKey="premium"
+                icon={<StarFill />}
+                title="Công cụ Premium"
+                callback={toggleCategory}
+              />
+              {activeKeys.includes('premium') && <div style={verticalLineStyle}></div>}
+              <Accordion.Body className="p-0 ps-4">
+                <Nav className="flex-column">
+                  {premiumTools.map((tool) => (
+                    <ToolLink key={tool.id} tool={tool} />
+                  ))}
+                </Nav>
+              </Accordion.Body>
+            </Accordion.Item>
 
-          {/* Tool Categories from categoriesData */}
-          {isLoading ? (
-            <div className="p-3 text-black">Đang tải danh mục...</div>
-          ) : (
-            categoriesData.map((category) => (
+            {/* Tool Categories from categoriesData */}
+            {categoriesData.map((category) => (
               <Accordion.Item 
                 eventKey={category.id} 
                 key={category.id} 
@@ -241,10 +249,10 @@ const Sidebar = () => {
                   </Nav>
                 </Accordion.Body>
               </Accordion.Item>
-            ))
-          )}
-        </Accordion>
-    </div>
+            ))}
+          </Accordion>
+        )}
+      </div>
     </div>
   );
 };

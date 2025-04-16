@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Form, Button, Spinner, Alert, Modal, Row, Col } from 'react-bootstrap';
 import { Trash, PlusCircle } from 'react-bootstrap-icons';
-import toolsData from '../data/toolsData';
+import fetchToolsData from '../data/toolsData';
 
 const AdminToolList = () => {
   const [tools, setTools] = useState([]);
@@ -16,22 +16,21 @@ const AdminToolList = () => {
   const fetchTools = async () => {
     setLoading(true);
     try {
-      // Lấy dữ liệu từ toolsData.js
-      setTimeout(() => {
-        // Chuyển đổi từ dữ liệu trong toolsData sang định dạng phù hợp với AdminToolList
-        const formattedTools = toolsData.map(tool => ({
-          id: tool.id,
-          name: tool.name,
-          type: tool.category,
-          premium: tool.isPremium,
-          enabled: tool.isEnabled
-        }));
-        
-        setTools(formattedTools);
-        setLoading(false);
-      }, 300);
+      const toolsData = await fetchToolsData();
+      
+      // Chuyển đổi từ dữ liệu trong toolsData sang định dạng phù hợp với AdminToolList
+      const formattedTools = toolsData.map(tool => ({
+        id: tool.id,
+        name: tool.name,
+        type: tool.category,
+        premium: tool.isPremium,
+        enabled: tool.isEnabled
+      }));
+      
+      setTools(formattedTools);
     } catch (err) {
       setError('Có lỗi xảy ra khi tải dữ liệu công cụ');
+    } finally {
       setLoading(false);
     }
   };
