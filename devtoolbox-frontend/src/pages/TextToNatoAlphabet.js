@@ -15,7 +15,7 @@ const TextToNatoAlphabet = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/tool/nato-converter/convert?text=${encodeURIComponent(text)}`,
+        `http://localhost:8080/tool/text-to-nato-alphabet/convert?text=${encodeURIComponent(text)}`,
         {
           method: 'GET',
         }

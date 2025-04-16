@@ -7,6 +7,10 @@ import ToolLayout from './pages/ToolLayout';
 import UserDashboard from './pages/UserDashboard';
 import Login from './pages/Login';
 import Register from './pages/Register';
+import { AuthProvider } from './context/AuthContext';
+import ProtectedRoute from './components/guards/ProtectedRoute';
+import Unauthorized from './pages/Unauthorized';
+
 import TokenGeneratorTool from './pages/TokenGeneratorTool';
 import HashText from './pages/HashText';
 import Bcrypt from './pages/Bcrypt';
@@ -42,72 +46,62 @@ import MacAddressGenerator from './pages/MacAddressGenerator';
 import Ipv4Converter from './pages/Ipv4Converter';
 import Ipv4RangeExpander from './pages/Ipv4RangeExpander';
 
-// const AdminGuard = ({ children }) => {
-//   const role = localStorage.getItem('role');
-  
-//   if (role === 'ADMIN') {
-//     return children;
-//   }
-  
-//   return <Navigate to="/login" replace />;
-// };
-
 function App() {
   return (
+    <AuthProvider>
     <SidebarProvider>
       <BrowserRouter>
         <Routes>
-          {/* Đặt ToolLayout làm layout chính */}
-          <Route path="/" element={<ToolLayout />}>
-            <Route index element={<UserDashboard />} />
-            <Route path="token-generator" element={<TokenGeneratorTool />} />
-            <Route path="hash-text" element={<HashText />} />
-            <Route path="bcrypt" element={<Bcrypt />} />
-            <Route path="math-evaluator" element={<MathEvaluator />} />
-            <Route path="ulid-generator" element={<ULID />} />
-            <Route path="/eta-calculator" element={<ETACalculator />} />
-            <Route path="/percentage-calculator" element={<PercentageCalculator />} />
-            <Route path="base-converter" element={<IntegerBaseConverter />} />
-            <Route path="text-to-nato-alphabet" element={<TextToNatoAlphabet />} />
-            <Route path="xml-to-json" element={<XMLToJSON />} />
-            <Route path="url-parser" element={<URLParser />} />
-            <Route path="url-formatter" element={<URLFormatter />} />
-            <Route path="jwt-parser" element={<JWTParser />} />
-            <Route path="/chronometer" element={<Chronometer />} />
-            <Route path="qr-code-generator" element={<QRCodeGenerator />} />
-            <Route path="wifi-qr-code-generator" element={<WiFiQRCodeGenerator />} />
-            <Route path="image-to-base64" element={<ImageToBase64 />} />
-            <Route path="json-formatter" element={<JSONFormatter />} />
-            <Route path="json-to-csv" element={<JSONToCSV />} />
-            <Route path="docker-compose-converter" element={<DockerComposeConverter />} />
-            <Route path="/temperature-converter" element={<TemperatureConverter />} />
-            <Route path="/benchmark-builder" element={<BenchmarkBuilder />} />
-            <Route path="/lorem-ipsum-generator" element={<LoremIpsumGenerator />} />
-            <Route path="/text-statistics" element={<TextStatistics />} />
-            <Route path="/numeronym-generator" element={<NumeronymGenerator />} />
-            <Route path="/phone-parser" element={<PhoneParser />} />
-            <Route path="/iban-validator" element={<IbanValidator />} />
-            <Route path="/credit-card-validator" element={<CreditCardValidator />} />
-            <Route path="/mac-address-generator" element={<MacAddressGenerator />} />
-            <Route path="/ipv4-converter" element={<Ipv4Converter />} />
-            <Route path="/ipv4-range-expander" element={<Ipv4RangeExpander />} />
+          <Route element={<ProtectedRoute requiredRole="anonymous" />}>
+            <Route path="/" element={<ToolLayout />}>
+              <Route index element={<UserDashboard />} />
+              <Route path="token" element={<TokenGeneratorTool />} />
+              <Route path="hash" element={<HashText />} /> 
+              <Route path="bcrypt" element={<Bcrypt />} />
+              <Route path="math" element={<MathEvaluator />} />
+              <Route path="ulid" element={<ULID />} />
+              <Route path="eta-calculator" element={<ETACalculator />} /> 
+              <Route path="percentage-calculator" element={<PercentageCalculator />} /> 
+              <Route path="base-converter" element={<IntegerBaseConverter />} />
+              <Route path="text-to-nato-alphabet" element={<TextToNatoAlphabet />} />
+              <Route path="xml-to-json" element={<XMLToJSON />} />
+              <Route path="url-parser" element={<URLParser />} />
+              <Route path="url-formatter" element={<URLFormatter />} />
+              <Route path="jwt-parser" element={<JWTParser />} />
+              <Route path="chronometer" element={<Chronometer />} /> 
+              <Route path="qr-code" element={<QRCodeGenerator />} /> 
+              <Route path="wifi-qr-code" element={<WiFiQRCodeGenerator />} /> 
+              <Route path="image-to-base64" element={<ImageToBase64 />} />
+              <Route path="json-formatter" element={<JSONFormatter />} />
+              <Route path="json-to-csv" element={<JSONToCSV />} />
+              <Route path="docker-compose-converter" element={<DockerComposeConverter />} />
+              <Route path="temperature-converter" element={<TemperatureConverter />} /> 
+              <Route path="benchmark" element={<BenchmarkBuilder />} /> 
+              <Route path="lorem-ipsum" element={<LoremIpsumGenerator />} /> 
+              <Route path="text-statistics" element={<TextStatistics />} /> 
+              <Route path="numeronym" element={<NumeronymGenerator />} /> 
+              <Route path="phone-parser" element={<PhoneParser />} /> 
+              <Route path="iban" element={<IbanValidator />} /> 
+              <Route path="credit-card" element={<CreditCardValidator />} /> 
+              <Route path="mac-address" element={<MacAddressGenerator />} /> 
+              <Route path="ipv4" element={<Ipv4Converter />} /> 
+              <Route path="ipv4-range" element={<Ipv4RangeExpander />} /> 
+            </Route>
           </Route>
 
-          {/* Các route không cần ToolLayout */}
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/verify" element={<VerifyEmail />} />
-          <Route path="/admin" element={
-          // <AdminGuard>
-            <AdminLayout />
-          // </AdminGuard>
-        } />
-          {/* Route không tìm thấy */}
+          <Route element={<ProtectedRoute requiredRole="admin" />}>
+              <Route path="/admin/*" element={<AdminLayout />} />
+          </Route>
+          <Route path="/unauthorized" element={<Unauthorized />} />
           <Route path="*" element={<div>Không tìm thấy trang!</div>} />
         </Routes>
       </BrowserRouter>
-    </SidebarProvider>
+      </SidebarProvider>
+    </AuthProvider>
   );
 }
 

@@ -1,11 +1,28 @@
 import {
+  Key,
+  Hash,
   ShieldLock,
-  ArrowsAngleContract,
+  ClockHistory,
+  Calculator,
+  Clock,
+  Percent,
   Globe,
+  Globe2,
+  Stopwatch,
+  Thermometer,
+  Speedometer,
+  TextParagraph,
+  FileEarmarkText,
+  Icon123,
+  TelephoneFill,
+  Bank,
+  CreditCard2Front,
+  Ethernet,
+  Diagram3,
+  ArrowsAngleContract,
   CameraVideo,
   Terminal,
   Wifi,
-  Calculator,
   Rulers,
   FileText,
   Database,
@@ -25,8 +42,8 @@ const categoryMap = {
   "Web": "web",
 };
 
-// Map icon tương ứng với category
-const iconMap = {
+// Map icon mặc định tương ứng với category (sử dụng khi không tìm thấy icon cụ thể cho tool)
+const categoryIconMap = {
   crypto: ShieldLock,
   converter: ArrowsAngleContract,
   web: Globe,
@@ -37,6 +54,40 @@ const iconMap = {
   measurement: Rulers,
   text: FileText,
   data: Database,
+};
+
+// Map icon cụ thể cho từng tool dựa vào ID
+const toolIconMap = {
+  // Crypto tools
+  "token": Key,
+  "hash": Hash,
+  "bcrypt": ShieldLock,
+  "ulid": ClockHistory,
+  
+  // Math tools
+  "math-evaluator": Calculator,
+  "eta-calculator": Clock,
+  "percentage-calculator": Percent,
+  
+  // Measurement tools
+  "chronometer": Stopwatch,
+  "temperature-converter": Thermometer,
+  "benchmark-builder": Speedometer,
+  
+  // Text tools
+  "lorem-ipsum-generator": TextParagraph,
+  "text-statistics": FileEarmarkText,
+  "numeronym-generator": Icon123,
+  
+  // Data tools
+  "phone-parser": TelephoneFill,
+  "iban-validator": Bank,
+  "credit-card-validator": CreditCard2Front,
+  
+  // Network tools
+  "mac-address-generator": Ethernet,
+  "ipv4-converter": Globe2,
+  "ipv4-range-expander": Diagram3
 };
 
 // Hàm fetch dữ liệu từ API và ánh xạ
@@ -52,7 +103,8 @@ const fetchToolsData = async () => {
       id: tool.id,
       name: tool.name,
       category: categoryMap[tool.category] || "unknown", // Ánh xạ category
-      icon: iconMap[categoryMap[tool.category]] || Globe, // Ánh xạ icon
+      // Ưu tiên chọn icon cụ thể cho tool, nếu không có thì dùng icon của category
+      icon: toolIconMap[tool.id] || categoryIconMap[categoryMap[tool.category]] || Globe,
       isNew: tool.isNew,
       isPremium: tool.isPremium,
       isEnabled: tool.isEnabled,
