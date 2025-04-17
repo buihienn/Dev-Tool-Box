@@ -1,19 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import { Nav, Accordion } from 'react-bootstrap';
 import { 
-  ClockHistory, 
   ChevronDown, 
   ChevronUp,
   StarFill,
-  Globe // Default icon
+  Globe
 } from 'react-bootstrap-icons';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useSidebar } from '../context/SidebarContext';
-import fetchToolsData from '../data/toolsData'; // Import function, không phải data
+import fetchToolsData from '../data/toolsData'; 
 import fetchCategories from '../data/categoriesData';
+import { useRecentTools } from '../hooks/useRecentTools';
+import ToolIcon from './ToolIcon'; 
 
 const Sidebar = () => {
+  const navigate = useNavigate();
   const { expanded } = useSidebar();
+  const { addToRecentTools } = useRecentTools();
   
   // State để lưu dữ liệu categories từ API
   const [categoriesData, setCategoriesData] = useState([]);
@@ -46,6 +49,24 @@ const Sidebar = () => {
     };
     
     loadData();
+
+    // Lắng nghe sự kiện recentToolsUpdated từ các component khác
+    const handleRecentToolsUpdate = () => {
+      // Kích hoạt re-render để cập nhật UI
+      setToolsData(prev => [...prev]);
+    };
+    
+    window.addEventListener('recentToolsUpdated', handleRecentToolsUpdate);
+    window.addEventListener('storage', event => {
+      if (event.key === 'recentTools') {
+        handleRecentToolsUpdate();
+      }
+    });
+    
+    return () => {
+      window.removeEventListener('recentToolsUpdated', handleRecentToolsUpdate);
+      window.removeEventListener('storage', handleRecentToolsUpdate);
+    };
   }, []);
   
   // Sử dụng state để lưu các accordion section đang mở
@@ -74,15 +95,15 @@ const Sidebar = () => {
     return toolsData.filter(tool => tool.category === categoryId);
   };
 
-  // Lấy danh sách công cụ sử dụng gần đây
-  const getRecentlyUsedTools = () => {
-    // Giả định 3 công cụ được sử dụng gần đây nhất
-    return toolsData.slice(0, Math.min(3, toolsData.length));
-  };
-
   // Lọc các công cụ Premium
   const premiumTools = toolsData.filter(tool => tool.isPremium);
-  const recentlyUsedTools = getRecentlyUsedTools();
+
+  // Handle tool click to add to recent tools
+  const handleToolClick = (tool) => {
+    addToRecentTools(tool);
+    navigate(`/${tool.id}`); // Navigate to tool page
+  };
+
 
   // Custom Accordion Toggle Component
   const CustomToggle = ({ eventKey, icon, title, callback }) => {
@@ -107,12 +128,12 @@ const Sidebar = () => {
 
   // Tool Link Component để hiển thị các liên kết công cụ nhất quán
   const ToolLink = ({ tool }) => (
-    <Nav.Link 
+    <div
       className="text-black d-flex align-items-center px-3 py-2"
-      as={Link}
-      to={`/${tool.id}`}
+      style={{ cursor: 'pointer' }}
+      onClick={() => handleToolClick(tool)}
     >
-      {React.createElement(tool.icon || Globe, { className: "me-2" })}
+      <ToolIcon toolId={tool.id} />
       <span 
         style={{
           whiteSpace: 'nowrap',
@@ -123,7 +144,7 @@ const Sidebar = () => {
       >
         {tool.name}
       </span>
-    </Nav.Link>
+    </div>
   );
 
   // Style cho các danh mục
@@ -184,28 +205,6 @@ const Sidebar = () => {
             activeKey={activeKeys}
             alwaysOpen
           >
-            {/* Recently Used Section*/}
-            <Accordion.Item 
-              eventKey="recent" 
-              className="border-0 text-black position-relative" 
-              style={categoryStyle}
-            >
-              <CustomToggle
-                eventKey="recent"
-                icon={<ClockHistory />}
-                title="Sử dụng gần đây"
-                callback={toggleCategory}
-              />
-              {activeKeys.includes('recent') && <div style={verticalLineStyle}></div>}
-              <Accordion.Body className="p-0 ps-4">
-                <Nav className="flex-column">
-                  {recentlyUsedTools.map((tool) => (
-                    <ToolLink key={tool.id} tool={tool} />
-                  ))}
-                </Nav>
-              </Accordion.Body>
-            </Accordion.Item>
-
             {/* Premium Tools Section */}
             <Accordion.Item 
               eventKey="premium" 

@@ -25,6 +25,7 @@ public class ToolController {
             .map(tool -> new ToolResponse(
                 tool.getId(),
                 tool.getName(),
+                tool.getDescription(),
                 tool.getCategory().getName(),
                 tool.getIsNew(),
                 tool.getIsPremium(),

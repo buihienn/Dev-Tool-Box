@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Container, Badge, Spinner } from 'react-bootstrap';
 import { Tools, ClockHistory } from 'react-bootstrap-icons';
 import ToolCard from '../components/ToolCard';
-import fetchToolsData from '../data/toolsData'; // Đổi tên import để rõ ràng hơn
+import fetchToolsData from '../data/toolsData';
 import fetchCategories from '../data/categoriesData';
 import '../styles/GridLayout.css';
+import { useRecentTools } from '../hooks/useRecentTools';
 
 const UserDashboard = () => {
   // State cho categories và công cụ
@@ -43,9 +44,7 @@ const UserDashboard = () => {
   // Lọc công cụ sau khi đã tải xong dữ liệu
   const newTools = toolsData.filter(tool => tool.isNew);
   
-  // Lấy 3 công cụ đầu tiên làm công cụ gần đây
-  // Trong thực tế, bạn có thể lưu trữ danh sách công cụ gần đây trong localStorage
-  const recentTools = toolsData.slice(0, 3);
+  const { recentTools } = useRecentTools();
   
   // Hiển thị spinner khi đang tải
   if (isLoading) {

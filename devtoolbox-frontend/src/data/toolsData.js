@@ -102,6 +102,7 @@ const fetchToolsData = async () => {
     return toolsFromAPI.map((tool) => ({
       id: tool.id,
       name: tool.name,
+      description: tool.description,
       category: categoryMap[tool.category] || "unknown", // Ánh xạ category
       // Ưu tiên chọn icon cụ thể cho tool, nếu không có thì dùng icon của category
       icon: toolIconMap[tool.id] || categoryIconMap[categoryMap[tool.category]] || Globe,

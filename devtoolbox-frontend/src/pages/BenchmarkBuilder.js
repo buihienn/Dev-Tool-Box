@@ -326,11 +326,7 @@ const BenchmarkBuilder = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-      <ToolHeader 
-        toolId="benchmark-builder"
-        defaultName="Benchmark Builder" 
-        defaultDescription="Dễ dàng so sánh thời gian thực thi của các nhiệm vụ với trình tạo bảng đánh giá trực tuyến đơn giản này."
-      />
+      <ToolHeader toolId="benchmark"/>
 
       <div style={{ maxWidth: '1000px', width: '100%' }}>
         {error && (

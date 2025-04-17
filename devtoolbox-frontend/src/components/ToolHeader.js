@@ -17,8 +17,8 @@ const ToolHeader = ({ toolId, defaultName = '', defaultDescription = '' }) => {
           const tool = tools.find(t => t.id === toolId);
           if (tool) {
             setToolInfo({
-              name: tool.name || defaultName,
-              description: tool.description || defaultDescription
+              name: tool.name,
+              description: tool.description
             });
           }
         } catch (error) {
