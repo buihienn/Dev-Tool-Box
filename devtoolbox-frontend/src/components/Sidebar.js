@@ -12,6 +12,7 @@ import fetchToolsData from '../data/toolsData';
 import fetchCategories from '../data/categoriesData';
 import { useRecentTools } from '../hooks/useRecentTools';
 import ToolIcon from './ToolIcon'; 
+import '../styles/ToolLink.css'; 
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -95,15 +96,11 @@ const Sidebar = () => {
     return toolsData.filter(tool => tool.category === categoryId);
   };
 
-  // Lọc các công cụ Premium
-  const premiumTools = toolsData.filter(tool => tool.isPremium);
-
   // Handle tool click to add to recent tools
   const handleToolClick = (tool) => {
     addToRecentTools(tool);
     navigate(`/${tool.id}`); // Navigate to tool page
   };
-
 
   // Custom Accordion Toggle Component
   const CustomToggle = ({ eventKey, icon, title, callback }) => {
@@ -126,27 +123,6 @@ const Sidebar = () => {
     );
   };
 
-  // Tool Link Component để hiển thị các liên kết công cụ nhất quán
-  const ToolLink = ({ tool }) => (
-    <div
-      className="text-black d-flex align-items-center px-3 py-2"
-      style={{ cursor: 'pointer' }}
-      onClick={() => handleToolClick(tool)}
-    >
-      <ToolIcon toolId={tool.id} />
-      <span 
-        style={{
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
-          maxWidth: '160px'
-        }}
-      >
-        {tool.name}
-      </span>
-    </div>
-  );
-
   // Style cho các danh mục
   const categoryStyle = {
     background: '#FCF9F1',
@@ -163,6 +139,27 @@ const Sidebar = () => {
     backgroundColor: '#000000', 
     zIndex: 5 
   };
+
+  // Tool item
+  const ToolLink = ({ tool }) => (
+    <div
+      className={`d-flex align-items-center px-3 py-2 tool-link ${tool.isPremium ? 'premium-tool' : ''}`}
+      onClick={() => handleToolClick(tool)}
+    >
+      <div className="d-flex align-items-center position-relative">
+        <div className={tool.isPremium ? 'premium-icon-wrapper' : ''}>
+          <ToolIcon toolId={tool.id} className="me-2" />
+          {tool.isPremium && <span className="premium-star"><StarFill /></span>}
+        </div>
+      </div>
+      <span 
+        className={`ms-2 tool-name ${tool.isPremium ? 'premium-name' : 'regular-name'}`}
+      >
+        {tool.name}
+        {tool.isPremium && <span className="ms-2 badge premium-badge">PRO</span>}
+      </span>
+    </div>
+  );
 
   return (
     <div 
@@ -205,30 +202,7 @@ const Sidebar = () => {
             activeKey={activeKeys}
             alwaysOpen
           >
-            {/* Premium Tools Section */}
-            <Accordion.Item 
-              eventKey="premium" 
-              className="border-0 text-black position-relative" 
-              style={categoryStyle}
-            >
-              <CustomToggle
-                eventKey="premium"
-                icon={<StarFill />}
-                title="Công cụ Premium"
-                callback={toggleCategory}
-              />
-              {activeKeys.includes('premium') && <div style={verticalLineStyle}></div>}
-              <Accordion.Body className="p-0 ps-4">
-                <Nav className="flex-column">
-                  {premiumTools.map((tool) => (
-                    <ToolLink key={tool.id} tool={tool} />
-                  ))}
-                </Nav>
-              </Accordion.Body>
-            </Accordion.Item>
-
-            {/* Tool Categories from categoriesData */}
-            {categoriesData.map((category) => (
+              {categoriesData.map((category) => (
               <Accordion.Item 
                 eventKey={category.id} 
                 key={category.id} 

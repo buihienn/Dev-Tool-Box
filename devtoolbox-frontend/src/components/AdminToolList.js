@@ -39,22 +39,70 @@ const AdminToolList = () => {
   const handleTogglePremium = async (id) => {
     try {
       const toolToUpdate = tools.find(tool => tool.id === id);
+      const newPremiumStatus = !toolToUpdate.premium;
       
-      // await fetch(`http://localhost:8080/api/admin/tools/${id}/premium`, {
-      //   method: 'PUT',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'Authorization': `Bearer ${localStorage.getItem('token')}`
-      //   },
-      //   body: JSON.stringify({ premium: !toolToUpdate.premium })
-      // });
-
-      // Cập nhật state
+      console.log(`Attempting to toggle premium for tool ${id} (${toolToUpdate.name}): 
+        Current status: ${toolToUpdate.premium}, 
+        New status: ${newPremiumStatus}`);
+      
+      // Hiển thị trạng thái đang xử lý
       setTools(tools.map(tool => 
-        tool.id === id ? { ...tool, premium: !tool.premium } : tool
+        tool.id === id ? { ...tool, isPremiumProcessing: true } : tool
       ));
+      
+      // Gọi API để cập nhật trạng thái premium
+      const response = await fetch(`http://localhost:8080/api/admin/toggle-premium`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: JSON.stringify({ 
+          toolId: id,
+          isPremium: newPremiumStatus
+        })
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Server error:', errorData);
+        throw new Error(errorData.message || 'Không thể cập nhật trạng thái premium của công cụ');
+      }
+
+      // Đọc kết quả từ response
+      const result = await response.json();
+      console.log('Server response:', result);
+      
+      // Cập nhật state với kết quả từ server
+      setTools(tools.map(tool => 
+        tool.id === id ? { 
+          ...tool, 
+          premium: result.isPremium, 
+          isPremiumProcessing: false 
+        } : tool
+      ));
+      
+      // Hiển thị thông báo thành công
+      setSuccessMessage(`Đã chuyển công cụ "${toolToUpdate.name}" sang ${result.isPremium ? 'Premium' : 'Thường'}`);
+      
+      // Tự động ẩn thông báo sau 3 giây
+      setTimeout(() => {
+        setSuccessMessage(null);
+      }, 3000);
+      
     } catch (err) {
-      setError('Có lỗi xảy ra khi cập nhật trạng thái công cụ');
+      console.error('Error updating tool premium status:', err);
+      setError(`Có lỗi xảy ra khi cập nhật trạng thái premium của công cụ: ${err.message}`);
+      
+      // Khôi phục state về trạng thái ban đầu nếu có lỗi
+      setTools(tools.map(tool => 
+        tool.id === id ? { ...tool, isPremiumProcessing: false } : tool
+      ));
+      
+      // Tự động ẩn thông báo lỗi sau 5 giây
+      setTimeout(() => {
+        setError(null);
+      }, 5000);
     }
   };
 
@@ -81,7 +129,7 @@ const AdminToolList = () => {
         },
         body: JSON.stringify({ 
           toolId: id,
-          enabled: newEnabledStatus // Chú ý: sửa isEnabled thành enabled để khớp với backend
+          enabled: newEnabledStatus
         })
       });
 
@@ -99,7 +147,7 @@ const AdminToolList = () => {
       setTools(tools.map(tool => 
         tool.id === id ? { 
           ...tool, 
-          enabled: result.enabled, // Sửa từ result.isEnabled thành result.enabled
+          enabled: result.enabled,
           isProcessing: false 
         } : tool
       ));
@@ -195,9 +243,19 @@ const AdminToolList = () => {
                   <Form.Check
                     type="switch"
                     id={`premium-switch-${tool.id}`}
-                    label={tool.premium ? "Premium" : "Thường"}
+                    label={
+                      tool.isPremiumProcessing ? (
+                        <span>
+                          <Spinner animation="border" size="sm" className="me-1" />
+                          Đang xử lý...
+                        </span>
+                      ) : (
+                        tool.premium ? "Premium" : "Thường"
+                      )
+                    }
                     checked={tool.premium}
                     onChange={() => handleTogglePremium(tool.id)}
+                    disabled={tool.isPremiumProcessing}
                   />
                 </td>
                 <td>
@@ -216,7 +274,7 @@ const AdminToolList = () => {
                     }
                     checked={tool.enabled}
                     onChange={() => handleToggleEnabled(tool.id)}
-                    disabled={tool.isProcessing} // Vô hiệu hóa khi đang xử lý
+                    disabled={tool.isProcessing}
                   />
                 </td>
                 <td>

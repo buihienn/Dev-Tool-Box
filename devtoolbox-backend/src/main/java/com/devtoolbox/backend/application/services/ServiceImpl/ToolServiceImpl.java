@@ -39,20 +39,6 @@ public class ToolServiceImpl  implements ToolService{
         toolRepository.deleteById(id);
     }
 
-    // Enable/Disable công cụ
-    public Tool enableTool(String id, boolean enabled) {
-        Tool tool = getToolById(id);
-        tool.setEnabled(enabled);
-        return toolRepository.save(tool);
-    }
-
-    // Nâng/Hạ cấp công cụ (Premium)
-    public Tool upgradeTool(String id, boolean isPremium) {
-        Tool tool = getToolById(id);
-        tool.setIsPremium(isPremium);
-        return toolRepository.save(tool);
-    }
-
     public boolean isToolEnabled(String id) {
         Tool tool = toolRepository.findById(id).orElse(null);
         return tool != null && tool.getEnabled();
@@ -81,6 +67,22 @@ public class ToolServiceImpl  implements ToolService{
         tool.setUpdatedAt(LocalDateTime.now()); // Cập nhật thời gian chỉnh sửa
         
         System.out.println("Updated enabled status: " + tool.getEnabled());
+        
+        return toolRepository.save(tool);
+    }
+
+    public Tool toggleToolPremium(String toolId, Boolean isPremium) {
+        System.out.println("Tool ID: " + toolId + ", New premium status: " + isPremium);
+        
+        Tool tool = toolRepository.findById(toolId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy công cụ với ID: " + toolId));
+        
+        System.out.println("Current premium status: " + tool.getIsPremium());
+        
+        tool.setIsPremium(isPremium);
+        tool.setUpdatedAt(LocalDateTime.now()); // Cập nhật thời gian chỉnh sửa
+        
+        System.out.println("Updated premium status: " + tool.getIsPremium());
         
         return toolRepository.save(tool);
     }

@@ -18,12 +18,6 @@ public interface ToolService {
     // Loại bỏ công cụ
     void deleteTool(String id);
 
-    // Enable/Disable công cụ
-    Tool enableTool(String id, boolean enabled);
-
-    // Nâng/Hạ cấp công cụ (Premium/Regular)
-    Tool upgradeTool(String id, boolean isPremium);
-    
     boolean isToolEnabled(String id);
 
     Tool getToolByName(String toolName);
@@ -34,4 +28,7 @@ public interface ToolService {
     
     // Enable/disable công cụ
     Tool toggleToolStatus(String toolId, Boolean enabled);
+
+    // Nâng/Hạ cấp công cụ
+    Tool toggleToolPremium(String toolId, Boolean isPremium);
 }

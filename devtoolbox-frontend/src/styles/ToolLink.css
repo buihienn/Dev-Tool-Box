@@ -1,0 +1,57 @@
+.tool-link {
+    cursor: pointer;
+    border-radius: 4px;
+    margin: 2px 4px;
+    transition: all 0.2s ease;
+    position: relative;
+  }
+  
+  .tool-link:hover {
+    background: rgba(0, 0, 0, 0.05);
+    transform: translateX(2px);
+  }
+  
+  /* Premium tool styles */
+  .premium-tool {
+  }
+  
+  .premium-tool:hover {
+    background: rgba(255, 215, 0, 0.2) !important;
+  }
+  
+  .premium-icon-wrapper {
+    position: relative;
+  }
+  
+  .premium-star {
+    position: absolute;
+    top: -5px;
+    right: -3px;
+    font-size: 10px;
+    color: #FFD700;
+  }
+  
+  .tool-name {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    position: relative;
+  }
+  
+  .premium-name {
+    max-width: 130px;
+  }
+  
+  .regular-name {
+    max-width: 160px;
+  }
+  
+  .premium-badge {
+    font-size: 0.65em;
+    padding: 2px 5px;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    color: #000;
+    vertical-align: middle;
+    background: linear-gradient(45deg, #FFD700, #FFA500);
+  }

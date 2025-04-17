@@ -41,10 +41,10 @@ const ToolCard = ({ tool }) => {
             <ToolIcon toolId={tool.id} size={24} className="flex-shrink-0"/>
             <div className="ms-auto flex-shrink-0">
               {tool.isNew && (
-                <Badge bg="warning" text="dark" className="me-1">Mới</Badge>
+                <Badge bg="info" text="dark" className="me-1">Mới</Badge>
               )}
               {tool.isPremium && (
-                <Badge bg="danger">Premium</Badge>
+                <Badge bg="warning" text="dark">Premium</Badge>
               )}
             </div>
           </div>
