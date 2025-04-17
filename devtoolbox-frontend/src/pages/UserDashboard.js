@@ -25,7 +25,9 @@ const UserDashboard = () => {
         ]);
         
         setCategoriesData(categoriesResult || []);
-        setToolsData(toolsResult || []);
+
+        const enabledTools = toolsResult.filter(tool => tool.isEnabled === true);
+        setToolsData(enabledTools || []);
       } catch (error) {
         console.error("Error loading data:", error);
         setCategoriesData([]);

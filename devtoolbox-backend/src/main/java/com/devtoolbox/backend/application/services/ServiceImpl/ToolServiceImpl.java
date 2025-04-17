@@ -5,7 +5,9 @@ import com.devtoolbox.backend.data.entities.Tool;
 import com.devtoolbox.backend.data.repositories.ToolRepository;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ToolServiceImpl  implements ToolService{
@@ -57,5 +59,29 @@ public class ToolServiceImpl  implements ToolService{
     }
     public Tool getToolByName(String toolName) {
         return toolRepository.findByName(toolName);
+    }
+
+    public List<Tool> findAllTools() {
+        return toolRepository.findAll();
+    }
+
+    public Optional<Tool> findToolById(String id) {
+        return toolRepository.findById(id);
+    }
+
+    public Tool toggleToolStatus(String toolId, Boolean enabled) {
+        System.out.println("Tool ID: " + toolId + ", New enabled status: " + enabled);
+        
+        Tool tool = toolRepository.findById(toolId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy công cụ với ID: " + toolId));
+        
+        System.out.println("Current enabled status: " + tool.getEnabled());
+        
+        tool.setEnabled(enabled);
+        tool.setUpdatedAt(LocalDateTime.now()); // Cập nhật thời gian chỉnh sửa
+        
+        System.out.println("Updated enabled status: " + tool.getEnabled());
+        
+        return toolRepository.save(tool);
     }
 }

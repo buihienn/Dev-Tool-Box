@@ -1,8 +1,8 @@
 package com.devtoolbox.backend.application.services;
 
 import com.devtoolbox.backend.data.entities.Tool;
-
 import java.util.List;
+import java.util.Optional;
 
 public interface ToolService {
 
@@ -27,4 +27,11 @@ public interface ToolService {
     boolean isToolEnabled(String id);
 
     Tool getToolByName(String toolName);
+
+    List<Tool> findAllTools();
+    
+    Optional<Tool> findToolById(String id);
+    
+    // Enable/disable công cụ
+    Tool toggleToolStatus(String toolId, Boolean enabled);
 }

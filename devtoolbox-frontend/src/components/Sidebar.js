@@ -33,7 +33,9 @@ const Sidebar = () => {
         
         // Tải dữ liệu công cụ
         const toolsResult = await fetchToolsData();
-        setToolsData(toolsResult || []);
+
+        const enabledTools = toolsResult.filter(tool => tool.isEnabled === true);
+        setToolsData(enabledTools || []);
       } catch (error) {
         console.error("Error loading data:", error);
         setCategoriesData([]);
