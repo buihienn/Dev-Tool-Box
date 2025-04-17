@@ -107,8 +107,6 @@ export const AuthProvider = ({ children }) => {
 
   // Hàm kiểm tra quyền truy cập
   const hasPermission = (requiredRole) => {
-    console.log("Current userRole:", userRole); // Debug
-    console.log("Required role:", requiredRole); // Debug
     
     // Chuyển cả hai giá trị về lowercase để so sánh không phân biệt hoa thường
     const normalizedUserRole = userRole?.toLowerCase();
