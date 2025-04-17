@@ -3,14 +3,16 @@ package com.devtoolbox.backend.application.dto;
 public class ToolResponse {
     private String id;
     private String name;
+    private String description;
     private String category;
     private Boolean isNew;
     private Boolean isPremium;
     private Boolean isEnabled;
 
-    public ToolResponse(String id, String name, String category, Boolean isNew, Boolean isPremium, Boolean isEnabled) {
+    public ToolResponse(String id, String name, String description, String category, Boolean isNew, Boolean isPremium, Boolean isEnabled) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.category = category;
         this.isNew = isNew;
         this.isPremium = isPremium;
@@ -64,5 +66,13 @@ public class ToolResponse {
 
     public void setIsEnabled(Boolean isEnabled) {
         this.isEnabled = isEnabled;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

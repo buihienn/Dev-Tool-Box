@@ -13,6 +13,9 @@ public class Tool {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column(nullable = true, length = 10000)
+    private String description;
+
     @Column(nullable = false)
     private Boolean enabled = true;
 
@@ -36,9 +39,10 @@ public class Tool {
     public Tool() {
     }
 
-    public Tool(String id, String name, Boolean enabled, Boolean isPremium, Boolean isNew, Category category) {
+    public Tool(String id, String name, String description,Boolean enabled, Boolean isPremium, Boolean isNew, Category category) {
         this.id = id;
         this.name = name;
+        this.description = description;
         this.enabled = enabled;
         this.isPremium = isPremium;
         this.isNew = isNew;
@@ -107,5 +111,13 @@ public class Tool {
 
     public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

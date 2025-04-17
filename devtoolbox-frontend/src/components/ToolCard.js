@@ -1,13 +1,23 @@
 import React from 'react';
 import { Card, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useRecentTools } from '../hooks/useRecentTools';
+import ToolIcon from './ToolIcon'; 
 
 const ToolCard = ({ tool }) => {
+  const { addToRecentTools } = useRecentTools();
+
+  // Handle click on tool card
+  const handleToolClick = () => {
+    addToRecentTools(tool);
+  };
+
   return (
     <Link 
       to={`/${tool.id}`} 
       className="text-decoration-none" 
       style={{ display: 'block' }}
+      onClick={handleToolClick}
     >
       <Card 
         className="h-100 shadow-sm" 
@@ -28,13 +38,13 @@ const ToolCard = ({ tool }) => {
       >
         <Card.Body className="d-flex flex-column" style={{ padding: '1.25rem' }}>
           <div className="d-flex align-items-center">
-            {React.createElement(tool.icon, { size: 24, className: "me-2 flex-shrink-0" })}
+            <ToolIcon toolId={tool.id} size={24} className="flex-shrink-0"/>
             <div className="ms-auto flex-shrink-0">
               {tool.isNew && (
-                <Badge bg="warning" text="dark" className="me-1">Mới</Badge>
+                <Badge bg="info" text="dark" className="me-1">Mới</Badge>
               )}
               {tool.isPremium && (
-                <Badge bg="danger">Premium</Badge>
+                <Badge bg="warning" text="dark">Premium</Badge>
               )}
             </div>
           </div>

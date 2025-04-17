@@ -2,15 +2,36 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Modal, Form, InputGroup, ListGroup } from 'react-bootstrap';
 import { Search, X, ArrowRight } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
-import toolsData from '../data/toolsData';
+import fetchToolsData from '../data/toolsData';
 import '../styles/SearchModal.css'; 
+import { useRecentTools } from '../hooks/useRecentTools';
+import ToolIcon from './ToolIcon';
 
 const SearchModal = ({ show, onHide }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [searchResults, setSearchResults] = useState([]);
+  const [tools, setTools] = useState([]); // Thêm state để lưu trữ tools
   const navigate = useNavigate();
   const inputRef = useRef(null);
   const [selectedIndex, setSelectedIndex] = useState(0);
+  const { addToRecentTools } = useRecentTools();
+  
+  // Fetch dữ liệu tools khi component mount
+  useEffect(() => {
+    const loadTools = async () => {
+      try {
+        const data = await fetchToolsData();
+        // Lọc các tool đã enabled
+        const enabledTools = data.filter(tool => tool.isEnabled === true);
+        setTools(enabledTools || []);
+      } catch (error) {
+        console.error("Lỗi khi tải dữ liệu tools:", error);
+        setTools([]);
+      }
+    };
+    
+    loadTools();
+  }, []);
 
   // Focus vào input khi modal mở
   useEffect(() => {
@@ -32,26 +53,29 @@ const SearchModal = ({ show, onHide }) => {
 
   // Thực hiện tìm kiếm khi searchTerm thay đổi
   useEffect(() => {
-    if (!searchTerm.trim()) {
+    if (!searchTerm.trim() || !tools.length) {
       setSearchResults([]);
       return;
     }
 
     const normalizedSearchTerm = searchTerm.toLowerCase();
     
-    const results = toolsData
-      .filter(tool => tool.isEnabled)
-      .filter(tool => 
-        tool.name.toLowerCase().includes(normalizedSearchTerm) ||
-        tool.description.toLowerCase().includes(normalizedSearchTerm)
-      )
+    const results = tools
+      .filter(tool => {
+        // Kiểm tra an toàn trước khi gọi toLowerCase
+        const toolName = tool.name ? tool.name.toLowerCase() : '';
+        const toolDescription = tool.description ? tool.description.toLowerCase() : '';
+        
+        return toolName.includes(normalizedSearchTerm) || 
+               toolDescription.includes(normalizedSearchTerm);
+      })
       .slice(0, 8); // Giới hạn kết quả tìm kiếm
     
     setSearchResults(results);
     setSelectedIndex(0); // Reset selected index khi kết quả tìm kiếm thay đổi
-  }, [searchTerm]);
+  }, [searchTerm, tools]);
 
-  // Xử lý navigation bằng phím mũi tên
+  // Xử lý navigation bằng phím mũi tên 
   const handleKeyDown = (e) => {
     // Đóng modal khi nhấn Escape
     if (e.key === 'Escape') {
@@ -86,6 +110,14 @@ const SearchModal = ({ show, onHide }) => {
 
   // Điều hướng đến trang công cụ và đóng modal
   const navigateTo = (toolId) => {
+    // Tìm công cụ được chọn
+    const selectedTool = searchResults.find(tool => tool.id === toolId);
+    
+    // Thêm vào recent tools nếu tìm thấy
+    if (selectedTool) {
+      addToRecentTools(selectedTool);
+    }
+    
     navigate(`/${toolId}`);
     onHide();
   };
@@ -141,10 +173,7 @@ const SearchModal = ({ show, onHide }) => {
                 onClick={() => navigateTo(tool.id)}
               >
                 <div className="me-2">
-                  {React.createElement(tool.icon, { 
-                    size: 20,
-                    color: index === selectedIndex ? "white" : undefined
-                  })}
+                <ToolIcon toolId={tool.id}/>
                 </div>
                 <div className="flex-grow-1">
                   <div className="d-flex justify-content-between align-items-center">
@@ -155,7 +184,7 @@ const SearchModal = ({ show, onHide }) => {
                   </small>
                 </div>
                 <ArrowRight className="ms-2" color={index === selectedIndex ? "white" : undefined} />
-            </ListGroup.Item>
+              </ListGroup.Item>
             ))}
           </ListGroup>
         ) : searchTerm ? (

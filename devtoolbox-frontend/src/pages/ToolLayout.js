@@ -1,12 +1,18 @@
 import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Sidebar from '../components/Sidebar';
 import { useSidebar } from '../context/SidebarContext';
+import { useTools } from '../context/ToolsContext';
+import ToolDisabled from './ToolDisabled';
 
 const ToolLayout = () => {
+  const location = useLocation();
+  const path = location.pathname.slice(1); 
   const { expanded } = useSidebar();
-
+  const { isToolEnabled, isLoading } = useTools();
+  
+  // Layout luôn được render
   return (
     <div 
       style={{
@@ -38,14 +44,31 @@ const ToolLayout = () => {
         <Header />
       </div>
 
-      {/* Content */}
+      {/* Content - Điều kiện nằm trong phần nội dung */}
       <div style={{ 
         gridArea: 'content', 
         overflow: 'auto',
         padding: '1rem',
         background: '#FCF9F1'
       }}>
-        <Outlet />
+        {/* Nếu là trang chủ, hiển thị bình thường */}
+        {path === "" ? (
+          <Outlet />
+        ) : isLoading ? (
+          // Nếu đang tải dữ liệu
+          <div className="d-flex justify-content-center align-items-center" style={{minHeight: '70vh'}}>
+            <div className="spinner-border text-primary" role="status">
+              <span className="visually-hidden">Đang kiểm tra trạng thái công cụ...</span>
+            </div>
+            <span className="ms-2">Đang kiểm tra trạng thái công cụ...</span>
+          </div>
+        ) : !isToolEnabled(path) ? (
+          // Nếu tool bị disabled
+          <ToolDisabled toolId={path} />
+        ) : (
+          // Tool bình thường
+          <Outlet />
+        )}
       </div>
     </div>
   );
