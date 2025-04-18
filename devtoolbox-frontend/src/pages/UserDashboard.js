@@ -1,50 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import { Container, Badge, Spinner } from 'react-bootstrap';
+import React from 'react';
+import { Container, Badge, Spinner, Alert } from 'react-bootstrap';
 import { Tools, ClockHistory } from 'react-bootstrap-icons';
 import ToolCard from '../components/ToolCard';
-import fetchToolsData from '../data/toolsData';
-import fetchCategories from '../data/categoriesData';
+import CategoryIcon from '../components/CategoryIcon';
 import '../styles/GridLayout.css';
 import { useRecentTools } from '../hooks/useRecentTools';
+import { useTools } from '../context/ToolsContext';
 
 const UserDashboard = () => {
-  // State cho categories và công cụ
-  const [categoriesData, setCategoriesData] = useState([]);
-  const [toolsData, setToolsData] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { tools = [], categories = [], isLoading, error } = useTools();
+  const { recentTools = [] } = useRecentTools();
 
-  // Fetch cả categories và tools khi component mount
-  useEffect(() => {
-    const loadData = async () => {
-      try {
-        setIsLoading(true);
-        
-        // Tải song song cả danh mục và công cụ để tối ưu thời gian
-        const [categoriesResult, toolsResult] = await Promise.all([
-          fetchCategories(),
-          fetchToolsData()
-        ]);
-        
-        setCategoriesData(categoriesResult || []);
-
-        const enabledTools = toolsResult.filter(tool => tool.isEnabled === true);
-        setToolsData(enabledTools || []);
-      } catch (error) {
-        console.error("Error loading data:", error);
-        setCategoriesData([]);
-        setToolsData([]);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    
-    loadData();
-  }, []);
-
-  // Lọc công cụ sau khi đã tải xong dữ liệu
-  const newTools = toolsData.filter(tool => tool.isNew);
+  console.log('========== DEBUG DATA ==========');
+  console.log('Categories:', categories);
+  console.log('Tools:', tools);
+  console.log('================================');
   
-  const { recentTools } = useRecentTools();
+  // Lọc các công cụ được bật
+  const enabledTools = tools.filter(tool => tool && tool.isEnabled === true);
+  
+  // Lọc công cụ mới
+  const newTools = enabledTools.filter(tool => tool && tool.isNew);
   
   // Hiển thị spinner khi đang tải
   if (isLoading) {
@@ -58,10 +34,22 @@ const UserDashboard = () => {
     );
   }
 
+  // Hiển thị thông báo nếu có lỗi
+  if (error) {
+    return (
+      <Container fluid>
+        <Alert variant="danger">
+          <Alert.Heading>Đã xảy ra lỗi</Alert.Heading>
+          <p>{error}</p>
+        </Alert>
+      </Container>
+    );
+  }
+
   return (
     <Container fluid>      
       {/* Recently Used Tools Section */}
-      {recentTools.length > 0 && (
+      {recentTools && recentTools.length > 0 && (
         <>
           <div className="d-flex align-items-center mb-3">
             <h5 className="mb-0 d-flex align-items-center">
@@ -79,7 +67,7 @@ const UserDashboard = () => {
       )}
 
       {/* New Tools Section */}
-      {newTools.length > 0 && (
+      {newTools && newTools.length > 0 && (
         <>
           <div className="d-flex align-items-center mb-3">
             <h5 className="mb-0 d-flex align-items-center">
@@ -98,33 +86,45 @@ const UserDashboard = () => {
       )}
       
       {/* All Categories Section */}
-      {categoriesData.map(category => {
-        // Lọc công cụ theo danh mục
-        const categoryTools = toolsData.filter(tool => tool.category === category.id);
-        
-        // Chỉ hiển thị danh mục nếu có công cụ thuộc danh mục đó
-        if (categoryTools.length === 0) return null;
-        
-        return (
-          <div key={category.id} className="mb-4">
-            <div className="d-flex align-items-center mb-3">
-              <h5 className="mb-0 d-flex align-items-center">
-                {React.createElement(category.icon, { className: "me-2" })}
-                {category.name}
-              </h5>
+      {categories && categories.length > 0 ? (
+        categories.map(category => {
+          if (!category) return null;
+          
+          // Lọc công cụ theo danh mục
+          const categoryTools = enabledTools.filter(tool => 
+            tool && tool.category && (
+              (typeof tool.category === 'object' && tool.category.id === category.id) || 
+              (typeof tool.category === 'string' && tool.category === category.id)
+            )
+          );
+          
+          // Chỉ hiển thị danh mục nếu có công cụ thuộc danh mục đó
+          if (!categoryTools || categoryTools.length === 0) return null;
+          
+          return (
+            <div key={category.id} className="mb-4">
+              <div className="d-flex align-items-center mb-3">
+                <h5 className="mb-0 d-flex align-items-center">
+                  <CategoryIcon 
+                    categoryId={category.id} 
+                    className="me-2 text-primary" 
+                  />
+                  {category.name || 'Không có tên'}
+                </h5>
+              </div>
+              
+              <div className="grid grid-cols-1 gap-12px sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
+                {categoryTools.map(tool => (
+                  <ToolCard key={tool.id} tool={tool} />
+                ))}
+              </div>
             </div>
-            
-            <div className="grid grid-cols-1 gap-12px sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
-              {categoryTools.map(tool => (
-                <ToolCard key={tool.id} tool={tool} />
-              ))}
-            </div>
-          </div>
-        );
-      })}
+          );
+        })
+      ) : null}
       
-      {/* Hiển thị thông báo nếu không có dữ liệu */}
-      {toolsData.length === 0 && (
+      {/* Hiển thị thông báo nếu không có công cụ nào */}
+      {(!enabledTools || enabledTools.length === 0) && (
         <div className="text-center py-5">
           <p>Không có công cụ nào khả dụng.</p>
         </div>
