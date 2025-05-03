@@ -14,7 +14,6 @@ import {
   Github,
   InfoCircle,
   Sun,
-  Person,
   DiamondFill,
   Search,
   BoxArrowInRight,
@@ -23,13 +22,13 @@ import {
 import { useSidebar } from "../context/SidebarContext";
 import { useNavigate } from "react-router-dom";
 import SearchModal from "./SearchModal";
-import { useAuth } from "../context/AuthContext"; // Import AuthContext
+import { useAuth } from "../context/AuthContext";
 
-const Header = () => {
+const Header = ({ hideSearch = false }) => {
   const { expanded, toggleSidebar } = useSidebar();
   const navigate = useNavigate();
   const [showSearchModal, setShowSearchModal] = useState(false);
-  const { currentUser, userRole, logout, isAuthenticated } = useAuth(); // Sử dụng AuthContext
+  const { currentUser, userRole, logout, isAuthenticated, isPremium } = useAuth();
 
   const navigateToHome = () => {
     navigate("/");
@@ -69,9 +68,11 @@ const Header = () => {
         <Navbar style={{ backgroundColor: "#FCF9F1", color: "#000" }} className="px-3 py-2">
           <div className="d-flex align-items-center">
             <Nav className="ms-2">
+            {!hideSearch && (
               <Nav.Link style={{ color: "#000" }} onClick={toggleSidebar}>
                 <List />
               </Nav.Link>
+            )}
               <Nav.Link style={{ color: "#000" }} onClick={navigateToHome}>
                 <House />
               </Nav.Link>
@@ -79,58 +80,64 @@ const Header = () => {
           </div>
 
           {/* Thanh tìm kiếm có thể nhấn để mở modal */}
-          <div
-            className="mx-3 cursor-pointer"
-            style={{
-              maxWidth: expanded ? "500px" : "600px",
-              transition: "max-width 0.3s ease",
-              flexGrow: 1,
-            }}
-            onClick={() => setShowSearchModal(true)}
-          >
-            <InputGroup
+          {!hideSearch && (
+            <div
+              className="mx-3 cursor-pointer"
               style={{
-                backgroundColor: "#E0E0E0",
-                borderRadius: "5px",
-                cursor: "pointer",
+                maxWidth: expanded ? "500px" : "600px",
+                transition: "max-width 0.3s ease",
+                flexGrow: 1,
               }}
+              onClick={() => setShowSearchModal(true)}
             >
-              <InputGroup.Text
+              <InputGroup
                 style={{
                   backgroundColor: "#E0E0E0",
-                  color: "#000",
-                  border: "none",
-                }}
-              >
-                <Search />
-              </InputGroup.Text>
-              <Form.Control
-                placeholder="Tìm kiếm công cụ..."
-                aria-label="Tìm kiếm"
-                style={{
-                  backgroundColor: "#E0E0E0",
-                  color: "#000",
-                  border: "none",
+                  borderRadius: "5px",
                   cursor: "pointer",
                 }}
-                readOnly
-              />
-              <InputGroup.Text
-                style={{
-                  backgroundColor: "#E0E0E0",
-                  color: "#000",
-                  border: "none",
-                }}
               >
-                Ctrl + K
-              </InputGroup.Text>
-            </InputGroup>
-          </div>
+                <InputGroup.Text
+                  style={{
+                    backgroundColor: "#E0E0E0",
+                    color: "#000",
+                    border: "none",
+                  }}
+                >
+                  <Search />
+                </InputGroup.Text>
+                <Form.Control
+                  placeholder="Tìm kiếm công cụ..."
+                  aria-label="Tìm kiếm"
+                  style={{
+                    backgroundColor: "#E0E0E0",
+                    color: "#000",
+                    border: "none",
+                    cursor: "pointer",
+                  }}
+                  readOnly
+                />
+                <InputGroup.Text
+                  style={{
+                    backgroundColor: "#E0E0E0",
+                    color: "#000",
+                    border: "none",
+                  }}
+                >
+                  Ctrl + K
+                </InputGroup.Text>
+              </InputGroup>
+            </div>
+          )}
 
           <div className="ms-auto d-flex align-items-center">
             {/* Premium Button - Hiển thị Premium nếu đã đăng nhập */}
-            {isAuthenticated && (
-              <Button variant="warning" className="d-flex align-items-center text-dark">
+            {!isPremium && (
+              <Button
+                variant="warning"
+                className="d-flex align-items-center text-dark"
+                onClick={() => navigate("/pricing")}
+              >
                 <DiamondFill />
                 <span className="d-none d-md-inline ms-1">Premium</span>
               </Button>
@@ -200,10 +207,12 @@ const Header = () => {
       </div>
 
       {/* Search Modal Component */}
-      <SearchModal 
-        show={showSearchModal} 
-        onHide={() => setShowSearchModal(false)} 
-      />
+      {!hideSearch && (
+        <SearchModal 
+          show={showSearchModal} 
+          onHide={() => setShowSearchModal(false)} 
+        />
+      )}
     </>
   );
 };

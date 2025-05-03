@@ -15,6 +15,7 @@ import ToolRenderer from './pages/ToolRenderer';
 import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import AdminLayout from './pages/AdminLayout';
+import PricingPlan from './pages/PricingPlan';
 
 function App() {
   return (
@@ -41,6 +42,7 @@ function App() {
             </Route>
             <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="*" element={<div>Không tìm thấy trang!</div>} />
+            <Route path="/pricing" element={<PricingPlan />} />
           </Routes>
         </BrowserRouter>
         </SidebarProvider>
