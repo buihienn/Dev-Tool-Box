@@ -109,7 +109,7 @@ const IbanValidator = () => {
   
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <ToolHeader toolId="iban-validator"/>
+      <ToolHeader toolId="iban"/>
       
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4 no-hover mb-4">

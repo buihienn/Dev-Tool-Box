@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Alert, Button } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
+import ToolHeader from '../components/ToolHeader';
 
 const DockerComposeConverter = () => {
     const [dockerRunCommand, setDockerRunCommand] = useState('docker run -v /path/config.yml:/app/config.yml myapp'); // Lệnh docker run từ người dùng
@@ -42,10 +43,7 @@ const DockerComposeConverter = () => {
 
     return (
         <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-            <div className="tool-header">
-                <h3>Docker run to Docker compose converter</h3>
-                <p>Transforms "docker run" commands into docker-compose files!</p>
-            </div>
+            <ToolHeader toolId="docker-compose-converter" />
 
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
                 <Card className="bg-light text-dark p-4">

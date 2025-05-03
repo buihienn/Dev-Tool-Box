@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import "../styles/ForgotPassword.css";
+import { Card, Form, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
+import illustration from "../assets/images/illustration.png";
+import "../styles/Card.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -55,32 +58,60 @@ const ForgotPassword = () => {
   };
 
   return (
-    <div className="forgot-password-container">
-      <div className="forgot-password-card">
-        <h2>Quên mật khẩu</h2>
-        {/* Hiển thị thông báo thành công */}
-        {message && <p className="success-message">{message}</p>}
-        {/* Hiển thị thông báo lỗi */}
-        {error && <p className="error-message">{error}</p>}
-        {/* Hiển thị spinner khi đang loading */}
-        {loading && <div className="loading-spinner">Đang xử lý...</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-              placeholder="Nhập email của bạn"
+    <div className="container-fluid vh-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#FCF9F1" }}>
+      <div className="row w-100">
+        {/* Left Section */}
+        <div className="col-md-6 d-flex flex-column align-items-start justify-content-center ps-5">
+          <div className="d-flex justify-content-center w-100">
+            <img
+              src={illustration}
+              alt="People communicating"
+              className="img-fluid"
+              style={{ maxWidth: "80%" }}
             />
           </div>
-          <button type="submit" className="forgot-password-button" disabled={loading}>
-            Gửi yêu cầu
-          </button>
-        </form>
-        <div className="back-to-login">
-          <a href="/login">Quay lại trang đăng nhập</a>
+        </div>
+        {/* Right Section */}
+        <div className="col-md-6 d-flex align-items-center justify-content-center">
+          <Card className="shadow no-hover" style={{ width: "450px", borderRadius: "12px" }}>
+            <Card.Body className="p-4">
+              <h2 className="font-monospace mb-3 fw-light fs-4">Forgot Password</h2>
+              <h4 className="mb-4">
+                <span>Reset your password for</span>
+                <p className="small fw-bold fs-3" style={{ color: "#043A84" }}>Dev tool box</p>
+              </h4>
+              {message && <p className="success-message text-success">{message}</p>}
+              {error && <p className="error-message text-danger">{error}</p>}
+              {loading && <div className="loading-spinner">Đang xử lý...</div>}
+              <Form onSubmit={handleSubmit}>
+                <Form.Group className="mb-4">
+                  <Form.Label>Email</Form.Label>
+                  <Form.Control
+                    type="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    placeholder="Enter your email"
+                    className="py-2"
+                  />
+                </Form.Group>
+                <Button
+                  type="submit"
+                  variant="dark"
+                  className="w-100 py-2 mb-4"
+                  style={{ backgroundColor: "#043A84", borderRadius: "8px" }}
+                  disabled={loading}
+                >
+                  Send request
+                </Button>
+                <div className="text-center">
+                  <Link to="/login" className="text-decoration-none fw-bold" style={{ color: "#043A84" }}>
+                    Back to sign in
+                  </Link>
+                </div>
+              </Form>
+            </Card.Body>
+          </Card>
         </div>
       </div>
     </div>

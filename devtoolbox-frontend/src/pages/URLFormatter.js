@@ -3,6 +3,7 @@ import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify'; // Import Toast
 import 'react-toastify/dist/ReactToastify.css'; // Import Toast CSS
 import '../styles/ToolLayout.css'; // Import CSS
+import ToolHeader from '../components/ToolHeader';
 
 const URLFormatter = () => {
   const [inputEncode, setInputEncode] = useState('');
@@ -71,10 +72,7 @@ const URLFormatter = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>Encode/decode URL-formatted strings</h3>
-        <p>Encode text to URL-encoded format (also known as "percent-encoded"), or decode from it.</p>
-      </div>
+      <ToolHeader toolId="url-formatter"/>
 
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4">

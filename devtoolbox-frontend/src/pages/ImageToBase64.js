@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
+import ToolHeader from '../components/ToolHeader';
 
 const ImageToBase64 = () => {
   const [imageFile, setImageFile] = useState(null); // File hình ảnh được chọn
@@ -64,10 +65,7 @@ const ImageToBase64 = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>Image to Base64 + HTML</h3>
-        <p>Convert an image to Base64 and generate the corresponding HTML code.</p>
-      </div>
+      <ToolHeader toolId="image-to-base64" />
 
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4">

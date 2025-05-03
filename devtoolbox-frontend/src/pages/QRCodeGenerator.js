@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
+import ToolHeader from '../components/ToolHeader';
 
 const QRCodeGenerator = () => {
   const [text, setText] = useState('https://github.com/buihienn/Dev-Tool-Box');
@@ -51,10 +52,7 @@ const QRCodeGenerator = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>QR Code Generator</h3>
-        <p>Generate and download a QR code for a URL (or just plain text).</p>
-      </div>
+      <ToolHeader toolId="qr-code" />
 
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4">

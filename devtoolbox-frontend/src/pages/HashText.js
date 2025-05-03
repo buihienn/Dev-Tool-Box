@@ -59,7 +59,7 @@ const HashText = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <ToolHeader toolId="hash-text"/>
+      <ToolHeader toolId="hash"/>
 
       <div style={{ maxWidth: '800px', margin: '0 auto', backgroundColor: '#ffffff', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         {/* Nhập chuỗi văn bản */}

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; // Import CSS
+import ToolHeader from '../components/ToolHeader';
 
 const URLParser = () => {
   const [url, setUrl] = useState('');
@@ -56,10 +57,7 @@ const URLParser = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>URL Parser</h3>
-        <p>Parse a URL into its separate constituent parts (protocol, origin, params, port, username-password, ...).</p>
-      </div>
+      <ToolHeader toolId="url-parser" />
 
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4">

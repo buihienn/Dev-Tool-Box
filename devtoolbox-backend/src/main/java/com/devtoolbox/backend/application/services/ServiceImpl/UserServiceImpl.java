@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.devtoolbox.backend.application.services.UserService;
 import com.devtoolbox.backend.data.repositories.UserRepository;
+import com.devtoolbox.backend.data.entities.User;
 
 
 
@@ -28,6 +29,12 @@ public class UserServiceImpl implements UserService {
             }
         };
     }
-    
+
+    @Override
+    public void upgradePremium(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+        user.setPremium(true);
+        userRepository.save(user);
+    }
 }
  

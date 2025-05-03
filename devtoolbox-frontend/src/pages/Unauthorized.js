@@ -6,7 +6,7 @@ const Unauthorized = () => {
   const { isAuthenticated, logout } = useAuth();
 
   return (
-    <div className="container text-center py-5">
+    <div className="container-fluid vh-100" style={{ backgroundColor: "#FCF9F1" }}>
       <h1 className="text-danger mb-4">Không có quyền truy cập</h1>
       <p className="mb-4">Bạn không có quyền truy cập vào trang này.</p>
       <div>

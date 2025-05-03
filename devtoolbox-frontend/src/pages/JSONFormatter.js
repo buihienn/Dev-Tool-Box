@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Alert } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
+import ToolHeader from '../components/ToolHeader';
 
 const JSONFormatter = () => {
   const [rawJson, setRawJson] = useState('{"group": "11", "Hien": "Vinh"}'); 
@@ -39,10 +40,7 @@ const JSONFormatter = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>JSON Prettify and Format</h3>
-        <p>Prettify your JSON string into a friendly, human-readable format.</p>
-      </div>
+      <ToolHeader toolId="json-formatter" />
 
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4">

@@ -66,7 +66,7 @@ const NumeronymGenerator = () => {
   
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <ToolHeader toolId="numeronym-generator"/>
+      <ToolHeader toolId="numeronym"/>
       
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4 no-hover">

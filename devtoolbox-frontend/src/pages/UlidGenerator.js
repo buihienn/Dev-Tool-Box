@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Button, InputGroup, Form, ToggleButtonGroup, ToggleButton } from 'react-bootstrap';
-import '../styles/ToolLayout.css'; // Import CSS
+import '../styles/ToolLayout.css';
+import ToolHeader from '../components/ToolHeader';
 
 const UlidGenerator = () => {
   const [generatedUlid, setGeneratedUlid] = useState('');
@@ -34,12 +35,7 @@ const UlidGenerator = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>ULID Generator</h3>
-        <p>
-          Generate random Universally Unique Lexicographically Sortable Identifier (ULID).
-        </p>
-      </div>
+      <ToolHeader toolId="ulid" />
 
       <div style={{ maxWidth: '600px', margin: '0 auto', backgroundColor: '#ffffff', padding: '1.5rem', borderRadius: '8px', boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)' }}>
         {/* Quantity */}

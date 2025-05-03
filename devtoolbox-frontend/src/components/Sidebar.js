@@ -4,7 +4,6 @@ import {
   ChevronDown, 
   ChevronUp,
   StarFill,
-  Globe
 } from 'react-bootstrap-icons';
 import { useNavigate } from 'react-router-dom';
 import { useSidebar } from '../context/SidebarContext';
@@ -12,6 +11,7 @@ import fetchToolsData from '../data/toolsData';
 import fetchCategories from '../data/categoriesData';
 import { useRecentTools } from '../hooks/useRecentTools';
 import ToolIcon from './ToolIcon'; 
+import CategoryIcon from './CategoryIcon';
 import '../styles/ToolLink.css'; 
 
 const Sidebar = () => {
@@ -105,7 +105,6 @@ const Sidebar = () => {
   // Custom Accordion Toggle Component
   const CustomToggle = ({ eventKey, icon, title, callback }) => {
     const isActive = activeKeys.includes(eventKey);
-    
     return (
       <div
         className="d-flex align-items-center mb-2 px-3 py-2"
@@ -113,7 +112,7 @@ const Sidebar = () => {
         onClick={() => callback(eventKey)}
       >
         <span className="fw-bold d-flex align-items-center">
-          {React.isValidElement(icon) ? icon : React.createElement(Globe)}
+          <CategoryIcon categoryId={eventKey} />
           <span className="ms-2">{title}</span>
         </span>
         <span className="ms-auto">
@@ -211,7 +210,6 @@ const Sidebar = () => {
               >
                 <CustomToggle
                   eventKey={category.id}
-                  icon={React.createElement(category.icon || Globe)}
                   title={category.name}
                   callback={toggleCategory}
                 />

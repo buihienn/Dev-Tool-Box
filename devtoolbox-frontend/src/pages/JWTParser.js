@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Table } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
+import ToolHeader from '../components/ToolHeader';
 
 const JWTParser = () => {
   const [jwt, setJwt] = useState('');
@@ -46,10 +47,7 @@ React.useEffect(() => {
 
 return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-        <div className="tool-header">
-            <h3>JWT Parser</h3>
-            <p>Parse and decode your JSON Web Token (JWT) and display its content.</p>
-        </div>
+        <ToolHeader toolId="jwt-parser"/>
 
         <div style={{ maxWidth: '800px', margin: '0 auto' }}>
             <Card className="bg-light text-dark p-4">
