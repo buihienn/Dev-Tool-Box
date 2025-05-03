@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Alert, Button } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
+import ToolHeader from '../components/ToolHeader';
 
 const JSONToCSV = () => {
     const [rawJson, setRawJson] = useState(''); // JSON thô từ người dùng
@@ -38,10 +39,7 @@ const JSONToCSV = () => {
 
     return (
         <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-            <div className="tool-header">
-                <h3>JSON to CSV</h3>
-                <p>Convert JSON to CSV with automatic header detection.</p>
-            </div>
+            <ToolHeader toolId="json-to-csv" />
 
             <div style={{ maxWidth: '800px', margin: '0 auto' }}>
                 <Card className="bg-light text-dark p-4">

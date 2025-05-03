@@ -84,12 +84,6 @@ const ToolRenderer = ({ toolId: propToolId }) => {
       </Container>
     }>
       <Container className="py-4">
-        {toolInfo && (
-          <div className="mb-4">
-            <h2>{toolInfo.name}</h2>
-            {toolInfo.description && <p className="text-muted">{toolInfo.description}</p>}
-          </div>
-        )}
         <ToolComponent />
       </Container>
     </Suspense>

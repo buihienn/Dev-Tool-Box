@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
-import '../styles/ToolLayout.css'; // Import CSS
+import '../styles/ToolLayout.css'; 
+import ToolHeader from '../components/ToolHeader';
 
 const TextToNatoAlphabet = () => {
   const [inputText, setInputText] = useState('');
@@ -50,10 +51,7 @@ const TextToNatoAlphabet = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>Text to NATO alphabet</h3>
-        <p>Transform text into the NATO phonetic alphabet for oral transmission.</p>
-      </div>
+      <ToolHeader toolId="text-to-nato-alphabet" />
 
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4">

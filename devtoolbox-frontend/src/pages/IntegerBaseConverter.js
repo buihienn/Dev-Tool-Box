@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; // Import CSS
+import ToolHeader from '../components/ToolHeader';
 
 const IntegerBaseConverter = () => {
   const [inputNumber, setInputNumber] = useState('');
@@ -43,10 +44,7 @@ const IntegerBaseConverter = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>Integer Base Converter</h3>
-        <p>Convert a number between different bases (decimal, hexadecimal, binary, octal, base64, ...).</p>
-      </div>
+      <ToolHeader toolId="base-converter" />
 
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4">

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; // Import CSS
+import ToolHeader from '../components/ToolHeader';
 
 const XMLToJSON = () => {
   const [xmlInput, setXmlInput] = useState('"<a x=\'1.234\' y=\'It&#39;s\'/>"');
@@ -38,10 +39,7 @@ const XMLToJSON = () => {
 
   return (
     <div style={{ backgroundColor: '#FCF9F1', padding: '2rem' }}>
-      <div className="tool-header">
-        <h3>XML to JSON</h3>
-        <p>Convert XML to JSON</p>
-      </div>
+      <ToolHeader toolId="xml-to-json" />
 
       <div style={{ maxWidth: '800px', margin: '0 auto' }}>
         <Card className="bg-light text-dark p-4">
