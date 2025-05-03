@@ -36,7 +36,8 @@ export const AuthProvider = ({ children }) => {
 
         setCurrentUser({
           email: decodedToken.sub,
-          role: decodedToken.role
+          role: decodedToken.role,
+          is_premium: decodedToken.is_premium
         });
         setUserRole(decodedToken.role || 'user');
       } catch (error) {
@@ -67,19 +68,21 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         localStorage.setItem("token", data.token);
         const decodedToken = jwtDecode(data.token);
-        
         const userRoleFromToken = decodedToken.role || 'user';
+        const isPremium = decodedToken.is_premium || data.is_premium || false;
         
         setCurrentUser({
           email: decodedToken.sub,
-          role: userRoleFromToken
+          role: userRoleFromToken,
+          is_premium: isPremium
         });
         setUserRole(userRoleFromToken);
         
         return { 
           success: true, 
           message: 'Đăng nhập thành công',
-          role: userRoleFromToken
+          role: userRoleFromToken,
+          is_premium: isPremium
         };
       } else {
         return { 
@@ -134,7 +137,8 @@ export const AuthProvider = ({ children }) => {
     login,
     logout,
     hasPermission,
-    isAuthenticated: !!currentUser
+    isAuthenticated: !!currentUser,
+    isPremium: !!currentUser?.is_premium,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

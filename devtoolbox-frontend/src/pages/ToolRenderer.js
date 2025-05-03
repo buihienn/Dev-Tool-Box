@@ -1,20 +1,20 @@
 import React, { useEffect, useState, Suspense } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { loadToolComponent } from '../utils/ToolsLoader';
 import { Spinner, Alert, Container } from 'react-bootstrap';
 import { useTools } from '../context/ToolsContext';
+import { useAuth } from '../context/AuthContext';
 
 const ToolRenderer = ({ toolId: propToolId }) => {
   const { toolId: paramToolId } = useParams();
   const toolId = propToolId || paramToolId;
-  
+
   const { isToolEnabled, tools } = useTools();
+  const { isPremium } = useAuth();
   const [ToolComponent, setToolComponent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  
-  // Tìm thông tin của tool từ context
-  const toolInfo = tools.find(tool => tool.id === toolId);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const loadTool = async () => {
@@ -23,14 +23,23 @@ const ToolRenderer = ({ toolId: propToolId }) => {
         setLoading(false);
         return;
       }
-      
+
       // Kiểm tra xem công cụ có được enable không
       if (!isToolEnabled(toolId)) {
         setError('Công cụ này đã bị vô hiệu hóa hoặc không tồn tại');
         setLoading(false);
         return;
       }
-      
+
+      // Lấy thông tin tool hiện tại
+      const tool = tools.find(t => t.id === toolId);
+
+      // Nếu tool là premium mà user không có premium, chuyển hướng sang /pricing
+      if (tool && tool.isPremium && !isPremium) {
+        navigate('/pricing', { replace: true });
+        return;
+      }
+
       try {
         const Component = await loadToolComponent(toolId);
         setToolComponent(Component);
@@ -41,9 +50,9 @@ const ToolRenderer = ({ toolId: propToolId }) => {
         setLoading(false);
       }
     };
-    
+
     loadTool();
-  }, [toolId, isToolEnabled]);
+  }, [toolId, isToolEnabled, tools, isPremium, navigate]);
 
   if (loading) {
     return (

@@ -112,7 +112,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String token = jwtService.generateToken(
                 user, // UserDetails (username)
                 user.getRole().toString(), // Vai trò (role)
-                user.getId() // ID của người dùng (userId)
+                user.getId(), // ID của người dùng (userId)
+                user.isPremium() // Thông tin tài khoản premium
         );
 
         // Trả về thông tin người dùng và token
@@ -121,7 +122,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         response.put("token", token);
         response.put("email", user.getEmail());
         response.put("role", user.getRole().toString());
-        response.put("premium", user.isPremium());
+        response.put("is_premium", user.isPremium());
 
         return response;
     }

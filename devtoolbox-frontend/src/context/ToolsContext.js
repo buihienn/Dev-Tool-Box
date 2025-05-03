@@ -22,9 +22,6 @@ export const ToolsProvider = ({ children }) => {
           fetchCategories()
         ]);
         
-        console.log('API Response - Tools:', toolsData);
-        console.log('API Response - Categories:', categoriesData);
-        
         setTools(toolsData);
         setCategories(categoriesData);
         setError(null);
