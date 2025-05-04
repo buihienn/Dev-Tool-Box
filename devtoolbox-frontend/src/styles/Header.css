@@ -1,0 +1,10 @@
+.btn-outline-info {
+    color: #fff !important;
+    background-color: #043A84 !important;
+    border-color: #043A84 !important;
+}
+.btn-outline-info:hover, .btn-outline-info:active, .btn-outline-info:focus {
+    color: #fff !important;
+    background-color: #043A84 !important;
+    border-color: #043A84 !important;
+}

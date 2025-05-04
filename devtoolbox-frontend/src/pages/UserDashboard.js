@@ -52,7 +52,7 @@ const UserDashboard = () => {
         <>
           <div className="d-flex align-items-center mb-3">
             <h5 className="mb-0 d-flex align-items-center">
-              <ClockHistory className="me-2 text-primary" />
+              <ClockHistory className="me-2" color="#043A84"/>
               Sử dụng gần đây
             </h5>
           </div>
@@ -95,7 +95,7 @@ const UserDashboard = () => {
         <>
           <div className="d-flex align-items-center mb-3">
             <h5 className="mb-0 d-flex align-items-center">
-              <Tools className="me-2 text-warning" />
+              <Tools className="me-2" color="#043A84"/>
               Công cụ mới
             </h5>
           </div>
@@ -132,9 +132,10 @@ const UserDashboard = () => {
             <div key={category.id} className="mb-4">
               <div className="d-flex align-items-center mb-3">
                 <h5 className="mb-0 d-flex align-items-center">
-                  <CategoryIcon 
+                  <CategoryIcon  
                     categoryId={category.id} 
-                    className="me-2 text-primary" 
+                    className="me-2" 
+                    color="#043A84"
                   />
                   {category.name || 'Không có tên'}
                 </h5>

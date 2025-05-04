@@ -6,7 +6,7 @@ import {
   StarFill,
   HeartFill,
 } from 'react-bootstrap-icons';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useSidebar } from '../context/SidebarContext';
 import fetchToolsData from '../data/toolsData'; 
 import fetchCategories from '../data/categoriesData';
@@ -15,6 +15,7 @@ import ToolIcon from './ToolIcon';
 import CategoryIcon from './CategoryIcon';
 import '../styles/ToolLink.css'; 
 import { useFavoriteTools } from '../hooks/useFavoriteTools';
+import logo from "../assets/images/logo.png"; 
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -192,10 +193,16 @@ const Sidebar = () => {
       }}
     >
       <div className="p-3 border-bottom border-secondary">
-        <div className="p-4 d-flex align-items-center">
-          <h3 className="" style={{color: '#043A84', fontWeight: 'bold'}}>DEV TOOL BOX</h3>
+        <div className="d-flex align-items-center justify-content-center">
+          <Link to="/" className="d-block w-100 text-center">
+            <img
+              src={logo}
+              alt="Dev Tool Box Logo"
+              style={{ height: 160, width: "auto", display: "block", margin: "0 auto" }}
+            />
+          </Link>
         </div>
-        <p className="text-muted mb-0 small">Công cụ cho nhà phát triển.</p>
+        <p className="text-muted mb-0 small text-center">Công cụ cho nhà phát triển.</p>
       </div>
 
       {/* Phần scroll */}

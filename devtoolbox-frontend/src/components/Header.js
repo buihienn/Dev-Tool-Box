@@ -12,16 +12,17 @@ import {
   House,
   Github,
   InfoCircle,
-  Sun,
   DiamondFill,
   Search,
   BoxArrowInRight,
-  PersonCircle
+  PersonCircle,
+  BoxArrowRight,
 } from "react-bootstrap-icons";
 import { useSidebar } from "../context/SidebarContext";
 import { useNavigate } from "react-router-dom";
 import SearchModal from "./SearchModal";
 import { useAuth } from "../context/AuthContext";
+import "../styles/Header.css"; 
 
 const Header = ({ hideSearch = false }) => {
   const { expanded, toggleSidebar } = useSidebar();
@@ -83,9 +84,10 @@ const Header = ({ hideSearch = false }) => {
             <div
               className="mx-3 cursor-pointer"
               style={{
-                maxWidth: expanded ? "500px" : "600px",
+                flex: "1 1 0%",
+                minWidth: 0,    
                 transition: "max-width 0.3s ease",
-                flexGrow: 1,
+                maxWidth: "100%",
               }}
               onClick={() => setShowSearchModal(true)}
             >
@@ -120,7 +122,6 @@ const Header = ({ hideSearch = false }) => {
                   style={{
                     backgroundColor: "#E0E0E0",
                     color: "#000",
-                    border: "none",
                   }}
                 >
                   Ctrl + K
@@ -143,14 +144,16 @@ const Header = ({ hideSearch = false }) => {
             )}
 
             <Nav className="ms-2">
-              <Nav.Link href="#github" style={{ color: "#000" }}>
+            <Nav.Link
+                href="https://github.com/buihienn/Dev-Tool-Box"
+                style={{ color: "#000" }}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <Github />
               </Nav.Link>
-              <Nav.Link href="#info" style={{ color: '#000' }}>
+              <Nav.Link href="/info" style={{ color: '#000' }}>
                 <InfoCircle />
-              </Nav.Link>
-              <Nav.Link href="#theme" style={{ color: "#000" }}>
-                <Sun />
               </Nav.Link>
             </Nav>
 
@@ -170,14 +173,15 @@ const Header = ({ hideSearch = false }) => {
                     </span>
                   </Dropdown.Toggle>
                   <Dropdown.Menu align="end">
-                    <Dropdown.Item href="#profile">Xem hồ sơ</Dropdown.Item>
-                    <Dropdown.Item href="#settings">Cài đặt</Dropdown.Item>
-                    {userRole === 'admin' && (
+                    {userRole === 'ADMIN' && (
                       <Dropdown.Item onClick={() => navigate('/admin')}>Quản lý hệ thống</Dropdown.Item>
                     )}
                     <Dropdown.Divider />
                     <Dropdown.Item onClick={handleLogout}>
-                      <span className="text-danger">Đăng xuất</span>
+                      <span className="text-danger">
+                        <BoxArrowRight className="me-2" />
+                        Đăng xuất
+                      </span>
                     </Dropdown.Item>
                   </Dropdown.Menu>
                 </Dropdown>
