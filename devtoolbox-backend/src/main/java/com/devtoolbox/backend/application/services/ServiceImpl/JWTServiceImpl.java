@@ -27,12 +27,11 @@ public class JWTServiceImpl implements JWTService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String generateToken(UserDetails userDetails, String role, Long userId, boolean isPremium) {
+    public String generateToken(UserDetails userDetails, String role, Long userId) {
         return Jwts.builder()
                 .setSubject(userDetails.getUsername()) // Lưu username vào token
                 .claim("role", role) // Thêm vai trò vào payload
                 .claim("userId", userId) // Thêm userId vào payload
-                .claim("is_premium", isPremium) // Thêm thông tin premium vào payload
                 .setIssuedAt(new Date()) // Thời gian phát hành token
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // Hết hạn sau 24h
                 .signWith(getSigninKey(), SignatureAlgorithm.HS256) // Ký token bằng SHA-256

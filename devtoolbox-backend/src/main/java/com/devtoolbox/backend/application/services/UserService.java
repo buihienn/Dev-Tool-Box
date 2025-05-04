@@ -4,5 +4,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 
 public interface UserService {
     UserDetailsService userDetailsService();
-    void upgradePremium(String email);
+    void upgradePremium(Long userId);
+    boolean isPremium(Long userId);
 }

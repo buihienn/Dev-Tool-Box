@@ -10,7 +10,6 @@ import {
 import {
   List,
   House,
-  Heart,
   Github,
   InfoCircle,
   Sun,
@@ -140,14 +139,6 @@ const Header = ({ hideSearch = false }) => {
               >
                 <DiamondFill />
                 <span className="d-none d-md-inline ms-1">Premium</span>
-              </Button>
-            )}
-
-            {/* Favorites button - Hiển thị nếu đã đăng nhập */}
-            {isAuthenticated && (
-              <Button variant="danger" className="d-flex align-items-center ms-2">
-                <Heart />
-                <span className="d-none d-md-inline ms-1">Yêu thích</span>
               </Button>
             )}
 

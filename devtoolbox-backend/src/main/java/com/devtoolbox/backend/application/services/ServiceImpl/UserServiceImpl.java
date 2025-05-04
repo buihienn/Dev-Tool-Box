@@ -31,10 +31,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void upgradePremium(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow();
+    public void upgradePremium(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow();
         user.setPremium(true);
         userRepository.save(user);
     }
+
+    @Override
+    public boolean isPremium(Long userId) {
+        return userRepository.findById(userId)
+            .map(User::isPremium)
+            .orElse(false);
+    }
 }
- 
