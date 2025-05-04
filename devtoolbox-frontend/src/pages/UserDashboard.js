@@ -1,11 +1,12 @@
 import React from 'react';
 import { Container, Badge, Spinner, Alert } from 'react-bootstrap';
-import { Tools, ClockHistory } from 'react-bootstrap-icons';
+import { Tools, ClockHistory, HeartFill } from 'react-bootstrap-icons';
 import ToolCard from '../components/ToolCard';
 import CategoryIcon from '../components/CategoryIcon';
 import '../styles/GridLayout.css';
 import { useRecentTools } from '../hooks/useRecentTools';
 import { useTools } from '../context/ToolsContext';
+import { useFavoriteTools } from '../hooks/useFavoriteTools';
 
 const UserDashboard = () => {
   const { tools = [], categories = [], isLoading, error } = useTools();
@@ -16,6 +17,9 @@ const UserDashboard = () => {
   
   // Lọc công cụ mới
   const newTools = enabledTools.filter(tool => tool && tool.isNew);
+
+  const { favoriteTools } = useFavoriteTools();
+  const favoriteToolObjs = enabledTools.filter(tool => favoriteTools.includes(tool.id));
   
   // Hiển thị spinner khi đang tải
   if (isLoading) {
@@ -55,7 +59,32 @@ const UserDashboard = () => {
           
           <div className="grid grid-cols-1 gap-12px sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 mb-4">
             {recentTools.map(tool => (
-              <ToolCard key={tool.id} tool={tool} />
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                isFavorite={favoriteTools.includes(tool.id)}
+              />
+            ))}
+          </div>
+        </>
+      )}
+
+      {/* Favorite Tools Section */}
+      {favoriteToolObjs && favoriteToolObjs.length > 0 && (
+        <>
+          <div className="d-flex align-items-center mb-3">
+            <h5 className="mb-0 d-flex align-items-center">
+              <HeartFill color="#043A84" className="me-2 text-danger" />
+              Công cụ yêu thích
+            </h5>
+          </div>
+          <div className="grid grid-cols-1 gap-12px sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 mb-4">
+            {favoriteToolObjs.map(tool => (
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                isFavorite={favoriteTools.includes(tool.id)}
+              />
             ))}
           </div>
         </>
@@ -69,12 +98,15 @@ const UserDashboard = () => {
               <Tools className="me-2 text-warning" />
               Công cụ mới
             </h5>
-            <Badge bg="warning" text="dark" className="ms-2">Mới</Badge>
           </div>
           
           <div className="grid grid-cols-1 gap-12px sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 mb-4">
             {newTools.map(tool => (
-              <ToolCard key={tool.id} tool={tool} />
+              <ToolCard
+                key={tool.id}
+                tool={tool}
+                isFavorite={favoriteTools.includes(tool.id)}
+              />
             ))}
           </div>
         </>
@@ -110,7 +142,11 @@ const UserDashboard = () => {
               
               <div className="grid grid-cols-1 gap-12px sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4">
                 {categoryTools.map(tool => (
-                  <ToolCard key={tool.id} tool={tool} />
+                  <ToolCard
+                    key={tool.id}
+                    tool={tool}
+                    isFavorite={favoriteTools.includes(tool.id)}
+                  />
                 ))}
               </div>
             </div>

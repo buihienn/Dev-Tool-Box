@@ -1,13 +1,45 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useRecentTools } from '../hooks/useRecentTools';
+import { Heart, HeartFill } from "react-bootstrap-icons";
+import { useAuth } from "../context/AuthContext";
 import ToolIcon from './ToolIcon'; 
+import { useFavoriteTools } from "../hooks/useFavoriteTools";
 
-const ToolCard = ({ tool }) => {
+const ToolCard = ({ tool, isFavorite }) => {
   const { addToRecentTools } = useRecentTools();
+  const { currentUser, isAuthenticated } = useAuth();
+  const { triggerFavoriteUpdate } = useFavoriteTools();
+  const [favorite, setFavorite] = useState(isFavorite);
 
-  // Handle click on tool card
+  // Đồng bộ state local với prop isFavorite
+  useEffect(() => {
+    setFavorite(isFavorite);
+  }, [isFavorite]);
+
+  const handleFavorite = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!currentUser) return;
+    if (favorite) {
+      await fetch(`http://localhost:8080/api/favorite/remove?userId=${currentUser.userId}&toolId=${tool.id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+    } else {
+      await fetch(`http://localhost:8080/api/favorite/add?userId=${currentUser.userId}&toolId=${tool.id}`, {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      });
+    }
+    triggerFavoriteUpdate(); // Cập nhật lại toàn bộ dashboard
+  };
+
   const handleToolClick = () => {
     addToRecentTools(tool);
   };
@@ -47,6 +79,19 @@ const ToolCard = ({ tool }) => {
                 <Badge bg="warning" text="dark">Premium</Badge>
               )}
             </div>
+            {isAuthenticated && (
+              <button
+                className="btn btn-link ms-2 p-0"
+                onClick={handleFavorite}
+                aria-label={favorite ? "Bỏ yêu thích" : "Yêu thích"}
+                style={{ fontSize: 20 }}
+                tabIndex={0}
+              >
+                {favorite 
+                ? <HeartFill color="#043A84" /> 
+                : <Heart color="#043A84" />}
+              </button>
+            )}
           </div>
           
           <Card.Title 
