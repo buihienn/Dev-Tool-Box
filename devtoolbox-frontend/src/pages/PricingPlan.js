@@ -14,14 +14,27 @@ const PricingPlan = () => {
   const [popup, setPopup] = useState({ show: false, success: false, message: "" });
 
   const handleUpgradeSuccess = async () => {
-    setPopup({ show: true, success: true, message: "Bạn đã nâng cấp thành công tài khoản Premium!" });
+    console.log(`Upgrade ${currentUser.userId}!`);
     // Gọi API backend để cập nhật premium cho user
-    await fetch("/api/user/upgrade-premium?email=" + currentUser.email, { method: "POST" });
-    setTimeout(() => {
-      setPopup({ show: false, success: true, message: "" });
-      navigate("/");
-      window.location.reload();
-    }, 2000);
+    const response = await fetch(`http://localhost:8080/api/user/upgrade-premium?userId=${currentUser.userId}`, {
+      method: "POST",
+      headers: {
+        "Authorization": "Bearer " + localStorage.getItem("token"),
+      }
+    });
+  
+    const result = await response.text();
+  
+    if (response.ok) {
+      setPopup({ show: true, success: true, message: "Bạn đã nâng cấp thành công tài khoản Premium!" });
+      setTimeout(() => {
+        setPopup({ show: false, success: true, message: "" });
+        navigate("/");
+        window.location.reload();
+      }, 2000);
+    } else {
+      setPopup({ show: true, success: false, message: "Có lỗi xảy ra: " + result });
+    }
   };
 
   const handleUpgradeFail = () => {

@@ -112,8 +112,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
         String token = jwtService.generateToken(
                 user, // UserDetails (username)
                 user.getRole().toString(), // Vai trò (role)
-                user.getId(), // ID của người dùng (userId)
-                user.isPremium() // Thông tin tài khoản premium
+                user.getId() // ID của người dùng (userId)
         );
 
         // Trả về thông tin người dùng và token

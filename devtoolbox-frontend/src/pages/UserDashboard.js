@@ -11,11 +11,6 @@ const UserDashboard = () => {
   const { tools = [], categories = [], isLoading, error } = useTools();
   const { recentTools = [] } = useRecentTools();
 
-  console.log('========== DEBUG DATA ==========');
-  console.log('Categories:', categories);
-  console.log('Tools:', tools);
-  console.log('================================');
-  
   // Lọc các công cụ được bật
   const enabledTools = tools.filter(tool => tool && tool.isEnabled === true);
   

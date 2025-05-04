@@ -11,35 +11,33 @@ export const AuthProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(null);
   const [userRole, setUserRole] = useState('anonymous');
   const [loading, setLoading] = useState(true);
+  const [isPremium, setIsPremium] = useState(false);
 
   // Kiểm tra trạng thái xác thực khi component được mount
   useEffect(() => {
-    const checkAuthStatus = () => {
+    const checkAuthStatus = async () => {
       const token = localStorage.getItem('token');
-      
       if (!token) {
         setCurrentUser(null);
         setUserRole('anonymous');
+        setIsPremium(false);
         setLoading(false);
         return;
       }
-
       try {
         const decodedToken = jwtDecode(token);
         const currentTime = Date.now() / 1000;
-
         if (decodedToken.exp < currentTime) {
-          // Token đã hết hạn
           logout();
           return;
         }
-
         setCurrentUser({
           email: decodedToken.sub,
+          userId: decodedToken.userId,
           role: decodedToken.role,
-          is_premium: decodedToken.is_premium
         });
         setUserRole(decodedToken.role || 'user');
+        await fetchIsPremium(decodedToken.userId);
       } catch (error) {
         console.error('Lỗi khi giải mã token:', error);
         logout();
@@ -47,9 +45,27 @@ export const AuthProvider = ({ children }) => {
         setLoading(false);
       }
     };
-
     checkAuthStatus();
   }, []);
+
+  // Hàm lấy trạng thái premium từ API
+  const fetchIsPremium = async (userId) => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/user/is-premium?userId=${userId}`, {
+        headers: {
+          "Authorization": "Bearer " + localStorage.getItem("token"),
+        }
+      });
+      if (response.ok) {
+        const data = await response.json();
+        setIsPremium(!!data.isPremium);
+      } else {
+        setIsPremium(false);
+      }
+    } catch (error) {
+      setIsPremium(false);
+    }
+  };
 
   // Hàm đăng nhập
   const login = async (email, password) => {
@@ -69,14 +85,15 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem("token", data.token);
         const decodedToken = jwtDecode(data.token);
         const userRoleFromToken = decodedToken.role || 'user';
-        const isPremium = decodedToken.is_premium || data.is_premium || false;
         
         setCurrentUser({
           email: decodedToken.sub,
+          userId: decodedToken.userId,
           role: userRoleFromToken,
           is_premium: isPremium
         });
         setUserRole(userRoleFromToken);
+        await fetchIsPremium(decodedToken.userId);
         
         return { 
           success: true, 
@@ -85,6 +102,7 @@ export const AuthProvider = ({ children }) => {
           is_premium: isPremium
         };
       } else {
+        setIsPremium(false);
         return { 
           success: false, 
           message: data.message || 'Đăng nhập thất bại',
@@ -102,10 +120,9 @@ export const AuthProvider = ({ children }) => {
   // Hàm đăng xuất
   const logout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('email');
-    localStorage.removeItem('role');
     setCurrentUser(null);
     setUserRole('anonymous');
+    setIsPremium(false);
   };
 
   // Hàm kiểm tra quyền truy cập
@@ -138,7 +155,7 @@ export const AuthProvider = ({ children }) => {
     logout,
     hasPermission,
     isAuthenticated: !!currentUser,
-    isPremium: !!currentUser?.is_premium,
+    isPremium,
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

@@ -53,6 +53,7 @@ public class SecurityConfig {
                 .requestMatchers("/api/token/generate").hasAuthority(Role.ADMIN.name())
                 .requestMatchers("/app/admin/**").hasAuthority(Role.ADMIN.name())
                 .requestMatchers("/app/user/**").hasAuthority(Role.USER.name())
+                .requestMatchers("/api/user/**").hasAuthority(Role.USER.name())
                 .requestMatchers("/tool/**").permitAll() // dùng để chạy các tool
                 .anyRequest().authenticated()
             )
