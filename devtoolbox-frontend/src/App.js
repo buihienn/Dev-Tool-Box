@@ -16,6 +16,7 @@ import ForgotPassword from './pages/ForgotPassword';
 import VerifyEmail from './pages/VerifyEmail';
 import AdminLayout from './pages/AdminLayout';
 import PricingPlan from './pages/PricingPlan';
+import InfoPage from './pages/InfoPage';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
             <Route path="/unauthorized" element={<Unauthorized />} />
             <Route path="*" element={<div>Không tìm thấy trang!</div>} />
             <Route path="/pricing" element={<PricingPlan />} />
+            <Route path="/info" element={<InfoPage />} />
           </Routes>
         </BrowserRouter>
         </SidebarProvider>

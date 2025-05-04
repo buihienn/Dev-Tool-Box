@@ -85,7 +85,7 @@ const ToolHeader = ({ toolId, defaultName = '', defaultDescription = '' }) => {
             aria-label={isFavorite ? "Bỏ yêu thích" : "Yêu thích"}
             style={{ fontSize: 22 }}
           >
-            {isFavorite ? <HeartFill color="red" /> : <Heart />}
+            {isFavorite ? <HeartFill color="#043A84" /> : <Heart color="#043A84" />}
           </button>
         )}
       </div>

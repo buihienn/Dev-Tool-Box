@@ -1,6 +1,6 @@
 import React from "react";
-import { Container, Navbar, Button } from "react-bootstrap";
-import { BoxArrowRight } from "react-bootstrap-icons";
+import { Container, Navbar, Dropdown } from "react-bootstrap";
+import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import '../styles/Admin.css';
 
@@ -14,22 +14,34 @@ const AdminHeader = () => {
     navigate("/login");
   };
 
+  const handleBackToUser = () => {
+    navigate("/");
+  };
+
   return (
     <Navbar bg="dark" variant="dark" expand="lg">
       <Container fluid>
         <Navbar.Brand href="/admin" className="fw-bold">
-          <img 
-            src="/logo.png" 
-            alt="DevToolBox Logo" 
-            height="30" 
-            className="d-inline-block align-top me-2"
-          />
           DevToolBox Admin
         </Navbar.Brand>
-        <Button variant="outline-light" onClick={handleLogout}>
-          <BoxArrowRight className="me-2" />
-          Đăng xuất
-        </Button>
+        <Dropdown align="end">
+          <Dropdown.Toggle variant="outline-light" id="dropdown-admin-user">
+            <PersonCircle className="me-2" />
+            Admin
+          </Dropdown.Toggle>
+          <Dropdown.Menu align="end">
+            <Dropdown.Item onClick={handleBackToUser}>
+              Về phân hệ người dùng
+            </Dropdown.Item>
+            <Dropdown.Divider />
+            <Dropdown.Item onClick={handleLogout}>
+              <span className="text-danger">
+                <BoxArrowRight className="me-2" />
+                Đăng xuất
+              </span>
+            </Dropdown.Item>
+          </Dropdown.Menu>
+        </Dropdown>
       </Container>
     </Navbar>
   );

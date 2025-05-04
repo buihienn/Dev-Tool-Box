@@ -31,29 +31,29 @@ const toolIconMap = {
   "ulid": ClockHistory,
   
   // Math tools
-  "math-evaluator": Calculator,
+  "math": Calculator,
   "eta-calculator": Clock,
   "percentage-calculator": Percent,
   
   // Measurement tools
   "chronometer": Stopwatch,
   "temperature-converter": Thermometer,
-  "benchmark-builder": Speedometer,
+  "benchmark": Speedometer,
   
   // Text tools
-  "lorem-ipsum-generator": TextParagraph,
+  "lorem-ipsum": TextParagraph,
   "text-statistics": FileEarmarkText,
-  "numeronym-generator": Icon123,
+  "numeronym": Icon123,
   
   // Data tools
   "phone-parser": TelephoneFill,
-  "iban-validator": Bank,
-  "credit-card-validator": CreditCard2Front,
+  "iban": Bank,
+  "credit-card": CreditCard2Front,
   
   // Network tools
-  "mac-address-generator": Ethernet,
-  "ipv4-converter": Globe2,
-  "ipv4-range-expander": Diagram3
+  "mac-address": Ethernet,
+  "ipv4": Globe2,
+  "ipv4-range": Diagram3
 };
 
 /**
