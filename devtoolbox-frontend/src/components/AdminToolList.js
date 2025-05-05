@@ -15,7 +15,8 @@ const AdminToolList = () => {
 
   // State cho modal thêm công cụ mới
   const [showAddToolModal, setShowAddToolModal] = useState(false);
-  const [newToolFile, setNewToolFile] = useState(null);
+  const [newToolFileJs, setNewToolFileJs] = useState(null);
+  const [newToolFileJar, setNewToolFileJar] = useState(null);
   const [newToolName, setNewToolName] = useState('');
   const [newToolCategory, setNewToolCategory] = useState('');
   const [newToolId, setNewToolId] = useState('');
@@ -234,7 +235,8 @@ const AdminToolList = () => {
   // Mở modal thêm công cụ
   const handleShowToolModal = () => {
     setShowAddToolModal(true);
-    setNewToolFile(null);
+    setNewToolFileJs(null);
+    setNewToolFileJar(null);
     setNewToolName('');
     setNewToolCategory('');
     setNewToolId('');
@@ -313,28 +315,38 @@ const AdminToolList = () => {
 
   // Xử lý thêm công cụ mới
   const handleAddTool = async () => {
-    if (!newToolFile || !newToolName || !newToolCategory || !newToolId) {
-      setError('Vui lòng điền đầy đủ thông tin và chọn file.');
+    if (!newToolFileJs || !newToolFileJar || !newToolName || !newToolCategory || !newToolId) {
+      setError('Vui lòng điền đầy đủ thông tin và upload đủ file.');
       return;
     }
-    
+  
     setUploading(true);
-    
+  
     try {
+      // 1. Upload file JAR 
+      const jarFormData = new FormData();
+      jarFormData.append('file', newToolFileJar);
+  
+      const jarRes = await fetch('http://localhost:8080/api/tools/upload-jar', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        },
+        body: jarFormData
+      });
+  
+      if (!jarRes.ok) {
+        const errorData = await jarRes.json();
+        throw new Error(errorData.message || 'Không thể upload file JAR');
+      }
+  
+      // 2. Thêm tool vào database
       const formData = new FormData();
-      formData.append('file', newToolFile);
+      formData.append('file', newToolFileJs);
       formData.append('name', newToolName);
       formData.append('category', newToolCategory);
       formData.append('id', newToolId);
-
-      console.log('Sending upload request with:', {
-        fileName: newToolFile.name,
-        fileSize: newToolFile.size,
-        name: newToolName,
-        category: newToolCategory,
-        id: newToolId
-      });
-      
+  
       const response = await fetch('http://localhost:8080/api/admin/tools/upload', {
         method: 'POST',
         headers: {
@@ -348,9 +360,6 @@ const AdminToolList = () => {
         throw new Error(errorData.message || 'Không thể tải lên công cụ mới');
       }
 
-      const result = await response.json();
-      console.log('Upload success:', result);
-      
       // Thêm công cụ mới vào danh sách
       const newTool = {
         id: newToolId,
@@ -372,8 +381,7 @@ const AdminToolList = () => {
     } catch (err) {
       console.error('Error uploading tool:', err);
       setError(`Có lỗi xảy ra khi tải lên công cụ mới: ${err.message}`);
-      
-      // Tự động ẩn thông báo lỗi sau 5 giây
+  
       setTimeout(() => {
         setError(null);
       }, 5000);
@@ -452,7 +460,8 @@ const AdminToolList = () => {
         setNewToolName={setNewToolName}
         newToolCategory={newToolCategory}
         setNewToolCategory={setNewToolCategory}
-        setNewToolFile={setNewToolFile}
+        setNewToolFileJs={setNewToolFileJs}
+        setNewToolFileJar={setNewToolFileJar}
         categories={categories}
       />
       
