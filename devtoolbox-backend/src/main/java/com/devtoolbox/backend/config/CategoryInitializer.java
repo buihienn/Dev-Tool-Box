@@ -4,11 +4,13 @@ import com.devtoolbox.backend.data.entities.Category;
 import com.devtoolbox.backend.data.repositories.CategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.annotation.Order;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.List;
 
 @Configuration
+@Order(1)
 public class CategoryInitializer {
 
     @Bean
