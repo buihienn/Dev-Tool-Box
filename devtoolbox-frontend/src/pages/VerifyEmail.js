@@ -1,10 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
+import Header from "../components/Header";
+import { Button, Container, Alert } from "react-bootstrap";
+
 
 const VerifyEmail = () => {
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const location = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
   const queryParams = new URLSearchParams(location.search);
@@ -39,9 +43,27 @@ const VerifyEmail = () => {
 }, [location]);
 
   return (
-    <div>
-      {message && <p>{message}</p>}
-      {error && <p>{error}</p>}
+    <div className="container-fluid vh-100" style={{ backgroundColor: "#FCF9F1" }}>
+      <Header hideSearch />
+      <Container className="d-flex flex-column align-items-center justify-content-center" style={{ minHeight: "60vh" }}>
+        {message && (
+          <Alert variant="success" className="w-100 text-center">
+            {message}
+          </Alert>
+        )}
+        {error && (
+          <Alert variant="danger" className="w-100 text-center">
+            {error}
+          </Alert>
+        )}
+        <Button
+          variant="primary"
+          style={{ backgroundColor: "#043A84", border: "none", marginTop: "1rem" }}
+          onClick={() => navigate("/login")}
+        >
+          Quay về trang đăng nhập
+        </Button>
+      </Container>
     </div>
   );
 };

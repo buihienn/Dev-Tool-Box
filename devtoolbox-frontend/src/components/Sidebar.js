@@ -16,6 +16,7 @@ import CategoryIcon from './CategoryIcon';
 import '../styles/ToolLink.css'; 
 import { useFavoriteTools } from '../hooks/useFavoriteTools';
 import logo from "../assets/images/logo.png"; 
+import '../styles/Sidebar.css';
 
 const Sidebar = () => {
   const navigate = useNavigate();
@@ -184,6 +185,7 @@ const Sidebar = () => {
         height: '100vh',
         width: expanded ? '250px' : '0',
         overflow: 'hidden',
+        overflowX: 'hidden', 
         display: 'flex',    
         flexDirection: 'column',
         position: 'fixed', 
@@ -211,7 +213,8 @@ const Sidebar = () => {
         style={{ 
           width: '100%',
           flex: '1 1 auto',
-          height: '0' 
+          height: '0',
+          overflowX: 'hidden' //
         }}
       >
         {isLoading ? (

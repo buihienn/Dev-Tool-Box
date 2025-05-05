@@ -12,7 +12,7 @@ import {
   House,
   Github,
   InfoCircle,
-  DiamondFill,
+  Gem,
   Search,
   BoxArrowInRight,
   PersonCircle,
@@ -138,7 +138,7 @@ const Header = ({ hideSearch = false }) => {
                 className="d-flex align-items-center text-dark"
                 onClick={() => navigate("/pricing")}
               >
-                <DiamondFill />
+                <Gem />
                 <span className="d-none d-md-inline ms-1">Premium</span>
               </Button>
             )}
@@ -189,7 +189,11 @@ const Header = ({ hideSearch = false }) => {
             ) : (
               // Nút đăng nhập khi chưa đăng nhập
               <Button 
-                variant="outline-primary" 
+                style={{
+                  backgroundColor: "#043A84",
+                  color: "#fff",
+                  border: "none"
+                }}
                 className="ms-2 d-flex align-items-center"
                 onClick={handleLogin}
               >
