@@ -12,7 +12,7 @@ const categoryMap = {
   "Web": "web",
 };
 
-const API_URL = "http://localhost:8080/api/get-tool/all";
+const API_URL = "http://localhost:8080/api/doTool/getAll";
 
 // Hàm fetch dữ liệu từ API và ánh xạ
 const fetchToolsData = async () => {

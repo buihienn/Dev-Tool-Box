@@ -216,17 +216,34 @@ const AdminToolList = () => {
   const handleDeleteTool = async (id) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa công cụ này không?')) {
       try {
-        // await fetch(`http://localhost:8080/api/admin/tools/${id}`, {
-        //   method: 'DELETE',
-        //   headers: {
-        //     'Authorization': `Bearer ${localStorage.getItem('token')}`
-        //   }
-        // });
-
-        // Cập nhật state
+        const response = await fetch(`http://localhost:8080/api/doTool/deletById/${id}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`, // Thêm token nếu cần
+          },
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.message || 'Không thể xóa công cụ');
+        }
+  
+        // Cập nhật state để loại bỏ tool đã xóa
         setTools(tools.filter(tool => tool.id !== id));
+        setSuccessMessage('Đã xóa công cụ thành công!');
+        
+        // Tự động ẩn thông báo sau 3 giây
+        setTimeout(() => {
+          setSuccessMessage(null);
+        }, 3000);
       } catch (err) {
-        setError('Có lỗi xảy ra khi xóa công cụ');
+        console.error('Error deleting tool:', err);
+        setError(`Có lỗi xảy ra khi xóa công cụ: ${err.message}`);
+        
+        // Tự động ẩn thông báo lỗi sau 5 giây
+        setTimeout(() => {
+          setError(null);
+        }, 5000);
       }
     }
   };
