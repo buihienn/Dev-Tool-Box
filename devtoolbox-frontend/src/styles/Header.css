@@ -8,3 +8,10 @@
     background-color: #043A84 !important;
     border-color: #043A84 !important;
 }
+
+.dropdown-menu .dropdown-item:active,
+.dropdown-menu .dropdown-item:focus,
+.dropdown-menu .dropdown-item.active {
+    background-color: #043A84 !important; 
+    color: #fff !important;               
+}

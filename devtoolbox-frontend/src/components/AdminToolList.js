@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Table, Form, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
-import { Trash, PlusCircle } from 'react-bootstrap-icons';
+import { Trash, PlusCircle, CaretUpFill, CaretDownFill } from 'react-bootstrap-icons';
 import fetchToolsData from '../data/toolsData';
 import AddToolModal from './modals/AddToolModal';
 import AddCategoryModal from './modals/AddCategoryModal';
+import '../styles/AdminToolList.css';
 
 const AdminToolList = () => {
   const [tools, setTools] = useState([]);
@@ -25,6 +26,9 @@ const AdminToolList = () => {
   const [newCategoryName, setNewCategoryName] = useState('');
   const [newCategoryDescription, setNewCategoryDescription] = useState('');
   const [addingCategory, setAddingCategory] = useState(false);
+
+  // State cho sort
+  const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
 
   useEffect(() => {
     // Fetch tools from API
@@ -378,6 +382,31 @@ const AdminToolList = () => {
     }
   };
 
+  // Hàm sort
+  const sortedTools = React.useMemo(() => {
+    let sortableTools = [...tools];
+    if (sortConfig.key) {
+      sortableTools.sort((a, b) => {
+        const aValue = (a[sortConfig.key] || '').toString().toLowerCase();
+        const bValue = (b[sortConfig.key] || '').toString().toLowerCase();
+        if (aValue < bValue) return sortConfig.direction === 'asc' ? -1 : 1;
+        if (aValue > bValue) return sortConfig.direction === 'asc' ? 1 : -1;
+        return 0;
+      });
+    }
+    return sortableTools;
+  }, [tools, sortConfig]);
+
+  const handleSort = (key) => {
+    setSortConfig(prev => {
+      if (prev.key === key) {
+        // Đảo chiều sort nếu nhấn lại
+        return { key, direction: prev.direction === 'asc' ? 'desc' : 'asc' };
+      }
+      return { key, direction: 'asc' };
+    });
+  };
+
   if (loading) {
     return (
       <div className="text-center mt-5">
@@ -395,7 +424,11 @@ const AdminToolList = () => {
         </Col>
         <Col xs="auto">
           <Button 
-            variant="primary"
+            style={{
+              backgroundColor: "#043A84",
+              color: "#fff",
+              border: "none"
+            }}
             onClick={handleShowToolModal}
           >
             <PlusCircle className="me-2" /> Thêm công cụ
@@ -438,16 +471,34 @@ const AdminToolList = () => {
         <thead className="table-dark">
           <tr>
             <th width="5%">STT</th>
-            <th width="30%">Tên công cụ</th>
-            <th width="15%">Loại</th>
+            <th width="30%" style={{cursor: 'pointer'}} onClick={() => handleSort('name')}>
+              <span style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                Tên công cụ
+                <span>
+                  {sortConfig.key === 'name' && (
+                    sortConfig.direction === 'asc' ? <CaretUpFill /> : <CaretDownFill />
+                  )}
+                </span>
+              </span>
+            </th>
+            <th width="15%" style={{cursor: 'pointer'}} onClick={() => handleSort('type')}>
+              <span style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
+                Loại
+                <span>
+                  {sortConfig.key === 'type' && (
+                    sortConfig.direction === 'asc' ? <CaretUpFill /> : <CaretDownFill />
+                  )}
+                </span>
+              </span>
+            </th>
             <th width="15%">Loại công cụ</th>
             <th width="15%">Trạng thái</th>
             <th width="20%">Thao tác</th>
           </tr>
         </thead>
         <tbody>
-          {tools.length > 0 ? (
-            tools.map((tool, index) => (
+          {sortedTools.length > 0 ? (
+            sortedTools.map((tool, index) => (
               <tr key={tool.id}>
                 <td>{index + 1}</td>
                 <td>{tool.name}</td>

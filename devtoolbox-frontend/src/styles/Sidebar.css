@@ -1,0 +1,4 @@
+.sidebar,
+.sidebar .overflow-auto {
+    overflow-x: hidden !important;
+}

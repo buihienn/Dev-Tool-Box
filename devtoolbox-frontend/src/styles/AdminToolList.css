@@ -1,0 +1,7 @@
+.form-switch .form-check-input:checked {
+    background-color: #043A84 !important;
+    border-color: #043A84 !important;
+}
+.form-switch .form-check-input {
+    cursor: pointer;
+}
