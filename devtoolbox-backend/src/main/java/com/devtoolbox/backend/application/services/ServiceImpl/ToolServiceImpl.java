@@ -2,8 +2,10 @@ package com.devtoolbox.backend.application.services.ServiceImpl;
 
 import com.devtoolbox.backend.application.services.ToolService;
 import com.devtoolbox.backend.data.entities.Tool;
+import com.devtoolbox.backend.data.repositories.FavoriteToolRepository;
 import com.devtoolbox.backend.data.repositories.ToolRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -13,9 +15,11 @@ import java.util.Optional;
 public class ToolServiceImpl  implements ToolService{
 
     private ToolRepository toolRepository;
+    private FavoriteToolRepository favoriteToolRepository;
 
-    public ToolServiceImpl(ToolRepository toolRepository) {
+    public ToolServiceImpl(ToolRepository toolRepository, FavoriteToolRepository favoriteToolRepository) {
         this.toolRepository = toolRepository;
+        this.favoriteToolRepository = favoriteToolRepository;
     }
 
     // Lấy danh sách tất cả công cụ
@@ -86,4 +90,13 @@ public class ToolServiceImpl  implements ToolService{
         
         return toolRepository.save(tool);
     }
+
+    @Override
+    @Transactional
+    public void deleteToolById(String toolId) {
+        favoriteToolRepository.deleteByToolId(toolId);
+        toolRepository.deleteById(toolId);
+    }
+
+
 }

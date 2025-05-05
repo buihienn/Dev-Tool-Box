@@ -15,7 +15,6 @@ const staticTools = {
   'hash': () => import('../pages/HashText'),
   'bcrypt': () => import('../pages/Bcrypt'),
   'math': () => import('../pages/MathEvaluator'),
-  'ulid': () => import('../pages/UlidGenerator'),
   'eta-calculator': () => import('../pages/ETACalculator'),
   'percentage-calculator': () => import('../pages/PercentageCalculator'),
   'base-converter': () => import('../pages/IntegerBaseConverter'),

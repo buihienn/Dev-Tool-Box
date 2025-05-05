@@ -11,4 +11,5 @@ public interface FavoriteToolRepository extends JpaRepository<FavoriteTool, Long
     List<FavoriteTool> findByUser(User user);
     Optional<FavoriteTool> findByUserAndToolId(User user, String toolId);
     void deleteByUserAndToolId(User user, String toolId);
+    void deleteByToolId(String toolId);
 }

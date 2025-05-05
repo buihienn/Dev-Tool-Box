@@ -31,4 +31,6 @@ public interface ToolService {
 
     // Nâng/Hạ cấp công cụ
     Tool toggleToolPremium(String toolId, Boolean isPremium);
+
+    void deleteToolById(String toolId);
 }
