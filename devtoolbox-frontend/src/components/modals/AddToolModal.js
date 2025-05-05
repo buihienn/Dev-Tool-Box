@@ -14,12 +14,18 @@ const AddToolModal = ({
   setNewToolName,
   newToolCategory,
   setNewToolCategory,
-  setNewToolFile,
+  setNewToolFileJs,
+  setNewToolFileJar,
   categories
 }) => {
-  // Xử lý khi chọn file
-  const handleFileChange = (e) => {
-    setNewToolFile(e.target.files[0]);
+  // Xử lý khi chọn file JavaScript
+  const handleJsFileChange = (e) => {
+    setNewToolFileJs(e.target.files[0]);
+  };
+
+  // Xử lý khi chọn file JAR
+  const handleJarFileChange = (e) => {
+    setNewToolFileJar(e.target.files[0]);
   };
 
   return (
@@ -80,11 +86,20 @@ const AddToolModal = ({
             <Form.Control 
               type="file" 
               accept=".js"
-              onChange={handleFileChange}
+              onChange={handleJsFileChange}
             />
             <Form.Text className="text-muted">
               Chỉ chấp nhận file JavaScript (.js)
             </Form.Text>
+          </Form.Group>
+
+          <Form.Group className="mb-3" controlId="formJarFile">
+            <Form.Label>Upload file JAR</Form.Label>
+            <Form.Control
+              type="file"
+              accept=".jar"
+              onChange={handleJarFileChange}
+            />
           </Form.Group>
         </Form>
       </Modal.Body>
