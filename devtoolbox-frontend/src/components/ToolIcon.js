@@ -20,6 +20,16 @@ import {
   CreditCard2Front,
   Ethernet,
   Diagram3,
+  Alphabet,
+  Code,
+  FileEarmarkCode,
+  FileSpreadsheet,
+  Image,
+  QrCode,
+  Wifi,
+  Link,
+  Link45deg,
+  
 } from 'react-bootstrap-icons';
 
 // Map icon cụ thể cho từng tool dựa vào ID
@@ -53,7 +63,27 @@ const toolIconMap = {
   // Network tools
   "mac-address": Ethernet,
   "ipv4": Globe2,
-  "ipv4-range": Diagram3
+  "ipv4-range": Diagram3,
+
+  // Chuyen doi
+  "base-converter": Calculator,
+  "text-to-nato-alphabet": Alphabet,
+  "xml-to-json": Code,
+  "docker-compose-converter": FileEarmarkCode,
+  "json-formatter": FileEarmarkText,
+  "json-to-csv": FileSpreadsheet,
+    // Image tools
+  "image-to-base64": Image,
+  "qr-code": QrCode,
+  "wifi-qr-code": Wifi,
+
+  // Security tools
+  "jwt-parser": ShieldLock,
+
+  // URL tools
+  "url-formatter": Link,
+  "url-parser": Link45deg,
+
 };
 
 /**

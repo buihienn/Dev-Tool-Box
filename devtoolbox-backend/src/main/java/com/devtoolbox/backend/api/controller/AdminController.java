@@ -185,6 +185,7 @@ public class AdminController {
             tool.setCategory(toolCategory);
             tool.setEnabled(true);
             tool.setIsPremium(false);
+            tool.setIsNew(true);
             toolRepository.save(tool);
             logger.info("Tool saved to database: {}", tool.getId());
             
