@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import { ToastContainer, toast } from 'react-toastify'; // Import Toast
@@ -14,7 +15,7 @@ const URLFormatter = () => {
   // Hàm gọi API encode
   const handleEncode = async (text) => {
     try {
-      const response = await fetch('http://localhost:8080/tool/url-formatter/encode', {
+      const response = await apiFetch('/tool/url-formatter/encode', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -37,7 +38,7 @@ const URLFormatter = () => {
   // Hàm gọi API decode
   const handleDecode = async (text) => {
     try {
-      const response = await fetch('http://localhost:8080/tool/url-formatter/decode', {
+      const response = await apiFetch('/tool/url-formatter/decode', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from "react";
 import { Card, Form, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
@@ -28,7 +29,7 @@ const ForgotPassword = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/forgot-password", {
+      const response = await apiFetch("/api/auth/forgot-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

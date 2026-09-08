@@ -1,21 +1,25 @@
 package com.devtoolbox.backend.application.services.ServiceImpl;
 
 import com.devtoolbox.backend.application.services.JarLoaderService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Map;
+import java.util.jar.JarFile;
 
 @Service
 public class JarLoaderServiceImpl implements JarLoaderService {
@@ -23,112 +27,188 @@ public class JarLoaderServiceImpl implements JarLoaderService {
     @Autowired
     private ConfigurableApplicationContext applicationContext;
 
+    @Value("${app.plugins.runtime-loading-enabled:false}")
+    private boolean runtimeLoadingEnabled;
+
     // Lưu trữ các service đã nạp
     private final Map<String, Object> dynamicServices = new ConcurrentHashMap<>();
+    private final List<URLClassLoader> pluginClassLoaders = new CopyOnWriteArrayList<>();
 
     @Override
     public void loadJarFile(MultipartFile jarFile) throws Exception {
-        String jarDir = "uploaded-jars/";
+        if (!runtimeLoadingEnabled) {
+            throw new IllegalStateException(
+                "Runtime plugin loading is disabled. Set PLUGIN_RUNTIME_LOADING_ENABLED=true only for trusted plugins.");
+        }
+
         String originalFilename = jarFile.getOriginalFilename();
-        if (originalFilename == null || !originalFilename.endsWith(".jar")) {
+        if (jarFile.isEmpty() || originalFilename == null || !originalFilename.toLowerCase().endsWith(".jar")) {
             throw new IllegalArgumentException("Invalid file: " + originalFilename);
         }
 
-        Path path = Paths.get(jarDir + originalFilename);
-        Files.createDirectories(path.getParent());
+        String safeFilename = Paths.get(originalFilename).getFileName().toString();
+        Path jarDirectory = Paths.get("uploaded-jars").toAbsolutePath().normalize();
+        Path path = jarDirectory.resolve(safeFilename).normalize();
+        if (!path.startsWith(jarDirectory)) {
+            throw new IllegalArgumentException("Invalid JAR filename");
+        }
+
+        Files.createDirectories(jarDirectory);
         Files.write(path, jarFile.getBytes());
+
+        try (java.util.jar.JarFile ignored = new java.util.jar.JarFile(path.toFile())) {
+            // Opening the archive verifies that the upload is a readable JAR.
+        } catch (Exception ex) {
+            Files.deleteIfExists(path);
+            throw new IllegalArgumentException("Uploaded file is not a valid JAR", ex);
+        }
+
         System.out.println("Jar file saved to: " + path.toAbsolutePath());
 
-        // Nạp file .jar vào runtime
-        loadJarIntoRuntime(path.toAbsolutePath().toString());
-
-        // Đăng ký các bean từ file .jar
-        registerBeansFromJar(path.toAbsolutePath().toString());
+        URLClassLoader classLoader = createPluginClassLoader(path);
+        pluginClassLoaders.add(classLoader);
+        registerBeansFromJar(path, classLoader);
     }
 
-    private void loadJarIntoRuntime(String jarFilePath) throws Exception {
-        File jarFile = new File(jarFilePath);
-        if (!jarFile.exists()) {
-            throw new IllegalArgumentException("Jar file does not exist: " + jarFilePath);
-        }
+    private URLClassLoader createPluginClassLoader(Path jarPath) throws Exception {
+        Path runtimeDirectory = jarPath.getParent()
+                .resolve(".runtime")
+                .resolve(jarPath.getFileName().toString().replaceFirst("(?i)\\.jar$", ""));
+        Path classesDirectory = runtimeDirectory.resolve("classes");
+        Path librariesDirectory = runtimeDirectory.resolve("lib");
+        Files.createDirectories(classesDirectory);
+        Files.createDirectories(librariesDirectory);
 
-        System.out.println("Loading jar file: " + jarFilePath);
-        URL jarUrl = jarFile.toURI().toURL();
-        System.out.println("Jar URL: " + jarUrl);
-
-        // Sử dụng URLClassLoader để xử lý Spring Boot fat jar
-        try (URLClassLoader classLoader = new URLClassLoader(new URL[]{jarUrl}, getClass().getClassLoader())) {
-            Thread.currentThread().setContextClassLoader(classLoader);
-            System.out.println("Jar file loaded into runtime using LaunchedURLClassLoader: " + jarFilePath);
-        } catch (Exception e) {
-            throw new RuntimeException("Failed to load jar file into runtime: " + jarFilePath, e);
-        }
-    }
-
-    private void registerBeansFromJar(String jarFilePath) throws Exception {
-        System.out.println("Starting to register beans from jar: " + jarFilePath);
-        List<Class<?>> classes = getClassesFromJar(jarFilePath);
-        System.out.println("Total classes found: " + classes.size());
-
-        for (Class<?> clazz : classes) {
-            System.out.println("Processing class: " + clazz.getName());
-            if (clazz.isAnnotationPresent(org.springframework.stereotype.Service.class) ||
-                clazz.isAnnotationPresent(org.springframework.stereotype.Component.class)) {
-                try {
-                    // Sử dụng Spring để khởi tạo bean với dependency injection
-                    Object bean = applicationContext.getAutowireCapableBeanFactory().createBean(clazz);
-                    applicationContext.getBeanFactory().registerSingleton(clazz.getName(), bean);
-                    applicationContext.getAutowireCapableBeanFactory().initializeBean(bean, clazz.getName());
-                    dynamicServices.put(clazz.getSimpleName(), bean); // Lưu service vào Map
-                    System.out.println("Registered bean: " + clazz.getName() + "Simple name:" + clazz.getSimpleName());
-                } catch (Exception e) {
-                    System.err.println("Failed to register bean: " + clazz.getName());
-                    e.printStackTrace();
+        List<URL> classpath = new ArrayList<>();
+        boolean fatJar = false;
+        try (JarFile jarFile = new JarFile(jarPath.toFile())) {
+            for (var entries = jarFile.entries(); entries.hasMoreElements();) {
+                var entry = entries.nextElement();
+                String entryName = entry.getName();
+                if (entry.isDirectory()) {
+                    continue;
                 }
-            } else {
-                System.out.println("Class " + clazz.getName() + " is not annotated with @Service or @Component. Skipping.");
+
+                Path target = null;
+                if (entryName.startsWith("BOOT-INF/classes/")) {
+                    fatJar = true;
+                    target = classesDirectory.resolve(entryName.substring("BOOT-INF/classes/".length())).normalize();
+                    if (!target.startsWith(classesDirectory)) {
+                        throw new IllegalArgumentException("Unsafe entry in JAR: " + entryName);
+                    }
+                } else if (entryName.startsWith("BOOT-INF/lib/") && entryName.endsWith(".jar")) {
+                    fatJar = true;
+                    target = librariesDirectory.resolve(Paths.get(entryName).getFileName().toString()).normalize();
+                }
+
+                if (target != null) {
+                    Files.createDirectories(target.getParent());
+                    try (var input = jarFile.getInputStream(entry)) {
+                        Files.copy(input, target, StandardCopyOption.REPLACE_EXISTING);
+                    }
+                }
             }
         }
-        System.out.println("Finished registering beans from jar: " + jarFilePath);
+
+        if (fatJar) {
+            classpath.add(classesDirectory.toUri().toURL());
+            try (var libraries = Files.list(librariesDirectory)) {
+                libraries.filter(file -> file.getFileName().toString().endsWith(".jar"))
+                        .map(this::toUrl)
+                        .forEach(classpath::add);
+            }
+        } else {
+            classpath.add(jarPath.toUri().toURL());
+        }
+
+        return new URLClassLoader(classpath.toArray(new URL[0]), getClass().getClassLoader());
     }
 
-    private List<Class<?>> getClassesFromJar(String jarFilePath) throws Exception {
-        System.out.println("Starting to get classes from jar: " + jarFilePath);
+    private URL toUrl(Path path) {
+        try {
+            return path.toUri().toURL();
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Invalid plugin classpath entry: " + path, ex);
+        }
+    }
+
+    private void registerBeansFromJar(Path jarPath, ClassLoader classLoader) throws Exception {
+        List<Class<?>> classes = getClassesFromJar(jarPath, classLoader);
+        for (Class<?> clazz : classes) {
+            if (clazz.isAnnotationPresent(org.springframework.stereotype.Service.class)
+                    || clazz.isAnnotationPresent(org.springframework.stereotype.Component.class)) {
+                Object bean = applicationContext.getAutowireCapableBeanFactory().createBean(clazz);
+                if (!applicationContext.containsBean(clazz.getName())) {
+                    applicationContext.getBeanFactory().registerSingleton(clazz.getName(), bean);
+                }
+                dynamicServices.put(clazz.getSimpleName(), bean);
+            }
+        }
+    }
+
+    private List<Class<?>> getClassesFromJar(Path jarPath, ClassLoader classLoader) throws Exception {
         List<Class<?>> classes = new ArrayList<>();
-        try (java.util.jar.JarFile jarFile = new java.util.jar.JarFile(jarFilePath)) {
+        try (JarFile jarFile = new JarFile(jarPath.toFile())) {
             jarFile.stream()
                 .filter(entry -> entry.getName().startsWith("BOOT-INF/classes/") && entry.getName().endsWith(".class"))
                 .forEach(entry -> {
                     String className = entry.getName()
-                        .replace("BOOT-INF/classes/", "") // Loại bỏ tiền tố BOOT-INF/classes/
-                        .replace("/", ".") // Thay dấu "/" bằng "."
-                        .replace(".class", ""); // Loại bỏ đuôi .class
+                        .replace("BOOT-INF/classes/", "")
+                        .replace("/", ".")
+                        .replace(".class", "");
 
-                    // Chỉ lấy các lớp trong 3 package cần thiết
                     if (className.startsWith("com.")) {
                         try {
-                            System.out.println("Attempting to load class: " + className);
-                            Class<?> clazz = Class.forName(className, true, Thread.currentThread().getContextClassLoader());
-                            classes.add(clazz);
-                            System.out.println("Successfully loaded class: " + className);
-                        } catch (ClassNotFoundException e) {
-                            System.err.println("Class not found: " + className);
-                        } catch (Exception e) {
-                            System.err.println("Failed to load class: " + className);
+                            classes.add(Class.forName(className, true, classLoader));
+                        } catch (ReflectiveOperationException | LinkageError ex) {
+                            throw new IllegalStateException("Failed to load plugin class: " + className, ex);
                         }
-                    } else {
-                        System.out.println("Class " + className + " does not match required packages. Skipping.");
                     }
                 });
-        } catch (Exception e) {
-            System.err.println("Error while reading jar file: " + jarFilePath);
-            e.printStackTrace();
         }
-        System.out.println("Finished getting classes from jar. Total classes loaded: " + classes.size());
         return classes;
     }
 
     public Map<String, Object> getDynamicServices() {
         return dynamicServices;
     }
+
+    // @PostConstruct
+    // public void initialize() {
+    //     try {
+    //         String jarDir = "uploaded-jars/";
+    //         File folder = new File(jarDir);
+    //         if (!folder.exists() || !folder.isDirectory()) {
+    //             System.out.println("Jar directory does not exist. Creating directory: " + jarDir);
+    //             folder.mkdirs();
+    //             return;
+    //         }
+
+    //         File[] jarFiles = folder.listFiles((dir, name) -> name.endsWith(".jar"));
+    //         if (jarFiles == null || jarFiles.length == 0) {
+    //             System.out.println("No jar files found in directory: " + jarDir);
+    //             return;
+    //         }
+
+    //         for (File jarFile : jarFiles) {
+    //             System.out.println("Found jar file: " + jarFile.getName());
+    //             loadJarFile(jarFile);
+    //         }
+    //     } catch (Exception e) {
+    //         System.err.println("Error during initialization: " + e.getMessage());
+    //         e.printStackTrace();
+    //     }
+    // }
+
+    // // Overloaded method to load jar from File object
+    // public void loadJarFile(File jarFile) throws Exception {
+    //     String jarFilePath = jarFile.getAbsolutePath();
+    //     System.out.println("Loading jar file: " + jarFilePath);
+
+    //     // Nạp file .jar vào runtime
+    //     loadJarIntoRuntime(jarFilePath);
+
+    //     // Đăng ký các bean từ file .jar
+    //     registerBeansFromJar(jarFilePath);
+    // }
 }

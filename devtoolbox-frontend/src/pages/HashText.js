@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect, useCallback } from 'react';
 import { Form, InputGroup, Button, Dropdown, DropdownButton } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; 
@@ -25,8 +26,8 @@ const HashText = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/tool/hash/${encoding}?text=${encodeURIComponent(text)}`
+      const response = await apiFetch(
+        `/tool/hash/${encoding}?text=${encodeURIComponent(text)}`
       );
       if (response.ok) {
         const results = await response.json();

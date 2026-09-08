@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Header from "../components/Header";
@@ -15,7 +16,7 @@ const VerifyEmail = () => {
   const token = queryParams.get("token");
 
   if (token) {
-    fetch(`http://localhost:8080/api/auth/verify?token=${token}`, {
+    apiFetch(`/api/auth/verify?token=${token}`, {
       method: "GET", // Sử dụng GET thay vì POST
     })
       .then((response) => {

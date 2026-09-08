@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Row, Col, Table, InputGroup, Badge } from 'react-bootstrap';
 import ToolHeader from '../components/ToolHeader';
@@ -26,7 +27,7 @@ const PhoneParser = () => {
   // Fetch list of countries from API
   const fetchCountries = async () => {
     try {
-      const response = await fetch('http://localhost:8080/tool/phone-parser/countries');
+      const response = await apiFetch('/tool/phone-parser/countries');
       if (response.ok) {
         const data = await response.json();
         setCountries(data.countries || []);
@@ -45,7 +46,7 @@ const PhoneParser = () => {
     
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/tool/phone-parser/parse', {
+      const response = await apiFetch('/tool/phone-parser/parse', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

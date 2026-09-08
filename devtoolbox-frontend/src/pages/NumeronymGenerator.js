@@ -1,6 +1,7 @@
+import apiFetch from '../config/api';
 import React, { useState, useRef } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
-import { Clipboard, ArrowClockwise } from 'react-bootstrap-icons';
+import { ArrowClockwise } from 'react-bootstrap-icons';
 import ToolHeader from '../components/ToolHeader';
 import '../styles/ToolLayout.css';
 import '../styles/Card.css';
@@ -21,7 +22,7 @@ const NumeronymGenerator = () => {
     
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/tool/numeronym/generate', {
+      const response = await apiFetch('/tool/numeronym/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

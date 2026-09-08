@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -23,14 +24,14 @@ const ToolCard = ({ tool, isFavorite }) => {
     e.stopPropagation();
     if (!currentUser) return;
     if (favorite) {
-      await fetch(`http://localhost:8080/api/favorite/remove?userId=${currentUser.userId}&toolId=${tool.id}`, {
+      await apiFetch(`/api/favorite/remove?userId=${currentUser.userId}&toolId=${tool.id}`, {
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       });
     } else {
-      await fetch(`http://localhost:8080/api/favorite/add?userId=${currentUser.userId}&toolId=${tool.id}`, {
+      await apiFetch(`/api/favorite/add?userId=${currentUser.userId}&toolId=${tool.id}`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),

@@ -22,6 +22,15 @@ public class DynamicToolController {
             @RequestBody Map<String, Object> params) {
         try {
             Object result = dynamicToolService.invokeTool(serviceName, methodName, params);
+
+            // Kiểm tra nếu kết quả là chuỗi RAW
+            if (result instanceof String) {
+                return ResponseEntity.ok()
+                        .header("Content-Type", "text/plain") // Đặt Content-Type là text/plain
+                        .body(result);
+            }
+
+            // Mặc định trả về JSON
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();

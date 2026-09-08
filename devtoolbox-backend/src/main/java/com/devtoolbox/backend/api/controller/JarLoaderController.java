@@ -5,10 +5,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/api/tools")
-@CrossOrigin(origins = "*")
 public class JarLoaderController {
 
     private final JarLoaderService jarLoaderService;
@@ -18,6 +18,7 @@ public class JarLoaderController {
     }
 
     @PostMapping("/upload-jar")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<String> uploadJar(@RequestParam("file") MultipartFile jarFile) {
         try {
             jarLoaderService.loadJarFile(jarFile);

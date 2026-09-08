@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Row, Col, InputGroup, ButtonGroup, ToggleButton, Spinner } from 'react-bootstrap';
 import { Clipboard, ArrowRepeat } from 'react-bootstrap-icons';
@@ -26,6 +27,8 @@ const MacAddressGenerator = () => {
   // Tự động tạo địa chỉ MAC khi trang tải
   useEffect(() => {
     generateMacAddresses();
+    // Generate the initial value once; later generations are user-triggered.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   // Validate tiền tố khi người dùng nhập
@@ -37,14 +40,14 @@ const MacAddressGenerator = () => {
     }
     
     // Kiểm tra định dạng
-    const regex = /^([0-9A-Fa-f]{2}[:\-\.]?){0,5}$/;
+    const regex = /^([0-9A-Fa-f]{2}[:.-]?){0,5}$/;
     if (!regex.test(value)) {
       setPrefixError('Tiền tố không hợp lệ. Sử dụng định dạng như XX:XX:XX');
       return false;
     }
     
     // Kiểm tra độ dài
-    const normalizedPrefix = value.replace(/[:\-\.]/g, '');
+    const normalizedPrefix = value.replace(/[:.-]/g, '');
     if (normalizedPrefix.length > 10) { // Tối đa 5 octet (10 ký tự hex)
       setPrefixError('Tiền tố quá dài. Tối đa 5 octet');
       return false;
@@ -77,7 +80,7 @@ const MacAddressGenerator = () => {
     try {
       setLoading(true);
       
-      const response = await fetch('http://localhost:8080/tool/mac-address/generate', {
+      const response = await apiFetch('/tool/mac-address/generate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -25,7 +25,7 @@ public class CategoryController {
     }
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> createCategory(@RequestBody Map<String, String> categoryData) {
         try {
             // Lấy dữ liệu từ request

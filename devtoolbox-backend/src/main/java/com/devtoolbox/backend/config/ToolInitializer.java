@@ -12,10 +12,10 @@ import com.devtoolbox.backend.data.repositories.CategoryRepository;
 import com.devtoolbox.backend.data.repositories.ToolRepository;
 
 @Configuration
-@Order(2) // Đảm bảo rằng ToolInitializer được thực thi sau CategoryInitializer
 public class ToolInitializer {
 
     @Bean
+    @Order(2) // Run after CategoryInitializer has persisted the required categories.
     public CommandLineRunner initializeTools(ToolRepository toolRepository, CategoryRepository categoryRepository) {
         return args -> {
             // Danh sách các tool cần khởi tạo

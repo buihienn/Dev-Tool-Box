@@ -1,8 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import App from './App';
+import { resolveApiUrl } from './config/api';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+test('builds a backend URL from a relative API path', () => {
+  expect(resolveApiUrl('/api/categories/all', '/'))
+    .toBe('/api/categories/all');
+});
+
+test('does not modify an absolute URL', () => {
+  expect(resolveApiUrl('https://example.com/status', ''))
+    .toBe('https://example.com/status');
 });

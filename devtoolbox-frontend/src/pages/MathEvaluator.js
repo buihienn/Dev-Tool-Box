@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Button, Alert, Row, Col } from 'react-bootstrap';
 
@@ -23,7 +24,7 @@ const MathEvaluator = () => {
     try {
       // Mã hóa biểu thức để tránh các vấn đề với URL
       const encodedExpression = encodeURIComponent(expression.trim());
-      const response = await fetch(`http://localhost:8080/tool/math/evaluate?expression=${encodedExpression}`, {
+      const response = await apiFetch(`/tool/math/evaluate?expression=${encodedExpression}`, {
         method: 'GET',
       });
 

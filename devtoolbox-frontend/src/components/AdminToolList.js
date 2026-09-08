@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Table, Form, Button, Spinner, Alert, Row, Col } from 'react-bootstrap';
 import { Trash, PlusCircle, CaretUpFill, CaretDownFill } from 'react-bootstrap-icons';
@@ -62,7 +63,7 @@ const AdminToolList = () => {
   
   const fetchAllCategories = async () => {
     try {
-      const response = await fetch('http://localhost:8080/api/categories/all');
+      const response = await apiFetch('/api/categories/all');
       if (!response.ok) {
         throw new Error('Không thể tải danh sách danh mục');
       }
@@ -89,7 +90,7 @@ const AdminToolList = () => {
       ));
       
       // Gọi API để cập nhật trạng thái premium
-      const response = await fetch(`http://localhost:8080/api/admin/toggle-premium`, {
+      const response = await apiFetch(`/api/admin/toggle-premium`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -159,7 +160,7 @@ const AdminToolList = () => {
       ));
       
       // Gọi API để cập nhật trạng thái
-      const response = await fetch(`http://localhost:8080/api/admin/toggle-status`, {
+      const response = await apiFetch(`/api/admin/toggle-status`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -217,7 +218,7 @@ const AdminToolList = () => {
   const handleDeleteTool = async (id) => {
     if (window.confirm('Bạn có chắc chắn muốn xóa công cụ này không?')) {
       try {
-        const response = await fetch(`http://localhost:8080/api/doTool/deletById/${id}`, {
+        const response = await apiFetch(`/api/doTool/deletById/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`, // Thêm token nếu cần
@@ -284,7 +285,7 @@ const AdminToolList = () => {
     setAddingCategory(true);
     
     try {
-      const response = await fetch('http://localhost:8080/api/categories/create', {
+      const response = await apiFetch('/api/categories/create', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -344,7 +345,7 @@ const AdminToolList = () => {
       const jarFormData = new FormData();
       jarFormData.append('file', newToolFileJar);
   
-      const jarRes = await fetch('http://localhost:8080/api/tools/upload-jar', {
+      const jarRes = await apiFetch('/api/tools/upload-jar', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -364,7 +365,7 @@ const AdminToolList = () => {
       formData.append('category', newToolCategory);
       formData.append('id', newToolId);
   
-      const response = await fetch('http://localhost:8080/api/admin/tools/upload', {
+      const response = await apiFetch('/api/admin/tools/upload', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`

@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Table } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
@@ -11,7 +12,7 @@ const JWTParser = () => {
 
   const parseJWT = async (jwt) => {
     try {
-      const response = await fetch('http://localhost:8080/tool/jwt-parser/parse', {
+      const response = await apiFetch('/tool/jwt-parser/parse', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

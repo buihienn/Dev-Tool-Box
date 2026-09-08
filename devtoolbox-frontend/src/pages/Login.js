@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from "react";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { Card, Form, Button, InputGroup } from "react-bootstrap";
@@ -42,7 +43,7 @@ const Login = () => {
           );
           if (resend) {
             try {
-              const resendResponse = await fetch("http://localhost:8080/api/auth/resend-verification", {
+              const resendResponse = await apiFetch("/api/auth/resend-verification", {
                 method: "POST",
                 headers: {
                   "Content-Type": "application/json",

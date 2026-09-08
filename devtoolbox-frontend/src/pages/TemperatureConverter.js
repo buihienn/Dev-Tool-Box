@@ -17,9 +17,6 @@ const TemperatureConverter = () => {
 
   // State để lưu trữ giá trị của từng đơn vị nhiệt độ
   const [temperatures, setTemperatures] = useState({});
-  // State để theo dõi đơn vị nào đang được chỉnh sửa để tránh vòng lặp vô hạn
-  const [activeUnit, setActiveUnit] = useState(null);
-
   // Khởi tạo state với giá trị mặc định
   useEffect(() => {
     const initialTemperatures = {};
@@ -27,6 +24,8 @@ const TemperatureConverter = () => {
       initialTemperatures[unit.id] = unit.defaultValue;
     });
     setTemperatures(initialTemperatures);
+    // The unit definition is static for the lifetime of this page.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Hàm chuyển đổi từ bất kỳ đơn vị nào sang Kelvin
@@ -79,9 +78,6 @@ const TemperatureConverter = () => {
 
   // Hàm xử lý khi người dùng thay đổi giá trị ở một đơn vị
   const handleTemperatureChange = (value, unit) => {
-    // Đặt đơn vị đang được chỉnh sửa
-    setActiveUnit(unit);
-    
     // Chuyển đổi giá trị sang số
     const numericValue = parseFloat(value);
     
@@ -104,16 +100,6 @@ const TemperatureConverter = () => {
     
     // Cập nhật state với tất cả các giá trị đã chuyển đổi
     setTemperatures(newTemperatures);
-  };
-
-  // Định dạng số để hiển thị
-  const formatNumber = (number) => {
-    // Kiểm tra nếu là số nguyên
-    if (Number.isInteger(number)) {
-      return number.toString();
-    }
-    // Nếu là số thập phân, giữ tối đa 2 chữ số thập phân
-    return number.toFixed(2).replace(/\.?0+$/, '');
   };
 
   return (

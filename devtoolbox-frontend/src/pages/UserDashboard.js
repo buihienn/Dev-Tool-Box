@@ -1,5 +1,5 @@
 import React from 'react';
-import { Container, Badge, Spinner, Alert } from 'react-bootstrap';
+import { Container, Spinner, Alert } from 'react-bootstrap';
 import { Tools, ClockHistory, HeartFill } from 'react-bootstrap-icons';
 import ToolCard from '../components/ToolCard';
 import CategoryIcon from '../components/CategoryIcon';

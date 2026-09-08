@@ -6,16 +6,27 @@ import com.devtoolbox.backend.data.repositories.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 public class AdminInitializer {
 
     @Bean
-    public CommandLineRunner initializeAdmin(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public CommandLineRunner initializeAdmin(
+            UserRepository userRepository,
+            PasswordEncoder passwordEncoder,
+            @Value("${ADMIN_EMAIL:}") String adminEmail,
+            @Value("${ADMIN_PASSWORD:}") String adminPassword) {
         return args -> {
-            String adminEmail = "admin@gmail.com";
-            String adminPassword = "admin123";
+            if (adminEmail.isBlank() || adminPassword.isBlank()) {
+                System.out.println("Admin account initialization skipped. Set ADMIN_EMAIL and ADMIN_PASSWORD to create one.");
+                return;
+            }
+
+            if (adminPassword.length() < 12) {
+                throw new IllegalStateException("ADMIN_PASSWORD must contain at least 12 characters.");
+            }
 
             // Kiểm tra xem admin đã tồn tại chưa
             if (userRepository.findByEmail(adminEmail).isEmpty()) {
@@ -26,7 +37,7 @@ public class AdminInitializer {
                 admin.setVerified(true); // Đánh dấu tài khoản đã xác minh
                 admin.setPremium(true);; // Đánh dấu tài khoản đã kích hoạt
                 userRepository.save(admin);
-                System.out.println("Admin account created: " + adminEmail);
+                System.out.println("Admin account created from environment configuration: " + adminEmail);
             } else {
                 System.out.println("Admin account already exists.");
             }

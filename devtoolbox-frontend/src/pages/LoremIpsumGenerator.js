@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup, Row, Col } from 'react-bootstrap';
 import { ArrowClockwise, Clipboard } from 'react-bootstrap-icons';
@@ -21,8 +22,8 @@ const LoremIpsumGenerator = () => {
   const handleGenerateText = async () => {
     try {
       setLoading(true);
-      const response = await fetch(
-        `http://localhost:8080/tool/lorem-ipsum/generate?paragraphs=${paragraphs}&minSentences=${minSentences}&maxSentences=${maxSentences}&minWords=${minWords}&maxWords=${maxWords}&startWithLorem=${startWithLorem}&asHtml=${asHtml}`, 
+      const response = await apiFetch(
+        `/tool/lorem-ipsum/generate?paragraphs=${paragraphs}&minSentences=${minSentences}&maxSentences=${maxSentences}&minWords=${minWords}&maxWords=${maxWords}&startWithLorem=${startWithLorem}&asHtml=${asHtml}`,
         {
           method: "GET",
         }
@@ -52,6 +53,8 @@ const LoremIpsumGenerator = () => {
   // Tạo văn bản ngay khi component mount
   React.useEffect(() => {
     handleGenerateText();
+    // Generate the initial sample once; later generations are user-triggered.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

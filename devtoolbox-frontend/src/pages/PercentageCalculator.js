@@ -1,11 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, Form, Row, Col, Alert, Tab, Nav } from 'react-bootstrap';
 import ToolHeader from '../components/ToolHeader';
 
 const PercentageCalculator = () => {
-  // State cho thông tin tool
-  const [toolInfo, setToolInfo] = useState({ name: '', description: '' });
-
   // State cho tab thứ nhất: X% của Y là gì?
   const [percentOfValue, setPercentOfValue] = useState({ percent: '', value: '', result: null });
 

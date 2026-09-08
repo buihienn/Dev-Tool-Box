@@ -1,6 +1,7 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Button, Row, Col, Table, InputGroup, Badge } from 'react-bootstrap';
-import { Clipboard, Check2Circle, XCircle, CreditCard2Front, Calendar3 } from 'react-bootstrap-icons';
+import { Card, Form, Button, Row, Col, Table, Badge } from 'react-bootstrap';
+import { Clipboard, Check2Circle, XCircle, CreditCard2Front } from 'react-bootstrap-icons';
 import ToolHeader from '../components/ToolHeader';
 import '../styles/ToolLayout.css';
 import '../styles/Card.css';
@@ -22,7 +23,7 @@ const CreditCardValidator = () => {
   // Fetch credit card examples from API
   const fetchExamples = async () => {
     try {
-      const response = await fetch('http://localhost:8080/tool/credit-card/examples');
+      const response = await apiFetch('/tool/credit-card/examples');
       if (response.ok) {
         const data = await response.json();
         setExamples(data.examples || []);
@@ -78,7 +79,7 @@ const CreditCardValidator = () => {
     
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/tool/credit-card/validate', {
+      const response = await apiFetch('/tool/credit-card/validate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -118,7 +119,7 @@ const CreditCardValidator = () => {
   const validateCard = async (number, expiry, cardCvv) => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/tool/credit-card/validate', {
+      const response = await apiFetch('/tool/credit-card/validate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

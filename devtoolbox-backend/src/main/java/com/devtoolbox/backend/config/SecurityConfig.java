@@ -10,6 +10,9 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
+import org.springframework.http.HttpMethod;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,15 +26,25 @@ import com.devtoolbox.backend.data.entities.Role;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final UserService userService;
     private final ToolService toolService;
+    private final List<String> allowedOrigins;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, UserService userService, ToolService toolService) {
+    public SecurityConfig(
+            JwtAuthenticationFilter jwtAuthenticationFilter,
+            UserService userService,
+            ToolService toolService,
+            @Value("${app.cors.allowed-origins:http://localhost:3000}") String allowedOrigins) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.userService = userService;
         this.toolService = toolService;
+        this.allowedOrigins = List.of(allowedOrigins.split(",")).stream()
+                .map(String::trim)
+                .filter(origin -> !origin.isBlank())
+                .toList();
     }
 
     @Bean
@@ -39,7 +52,7 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable)
             .cors(cors -> cors.configurationSource(request -> {
                 var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
-                corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000")); // Cho phép frontend truy cập
+                corsConfiguration.setAllowedOrigins(allowedOrigins);
                 corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
                 corsConfiguration.setAllowedHeaders(List.of("*")); // Cho phep ta ca header
                 corsConfiguration.setAllowCredentials(true); // Cho phep gui cookie 
@@ -47,13 +60,11 @@ public class SecurityConfig {
             }))
             .authorizeHttpRequests(request -> request
                 .requestMatchers("/api/auth/**").permitAll()
-                .requestMatchers("/api/tools/**").permitAll()
-                .requestMatchers("/api/categories/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/api/categories/all").permitAll()
                 .requestMatchers("/api/doTool/getAll").permitAll()
-                .requestMatchers("/api/doTool//deletById").hasAuthority(Role.ADMIN.name())
-                .requestMatchers("/api/token/generate").hasAuthority(Role.ADMIN.name())
-                .requestMatchers("/app/admin/**").hasAuthority(Role.ADMIN.name())
-                .requestMatchers("/app/user/**").hasAuthority(Role.USER.name())
+                .requestMatchers("/api/admin/**", "/api/tools/**", "/api/thin-jar/**", "/api/categories/**")
+                    .hasAuthority(Role.ADMIN.name())
+                .requestMatchers(HttpMethod.DELETE, "/api/doTool/deletById/**").hasAuthority(Role.ADMIN.name())
                 .requestMatchers("/api/user/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                 .requestMatchers("/api/favorite/**").hasAnyAuthority(Role.USER.name(), Role.ADMIN.name())
                 .requestMatchers("/tool/**").permitAll() // dùng để chạy các tool

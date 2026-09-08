@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Row, Col, InputGroup, Alert } from 'react-bootstrap';
 import { Clipboard, Check2Circle, ArrowRight } from 'react-bootstrap-icons';
@@ -29,7 +30,7 @@ const Ipv4Converter = () => {
       setLoading(true);
       
       // Sử dụng phương thức GET để tránh vấn đề CORS và vấn đề 403
-      const response = await fetch(`http://localhost:8080/tool/ipv4/convert?ipAddress=${encodeURIComponent(ipAddress)}`, {
+      const response = await apiFetch(`/tool/ipv4/convert?ipAddress=${encodeURIComponent(ipAddress)}`, {
         method: 'GET',
       });
       

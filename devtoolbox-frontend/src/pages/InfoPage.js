@@ -7,16 +7,19 @@ const InfoPage = () => (
     <div
       className="container py-5 d-flex flex-column justify-content-center align-items-center"
     >
-      <div style={{ maxWidth: 600 }}>
+      <div style={{ maxWidth: 720 }}>
         <h2 className="fw-bold mb-4 text-center" style={{color: "#043A84"}}>Giới thiệu về Dev-Tool-Box</h2>
-        <p className="text-center">
-          <b style={{color: "#043A84"}}>Dev-Tool-Box</b> là nền tảng web cung cấp bộ công cụ tiện ích cho lập trình viên:
+        <p className="text-center fs-5">
+          <b style={{color: "#043A84"}}>DevToolBox</b> tập hợp các tiện ích thường dùng của lập trình viên trong một không gian làm việc nhanh, gọn và dễ tìm kiếm.
+        </p>
+        <p className="text-center text-muted mb-4">
+          Thay vì phải mở nhiều trang web khác nhau, bạn có thể chuyển đổi dữ liệu, tạo mã, kiểm tra định dạng và xử lý các tác vụ kỹ thuật hằng ngày ngay tại một nơi.
         </p>
         <ul>
-          <li>Hơn 20 công cụ chuyển đổi, kiểm tra, sinh mã, phân tích dữ liệu, ...</li>
-          <li>Quản lý công cụ yêu thích, công cụ gần đây</li>
-          <li>Hỗ trợ tài khoản Premium với nhiều quyền lợi</li>
-          <li>Giao diện đơn giản, dễ sử dụng.</li>
+          <li>Khoảng 30 công cụ về chuyển đổi, mã hóa, mạng, văn bản, dữ liệu và tính toán.</li>
+          <li>Tìm kiếm nhanh, lưu công cụ yêu thích và truy cập lịch sử sử dụng gần đây.</li>
+          <li>Hỗ trợ tài khoản người dùng, công cụ Premium và khu vực quản trị.</li>
+          <li>Giao diện trực quan, phù hợp cho học tập và công việc phát triển phần mềm.</li>
           <li>
             Phát triển bởi{" "}
             <a

@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; 
@@ -15,8 +16,8 @@ const TextToNatoAlphabet = () => {
     }
 
     try {
-      const response = await fetch(
-        `http://localhost:8080/tool/text-to-nato-alphabet/convert?text=${encodeURIComponent(text)}`,
+      const response = await apiFetch(
+        `/tool/text-to-nato-alphabet/convert?text=${encodeURIComponent(text)}`,
         {
           method: 'GET',
         }

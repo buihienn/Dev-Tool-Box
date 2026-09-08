@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import fetchToolsData from '../data/toolsData';
 import { Heart, HeartFill } from "react-bootstrap-icons";
@@ -41,7 +42,7 @@ const ToolHeader = ({ toolId, defaultName = '', defaultDescription = '' }) => {
 
     // Kiểm tra trạng thái favorite
     if (toolId && currentUser) {
-      fetch(`http://localhost:8080/api/favorite/is-favorite?userId=${currentUser.userId}&toolId=${toolId}`, {
+      apiFetch(`/api/favorite/is-favorite?userId=${currentUser.userId}&toolId=${toolId}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
@@ -55,7 +56,7 @@ const ToolHeader = ({ toolId, defaultName = '', defaultDescription = '' }) => {
   const handleFavorite = async (e) => {
     if (!currentUser) return;
     if (isFavorite) {
-      await fetch(`http://localhost:8080/api/favorite/remove?userId=${currentUser.userId}&toolId=${toolId}`, {
+      await apiFetch(`/api/favorite/remove?userId=${currentUser.userId}&toolId=${toolId}`, {
         method: "DELETE",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
@@ -63,7 +64,7 @@ const ToolHeader = ({ toolId, defaultName = '', defaultDescription = '' }) => {
       });
       setIsFavorite(false);
     } else {
-      await fetch(`http://localhost:8080/api/favorite/add?userId=${currentUser.userId}&toolId=${toolId}`, {
+      await apiFetch(`/api/favorite/add?userId=${currentUser.userId}&toolId=${toolId}`, {
         method: "POST",
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),

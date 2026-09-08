@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; // Import CSS
@@ -9,8 +10,8 @@ const XMLToJSON = () => {
 
   const handleConvertToJSON = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/tool/xml-to-json/convert`,
+      const response = await apiFetch(
+        `/tool/xml-to-json/convert`,
         {
           method: 'POST',
           headers: {

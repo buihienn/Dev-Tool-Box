@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState }from 'react';
 import { Card, Form, Button, InputGroup, ToggleButton } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
@@ -13,7 +14,7 @@ const TokenGeneratorTool = () => {
 
 const handleGenerateToken = async () => {
   try {
-    const response = await fetch(`http://localhost:8080/tool/token/generate?uppercase=${uppercase}&lowercase=${lowercase}&numbers=${numbers}&symbols=${symbols}&length=${length}`, {
+    const response = await apiFetch(`/tool/token/generate?uppercase=${uppercase}&lowercase=${lowercase}&numbers=${numbers}&symbols=${symbols}&length=${length}`, {
       method: "GET",
     });
 
