@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 
@@ -9,7 +10,7 @@ export const useFavoriteTools = () => {
   const fetchFavoriteTools = async () => {
     if (!currentUser) return;
     try {
-      const res = await fetch(`http://localhost:8080/api/favorite/list?userId=${currentUser.userId}`, {
+      const res = await apiFetch(`/api/favorite/list?userId=${currentUser.userId}`, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

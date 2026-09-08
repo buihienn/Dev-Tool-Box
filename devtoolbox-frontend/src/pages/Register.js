@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Card, Form, Button, InputGroup } from "react-bootstrap";
@@ -57,7 +58,7 @@ const Register = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("http://localhost:8080/api/auth/signup", {
+      const response = await apiFetch("/api/auth/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

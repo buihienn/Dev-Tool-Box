@@ -10,10 +10,13 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class DevToolBoxBackendApplication {
 
 	public static void main(String[] args) {
-		Dotenv dotenv = Dotenv.configure().load();
-        System.setProperty("DB_PASSWORD", dotenv.get("DB_PASSWORD"));
-        System.setProperty("DB_USERNAME", dotenv.get("DB_USERNAME"));
-        System.setProperty("DB_URL", dotenv.get("DB_URL"));
+		Dotenv dotenv = Dotenv.configure().ignoreIfMissing().load();
+		dotenv.entries().forEach(entry -> {
+			String key = entry.getKey();
+			if (System.getenv(key) == null && System.getProperty(key) == null) {
+				System.setProperty(key, entry.getValue());
+			}
+		});
 
 		SpringApplication.run(DevToolBoxBackendApplication.class, args);
 	}

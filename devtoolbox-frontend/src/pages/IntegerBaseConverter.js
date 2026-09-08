@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; // Import CSS
@@ -20,8 +21,8 @@ const IntegerBaseConverter = () => {
       if (!inputNumber || inputBase < 2 || inputBase > 36) return;
 
       try {
-        const response = await fetch(
-          `http://localhost:8080/tool/base-converter/convert?inputNumber=${inputNumber}&inputBase=${inputBase}`,
+        const response = await apiFetch(
+          `/tool/base-converter/convert?inputNumber=${inputNumber}&inputBase=${inputBase}`,
           {
             method: 'GET',
           }

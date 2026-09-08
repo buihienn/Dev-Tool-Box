@@ -1,5 +1,6 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Button, Row, Col, Table, Badge, InputGroup } from 'react-bootstrap';
+import { Card, Form, Button, Table, InputGroup } from 'react-bootstrap';
 import { Clipboard, Check2Circle, XCircle } from 'react-bootstrap-icons';
 import ToolHeader from '../components/ToolHeader';
 import '../styles/ToolLayout.css';
@@ -20,7 +21,7 @@ const IbanValidator = () => {
   // Fetch IBAN examples from API
   const fetchExamples = async () => {
     try {
-      const response = await fetch('http://localhost:8080/tool/iban/examples');
+      const response = await apiFetch('/tool/iban/examples');
       if (response.ok) {
         const data = await response.json();
         setExamples(data.examples || []);
@@ -39,7 +40,7 @@ const IbanValidator = () => {
     
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/tool/iban/validate', {
+      const response = await apiFetch('/tool/iban/validate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -75,7 +76,7 @@ const IbanValidator = () => {
   const validateIban = async (iban) => {
     try {
       setLoading(true);
-      const response = await fetch('http://localhost:8080/tool/iban/validate', {
+      const response = await apiFetch('/tool/iban/validate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

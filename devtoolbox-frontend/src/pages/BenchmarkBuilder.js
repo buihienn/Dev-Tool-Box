@@ -1,9 +1,10 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
-import { Card, Form, Button, Row, Col, Table, Alert } from 'react-bootstrap';
+import { Card, Form, Button, Table, Alert } from 'react-bootstrap';
 import { PlusCircle, Trash, ClipboardCheck } from 'react-bootstrap-icons';
 import ToolHeader from '../components/ToolHeader';
 
-const API_BASE_URL = 'http://localhost:8080/tool/benchmark';
+const API_BASE_URL = '/tool/benchmark';
 
 const BenchmarkBuilder = () => {
   const [benchmarkId, setBenchmarkId] = useState(null);
@@ -18,6 +19,8 @@ const BenchmarkBuilder = () => {
     setLoading(true);
     
     createNewBenchmark();
+    // The initial unit is intentionally used only when the page is created.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   
   // Tạo benchmark mới
@@ -25,7 +28,7 @@ const BenchmarkBuilder = () => {
     try {
       setLoading(true);
       // Bước 1: Tạo benchmark mới
-      const response = await fetch(`${API_BASE_URL}/create`, {
+      const response = await apiFetch(`${API_BASE_URL}/create`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +48,7 @@ const BenchmarkBuilder = () => {
       
       // Tạo Suite 1
       suitePromises.push(
-        fetch(`${API_BASE_URL}/${data.id}/suite`, {
+        apiFetch(`${API_BASE_URL}/${data.id}/suite`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -56,7 +59,7 @@ const BenchmarkBuilder = () => {
       
       // Tạo Suite 2
       suitePromises.push(
-        fetch(`${API_BASE_URL}/${data.id}/suite`, {
+        apiFetch(`${API_BASE_URL}/${data.id}/suite`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -69,7 +72,7 @@ const BenchmarkBuilder = () => {
       await Promise.all(suitePromises);
       
       // Bước 3: Lấy dữ liệu benchmark sau khi đã thêm các suite
-      const updatedResponse = await fetch(`${API_BASE_URL}/${data.id}`);
+      const updatedResponse = await apiFetch(`${API_BASE_URL}/${data.id}`);
       
       if (!updatedResponse.ok) {
         throw new Error('Failed to fetch updated benchmark');
@@ -94,7 +97,7 @@ const BenchmarkBuilder = () => {
     
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/${benchmarkId}`);
+      const response = await apiFetch(`${API_BASE_URL}/${benchmarkId}`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch benchmark');
@@ -117,7 +120,7 @@ const BenchmarkBuilder = () => {
     
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/${benchmarkId}/suite`, {
+      const response = await apiFetch(`${API_BASE_URL}/${benchmarkId}/suite`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -144,7 +147,7 @@ const BenchmarkBuilder = () => {
     
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/${benchmarkId}/suite/${suiteId}`, {
+      const response = await apiFetch(`${API_BASE_URL}/${benchmarkId}/suite/${suiteId}`, {
         method: 'DELETE',
       });
       
@@ -167,7 +170,7 @@ const BenchmarkBuilder = () => {
     
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/${benchmarkId}/suite/${suiteId}/measure`, {
+      const response = await apiFetch(`${API_BASE_URL}/${benchmarkId}/suite/${suiteId}/measure`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -194,7 +197,7 @@ const BenchmarkBuilder = () => {
     
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/${benchmarkId}/suite/${suiteId}`, {
+      const response = await apiFetch(`${API_BASE_URL}/${benchmarkId}/suite/${suiteId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -226,7 +229,7 @@ const BenchmarkBuilder = () => {
     
     try {
       setLoading(true);
-      const response = await fetch(`${API_BASE_URL}/${benchmarkId}/unit`, {
+      const response = await apiFetch(`${API_BASE_URL}/${benchmarkId}/unit`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -253,7 +256,7 @@ const BenchmarkBuilder = () => {
     if (!benchmarkId) return;
     
     try {
-      const response = await fetch(`${API_BASE_URL}/${benchmarkId}/export/markdown`);
+      const response = await apiFetch(`${API_BASE_URL}/${benchmarkId}/export/markdown`);
       
       if (!response.ok) {
         throw new Error('Failed to generate markdown');
@@ -274,7 +277,7 @@ const BenchmarkBuilder = () => {
     if (!benchmarkId) return;
     
     try {
-      const response = await fetch(`${API_BASE_URL}/${benchmarkId}/export/bulletlist`);
+      const response = await apiFetch(`${API_BASE_URL}/${benchmarkId}/export/bulletlist`);
       
       if (!response.ok) {
         throw new Error('Failed to generate bullet list');

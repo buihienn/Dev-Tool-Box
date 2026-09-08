@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Row, Col, InputGroup, Alert, Table } from 'react-bootstrap';
 import { ArrowRight, Clipboard, Check2Circle } from 'react-bootstrap-icons';
@@ -31,7 +32,7 @@ const Ipv4RangeExpander = () => {
       setLoading(true);
       setError('');
       
-      const response = await fetch(`http://localhost:8080/tool/ipv4-range/calculate?startIp=${encodeURIComponent(startIp)}&endIp=${encodeURIComponent(endIp)}`, {
+      const response = await apiFetch(`/tool/ipv4-range/calculate?startIp=${encodeURIComponent(startIp)}&endIp=${encodeURIComponent(endIp)}`, {
         method: 'GET'
       });
       

@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
@@ -20,7 +21,7 @@ const ImageToBase64 = () => {
     formData.append('file', imageFile);
 
     try {
-      const response = await fetch('http://localhost:8080/tool/image-to-base64/convert', {
+      const response = await apiFetch('/tool/image-to-base64/convert', {
         method: 'POST',
         body: formData,
       });

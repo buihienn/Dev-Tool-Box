@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
@@ -12,8 +13,8 @@ const WiFiQRCodeGenerator = () => {
   // Hàm gọi API để tạo QR Code và hiển thị
   const generateQRCode = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/tool/wifi-qr-code/generate?ssid=${encodeURIComponent(ssid)}&password=${encodeURIComponent(password)}&hidden=${hidden}`,
+      const response = await apiFetch(
+        `/tool/wifi-qr-code/generate?ssid=${encodeURIComponent(ssid)}&password=${encodeURIComponent(password)}&hidden=${hidden}`,
         {
           method: 'GET',
         }
@@ -36,6 +37,8 @@ const WiFiQRCodeGenerator = () => {
     if (ssid && password) {
       generateQRCode();
     }
+    // The request is driven by the three primitive form values above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ssid, password, hidden]);
 
   // Hàm tải xuống QR Code

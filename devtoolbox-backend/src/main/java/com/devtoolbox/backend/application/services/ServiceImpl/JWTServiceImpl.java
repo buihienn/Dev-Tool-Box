@@ -1,12 +1,12 @@
 package com.devtoolbox.backend.application.services.ServiceImpl;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.devtoolbox.backend.application.services.JWTService;
@@ -18,12 +18,18 @@ import java.util.function.Function;
 @Service
 public class JWTServiceImpl implements JWTService {
 
-    private static final Dotenv dotenv = Dotenv.load(); // Load file .env
-    private static final String SECRET_KEY = dotenv.get("JWT_SECRET_KEY");
-    private static final long EXPIRATION_TIME = Long.parseLong(dotenv.get("JWT_EXPIRATION_TIME", "86400000"));
+    private final String secretKey;
+    private final long expirationTime;
+
+    public JWTServiceImpl(
+            @Value("${JWT_SECRET_KEY}") String secretKey,
+            @Value("${JWT_EXPIRATION_TIME:86400000}") long expirationTime) {
+        this.secretKey = secretKey;
+        this.expirationTime = expirationTime;
+    }
 
     private Key getSigninKey() {
-        byte[] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
@@ -33,7 +39,7 @@ public class JWTServiceImpl implements JWTService {
                 .claim("role", role) // Thêm vai trò vào payload
                 .claim("userId", userId) // Thêm userId vào payload
                 .setIssuedAt(new Date()) // Thời gian phát hành token
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME)) // Hết hạn sau 24h
+                .setExpiration(new Date(System.currentTimeMillis() + expirationTime)) // Hết hạn sau 24h
                 .signWith(getSigninKey(), SignatureAlgorithm.HS256) // Ký token bằng SHA-256
                 .compact();
     }

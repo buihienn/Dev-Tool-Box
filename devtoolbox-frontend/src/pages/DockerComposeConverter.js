@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Alert, Button } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
@@ -11,7 +12,7 @@ const DockerComposeConverter = () => {
     // Hàm gửi lệnh docker run đến backend để chuyển đổi
     const handleConvertToCompose = async () => {
         try {
-            const response = await fetch('http://localhost:8080/tool/docker-compose-converter/convert', {
+            const response = await apiFetch('/tool/docker-compose-converter/convert', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ dockerRunCommand }),

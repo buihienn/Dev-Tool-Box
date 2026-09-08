@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 // Map category từ backend sang frontend
 const categoryMap = {
   "Chuyển đổi": "converter",
@@ -12,12 +13,12 @@ const categoryMap = {
   "Web": "web",
 };
 
-const API_URL = "http://localhost:8080/api/doTool/getAll";
+const API_URL = "/api/doTool/getAll";
 
 // Hàm fetch dữ liệu từ API và ánh xạ
 const fetchToolsData = async () => {
   try {
-    const response = await fetch(API_URL);
+    const response = await apiFetch(API_URL);
     if (!response.ok) {
       throw new Error("Failed to fetch tools data");
     }

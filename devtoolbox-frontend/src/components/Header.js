@@ -25,7 +25,7 @@ import { useAuth } from "../context/AuthContext";
 import "../styles/Header.css"; 
 
 const Header = ({ hideSearch = false }) => {
-  const { expanded, toggleSidebar } = useSidebar();
+  const { toggleSidebar } = useSidebar();
   const navigate = useNavigate();
   const [showSearchModal, setShowSearchModal] = useState(false);
   const { currentUser, userRole, logout, isAuthenticated, isPremium } = useAuth();

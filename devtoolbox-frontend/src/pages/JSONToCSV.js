@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Alert, Button } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
@@ -18,7 +19,7 @@ const JSONToCSV = () => {
                 parsedJson = [parsedJson];
             }
 
-            const response = await fetch('http://localhost:8080/tool/json-to-csv/convert', {
+            const response = await apiFetch('/tool/json-to-csv/convert', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ rawJson: JSON.stringify(parsedJson) }),

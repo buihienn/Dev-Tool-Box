@@ -1,8 +1,9 @@
-const API_URL = "http://localhost:8080/api/categories/all";
+import apiFetch from '../config/api';
+const API_URL = "/api/categories/all";
 
 const fetchCategories = async () => {
   try {
-    const response = await fetch(API_URL); // Gọi API từ backend
+    const response = await apiFetch(API_URL); // Gọi API từ backend
     if (!response.ok) {
       throw new Error("Failed to fetch categories");
     }

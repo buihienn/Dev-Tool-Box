@@ -49,7 +49,7 @@ public class AdminController {
      * API bật/tắt trạng thái công cụ
      */
     @PutMapping("/toggle-status")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> toggleToolStatus(@RequestBody ToggleStatusRequest request) {
         try {
             Tool updatedTool = toolService.toggleToolStatus(request.getToolId(), request.getEnabled());
@@ -69,7 +69,7 @@ public class AdminController {
     }
     
     @PutMapping("/tools/{id}/toggle/{status}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> toggleToolStatusWithPath(
             @PathVariable("id") String id,
             @PathVariable("status") boolean status) {
@@ -94,7 +94,7 @@ public class AdminController {
      * API để chuyển đổi trạng thái premium của công cụ
      */
     @PutMapping("/toggle-premium")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> toggleToolPremium(@RequestBody TogglePremiumRequest request) {
         try {
             Tool updatedTool = toolService.toggleToolPremium(request.getToolId(), request.getIsPremium());
@@ -117,7 +117,7 @@ public class AdminController {
      * Phiên bản API sử dụng PathVariable cho premium status
      */
     @PutMapping("/tools/{id}/premium/{status}")
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> toggleToolPremiumWithPath(
             @PathVariable("id") String id,
             @PathVariable("status") boolean status) {
@@ -149,6 +149,16 @@ public class AdminController {
             @RequestParam("id") String id) {
         
         try {
+            if (!id.matches("^[a-z0-9][a-z0-9-]{0,63}$")) {
+                return ResponseEntity.badRequest()
+                    .body(Map.of("message", "ID công cụ chỉ được chứa chữ thường, số và dấu gạch ngang"));
+            }
+
+            String originalFilename = file.getOriginalFilename();
+            if (file.isEmpty() || originalFilename == null || !originalFilename.toLowerCase().endsWith(".js")) {
+                return ResponseEntity.badRequest().body(Map.of("message", "Vui lòng tải lên một file JavaScript hợp lệ"));
+            }
+
             // Kiểm tra và tạo thư mục nếu chưa tồn tại
             File directory = new File(pluginDirectory);
             if (!directory.exists()) {

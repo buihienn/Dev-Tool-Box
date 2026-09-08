@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Row, Col, Button } from 'react-bootstrap';
 import { Clipboard, Clock, FileEarmarkText } from 'react-bootstrap-icons';
@@ -18,14 +19,12 @@ const TextStatistics = () => {
     readingTimeMinutes: 0,
     formattedReadingTime: 'dưới 1 phút'
   });
-  const [loading, setLoading] = useState(false);
   const [copySuccess, setCopySuccess] = useState(false);
   
   // Phân tích văn bản khi người dùng nhập
   const analyzeText = async (inputText) => {
     try {
-      setLoading(true);
-      const response = await fetch('http://localhost:8080/tool/text-statistics/analyze', {
+      const response = await apiFetch('/tool/text-statistics/analyze', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -41,8 +40,6 @@ const TextStatistics = () => {
       }
     } catch (error) {
       console.error('Lỗi kết nối:', error);
-    } finally {
-      setLoading(false);
     }
   };
   
@@ -76,7 +73,7 @@ const TextStatistics = () => {
   
   // Phân tích văn bản ban đầu khi component mount
   useEffect(() => {
-    analyzeText(text);
+    analyzeText('');
     // Cleanup timeout khi unmount
     return () => {
       if (window.textAnalysisTimeout) {

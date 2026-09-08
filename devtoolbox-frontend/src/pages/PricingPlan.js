@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from "react";
 import { Card, Button, Row, Col } from "react-bootstrap";
 import { useAuth } from "../context/AuthContext";
@@ -7,7 +8,7 @@ import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
 import PopupResult from "../components/PopupResult";
 import "../styles/Header.css";
 
-const PAYPAL_CLIENT_ID = "AbagdadySoTpDKoqQxVJpDrlKCg3a3GepBDyIquKU7H9kmQL3uH56TY1Gt5mDz2zYISCatMHS8GujCgR"; 
+const PAYPAL_CLIENT_ID = process.env.REACT_APP_PAYPAL_CLIENT_ID;
 
 const PricingPlan = () => {
   const { isAuthenticated, currentUser } = useAuth();
@@ -17,7 +18,7 @@ const PricingPlan = () => {
   const handleUpgradeSuccess = async () => {
     console.log(`Upgrade ${currentUser.userId}!`);
     // Gọi API backend để cập nhật premium cho user
-    const response = await fetch(`http://localhost:8080/api/user/upgrade-premium?userId=${currentUser.userId}`, {
+    const response = await apiFetch('/api/user/upgrade-premium', {
       method: "POST",
       headers: {
         "Authorization": "Bearer " + localStorage.getItem("token"),
@@ -86,7 +87,7 @@ const PricingPlan = () => {
                 </ul>
               </Card.Text>
               <div className="mt-auto">
-                {isAuthenticated ? (
+                {isAuthenticated && PAYPAL_CLIENT_ID ? (
                   <PayPalScriptProvider options={{ "client-id": PAYPAL_CLIENT_ID, currency: "USD" }}>
                     <PayPalButtons
                       style={{ layout: "vertical", color: "blue", shape: "rect", label: "pay" }}
@@ -108,6 +109,10 @@ const PricingPlan = () => {
                       onError={handleUpgradeFail}
                     />
                   </PayPalScriptProvider>
+                ) : isAuthenticated ? (
+                  <Button variant="outline-secondary" className="w-100" disabled>
+                    PayPal chưa được cấu hình
+                  </Button>
                 ) : (
                   <Button variant="outline-primary" className="w-100" onClick={() => navigate("/login")}>
                     Sign up now!

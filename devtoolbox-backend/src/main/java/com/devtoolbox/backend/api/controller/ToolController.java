@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import com.devtoolbox.backend.application.dto.ToolResponse;
 import com.devtoolbox.backend.application.services.ToolService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 
 @RestController
 @RequestMapping("/api/doTool")
@@ -42,6 +43,7 @@ public class ToolController {
     }
 
     @DeleteMapping("/deletById/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public ResponseEntity<?> deleteTool(@PathVariable String id) {
         try {
             toolService.deleteToolById(id);

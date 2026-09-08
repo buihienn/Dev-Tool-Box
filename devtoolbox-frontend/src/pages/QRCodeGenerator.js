@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState, useEffect } from 'react';
 import { Card, Form, Button, Alert } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
@@ -12,8 +13,8 @@ const QRCodeGenerator = () => {
   // Hàm gọi API để tạo QR Code và hiển thị
   const generateQRCode = async () => {
     try {
-      const response = await fetch(
-        `http://localhost:8080/tool/qr-code/generate?text=${encodeURIComponent(text)}&errorCorrectionLevel=${errorCorrectionLevel}`,
+      const response = await apiFetch(
+        `/tool/qr-code/generate?text=${encodeURIComponent(text)}&errorCorrectionLevel=${errorCorrectionLevel}`,
         {
           method: 'GET',
         }
@@ -36,6 +37,8 @@ const QRCodeGenerator = () => {
   // Gọi generateQRCode mỗi khi text hoặc errorCorrectionLevel thay đổi
   useEffect(() => {
     generateQRCode();
+    // The request is driven by the two primitive form values above.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [text, errorCorrectionLevel]);
 
   // Hàm tải xuống QR Code

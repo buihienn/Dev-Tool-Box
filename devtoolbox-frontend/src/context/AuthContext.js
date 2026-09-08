@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 
@@ -37,7 +38,7 @@ export const AuthProvider = ({ children }) => {
           role: decodedToken.role,
         });
         setUserRole(decodedToken.role || 'user');
-        await fetchIsPremium(decodedToken.userId);
+        await fetchIsPremium();
       } catch (error) {
         console.error('Lỗi khi giải mã token:', error);
         logout();
@@ -49,9 +50,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Hàm lấy trạng thái premium từ API
-  const fetchIsPremium = async (userId) => {
+  const fetchIsPremium = async () => {
     try {
-      const response = await fetch(`http://localhost:8080/api/user/is-premium?userId=${userId}`, {
+      const response = await apiFetch('/api/user/is-premium', {
         headers: {
           "Authorization": "Bearer " + localStorage.getItem("token"),
         }
@@ -71,7 +72,7 @@ export const AuthProvider = ({ children }) => {
   const login = async (email, password) => {
     setLoading(true);
     try {
-      const response = await fetch("http://localhost:8080/api/auth/login", {
+      const response = await apiFetch("/api/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -93,7 +94,7 @@ export const AuthProvider = ({ children }) => {
           is_premium: isPremium
         });
         setUserRole(userRoleFromToken);
-        await fetchIsPremium(decodedToken.userId);
+        await fetchIsPremium();
         
         return { 
           success: true, 

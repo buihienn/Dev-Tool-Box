@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css'; // Import CSS
@@ -19,7 +20,7 @@ const URLParser = () => {
 
   const parseURL = async (inputUrl) => {
     try {
-      const response = await fetch('http://localhost:8080/tool/url-parser/parse', {
+      const response = await apiFetch('/tool/url-parser/parse', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

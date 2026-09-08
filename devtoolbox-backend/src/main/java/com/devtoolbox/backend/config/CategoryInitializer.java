@@ -10,10 +10,10 @@ import org.springframework.context.annotation.Configuration;
 import java.util.List;
 
 @Configuration
-@Order(1)
 public class CategoryInitializer {
 
     @Bean
+    @Order(1)
     public CommandLineRunner initializeCategories(CategoryRepository categoryRepository) {
         return args -> {
             List<Category> categories = List.of(

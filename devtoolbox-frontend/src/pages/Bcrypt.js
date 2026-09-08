@@ -1,3 +1,4 @@
+import apiFetch from '../config/api';
 import React, { useState } from 'react';
 import { Card, Form, Button, InputGroup } from 'react-bootstrap';
 import '../styles/ToolLayout.css';
@@ -14,7 +15,7 @@ const Bcrypt = () => {
   // Gọi API để tạo hash
   const handleGenerateHash = async () => {
     try {
-      const response = await fetch('http://localhost:8080/tool/bcrypt/hash', {
+      const response = await apiFetch('/tool/bcrypt/hash', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -39,7 +40,7 @@ const Bcrypt = () => {
   // Gọi API để so sánh chuỗi với hash
   const handleCompareHash = async () => {
     try {
-      const response = await fetch('http://localhost:8080/tool/bcrypt/compare', {
+      const response = await apiFetch('/tool/bcrypt/compare', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
